@@ -1,0 +1,45 @@
+{
+  "private": true,
+  "displayName": "Homebridge Shortcuts Buttons",
+  "name": "homebridge-shortcuts-buttons",
+  "version": "0.0.1",
+  "description": "Homebridge Plugin to run any Apple Shortcuts from multiple Stateless Programmable Switches",
+  "license": "Apache-2.0",
+  "author": "duddu",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/duddu/homebridge-shortcuts-buttons.git"
+  },
+  "bugs": {
+    "url": "https://github.com/duddu/homebridge-shortcuts-buttons/issues"
+  },
+  "engines": {
+    "node": "^18.17.0 || ^20.9.0",
+    "homebridge": "^1.6.0"
+  },
+  "main": "dist/index.js",
+  "scripts": {
+    "lint": "eslint src/**/*.ts",
+    "watch": "npm run build && npm link && nodemon",
+    "build": "rimraf ./dist && tsc",
+    "prepublishOnly": "npm run lint && npm run build"
+  },
+  "keywords": [
+    "homebridge-plugin",
+    "apple-shortcuts",
+    "stateless-programmable-switch"
+  ],
+  "devDependencies": {
+    "@types/node": "^20.12.7",
+    "@typescript-eslint/eslint-plugin": "^7.6.0",
+    "@typescript-eslint/parser": "^7.7.0",
+    "eslint": "^8.57.0",
+    "homebridge": "^1.7.0",
+    "nodemon": "^3.1.0",
+    "prettier": "^3.2.5",
+    "prettier-eslint": "^16.3.0",
+    "rimraf": "^5.0.5",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.4.5"
+  }
+}
