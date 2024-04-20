@@ -19,8 +19,8 @@ import { XCallbackUrlServer } from './server';
 export type ShortcutsButtonsPlatformConfig = PlatformConfig & ShortcutsButtonsUserConfig;
 
 export class ShortcutsButtonsPlatform implements DynamicPlatformPlugin {
-  public readonly Service: typeof Service = this.api.hap.Service;
-  public readonly Characteristic: typeof Characteristic = this.api.hap.Characteristic;
+  public readonly Service: typeof Service;
+  public readonly Characteristic: typeof Characteristic;
 
   public readonly config: ShortcutsButtonsPlatformConfig;
   public accessory: ShortcutsButtonsPlatformAccessory | null = null;
@@ -31,6 +31,9 @@ export class ShortcutsButtonsPlatform implements DynamicPlatformPlugin {
     public readonly api: API,
   ) {
     this.config = _config as ShortcutsButtonsPlatformConfig;
+    this.Service = this.api.hap.Service;
+    this.Characteristic = this.api.hap.Characteristic;
+
     this.log.debug('Finished initializing platform:', this.config.name);
 
     // When this event is fired it means Homebridge has restored all cached accessories from disk.
