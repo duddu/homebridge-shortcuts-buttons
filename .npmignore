@@ -1,6 +1,12 @@
 # Ignore source code
 src
 
+# dev-only local executables
+bin/
+
+# MacOS
+.DS_Store
+
 # ------------- Defaults ------------- #
 
 # gitHub actions
@@ -131,6 +137,3 @@ web_modules/
 .yarn/unplugged
 .yarn/build-state.yml
 .pnp.*
-
-# dev-only local executables
-bin/

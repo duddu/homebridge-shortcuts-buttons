@@ -1,6 +1,9 @@
 # Ignore compiled code
 dist
 
+# MacOS
+.DS_Store
+
 # ------------- Defaults ------------- #
 
 # Logs
@@ -121,6 +124,3 @@ dist
 
 # Webstorm
 .idea
-
-# MacOS
-.DS_Store
