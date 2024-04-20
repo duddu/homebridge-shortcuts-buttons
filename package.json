@@ -2,7 +2,7 @@
   "private": true,
   "displayName": "Homebridge Shortcuts Buttons",
   "name": "homebridge-shortcuts-buttons",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Homebridge Plugin to run any Apple Shortcuts from multiple buttons (Switch or Outlet services), optionally waiting for result using x-callback-url protocol.",
   "license": "Apache-2.0",
   "author": "duddu",
@@ -21,7 +21,7 @@
   "scripts": {
     "lint": "eslint src/**/*.ts",
     "schema2ts": "./bin/schema2ts.sh",
-    "bundle": "rimraf ./dist && tsc && cp -R ./bin ./dist",
+    "bundle": "rimraf ./dist && tsc && cp -R ./src/bin ./dist",
     "build": "npm run schema2ts && npm run bundle",
     "watch": "npm run build && npm link && nodemon",
     "prepublishOnly": "npm run lint && npm run build"

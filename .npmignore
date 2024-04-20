@@ -2,7 +2,10 @@
 src
 
 # dev-only local executables
-bin/
+/bin/
+
+# dev-only configurations
+.*rc
 
 # MacOS
 .DS_Store
