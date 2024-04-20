@@ -121,3 +121,6 @@ dist
 
 # Webstorm
 .idea
+
+# MacOS
+.DS_Store

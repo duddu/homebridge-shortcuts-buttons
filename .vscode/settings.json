@@ -7,5 +7,7 @@
   "editor.rulers": [100],
   "files.autoSave": "onFocusChange",
   "files.eol": "\n",
-  "vs-code-prettier-eslint.prettierLast": false
+  "vs-code-prettier-eslint.prettierLast": false,
+  "typescript.tsdk": "node_modules/typescript/lib",
+  "sarif-viewer.connectToGithubCodeScanning": "off"
 }

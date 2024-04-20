@@ -3,15 +3,13 @@
   "extends": [
     "eslint:recommended",
     "plugin:@typescript-eslint/eslint-recommended",
-    "plugin:@typescript-eslint/recommended" // uses the recommended rules from the @typescript-eslint/eslint-plugin
+    "plugin:@typescript-eslint/recommended"
   ],
   "parserOptions": {
     "ecmaVersion": 2018,
     "sourceType": "module"
   },
-  "ignorePatterns": [
-    "dist"
-  ],
+  "ignorePatterns": ["dist"],
   "rules": {
     "quotes": ["warn", "single"],
     "indent": ["warn", 2, { "SwitchCase": 1 }],
@@ -23,7 +21,7 @@
     "brace-style": ["warn"],
     "prefer-arrow-callback": ["warn"],
     "max-len": ["warn", 100],
-    "no-console": ["warn"], // use the provided Homebridge log method instead
+    "no-console": ["warn"],
     "no-non-null-assertion": ["off"],
     "comma-spacing": ["error"],
     "no-multi-spaces": ["warn", { "ignoreEOLComments": true }],
@@ -33,6 +31,6 @@
     "@typescript-eslint/no-non-null-assertion": "off",
     "@typescript-eslint/explicit-module-boundary-types": "off",
     "@typescript-eslint/semi": ["warn"],
-    "@typescript-eslint/member-delimiter-style": ["warn"]
+    "@typescript-eslint/member-delimiter-style": "warn"
   }
 }

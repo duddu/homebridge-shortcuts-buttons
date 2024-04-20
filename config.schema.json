@@ -6,11 +6,76 @@
     "type": "object",
     "properties": {
       "name": {
-        "title": "Name",
         "type": "string",
-        "required": true,
-        "default": "Example Dynamic Platform"
+        "description": "Name of the platform bridge.",
+        "default": "Shortcuts Buttons"
+      },
+      "accessoryName": {
+        "type": "string",
+        "description": "Display name of the accessory.",
+        "default": "Shortcuts"
+      },
+      "displayButtonsAs": {
+        "type": "string",
+        "enum": ["Outlet", "Switch"],
+        "description": "Display the buttons services as outlets or as switches.",
+        "default": "Outlet"
+      },
+      "buttons": {
+        "type": "array",
+        "description": "List of buttons configuration objects.",
+        "uniqueItems": true,
+        "minItems": 1,
+        "items": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string",
+              "description": "Display name of the button."
+            },
+            "shortcut": {
+              "type": "string",
+              "description": "Name of the Apple Shortcut to trigger (without extension)."
+            }
+          },
+          "required": ["name", "shortcut"]
+        }
+      },
+      "waitForShortcutResult": {
+        "type": "boolean",
+        "description": "Wait for the triggered Shortcut to complete to invoke a callback.",
+        "default": true
+      },
+      "shortcutResultCallback": {
+        "type": "object",
+        "description": "All values in this section are ignored if `waitForShortcutResult` is off.",
+        "properties": {
+          "callbackServerHost": {
+            "type": "string",
+            "description": "IP address (or hostname) and port where the server handling the x-callback-url will be exposed.",
+            "default": "0.0.0.0:9090"
+          },
+          "waitUntilSeconds": {
+            "type": "integer",
+            "description": "@TODO? Seconds to wait for the triggered Shortcut to produce a result before timing out.",
+            "default": 10,
+            "minimum": 1,
+            "maximum": 60
+          },
+          "callbackCustomCommand": {
+            "type": "string",
+            "description": "By default (field left empty), after the Shortcut completes, a notification is shown on the host running Homebrige, and a relevant sound effect (\"Glass\" for success, \"Sosumi\" for failure) is played. \n\nIf any value is present in this field, after the Apple Shortcut completes the service will treat this value as a unix command and will try to run it via node `child_process.exec` (at your own risk). \nIn your command you have at your disposal the following environment variables: \n- SHORTCUT_NAME: string \n- SHORTCUT_RESULT: \"success\" | \"error\" | \"cancel\""
+          }
+        }
       }
-    }
+    },
+    "required": [
+      "name",
+      "accessoryName",
+      "buttons",
+      "displayButtonsAs",
+      "waitForShortcutResult",
+      "shortcutResultCallback"
+    ]
   }
 }

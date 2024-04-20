@@ -1,6 +1,6 @@
 name: Build and Lint
 
-on: [push, pull_request]
+on: [pull_request]
 
 jobs:
   build:
@@ -9,7 +9,6 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        # the Node.js versions to build on
         node-version: [18.x, 20.x]
 
     steps:

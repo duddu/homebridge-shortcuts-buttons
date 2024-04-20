@@ -2,8 +2,8 @@
   "private": true,
   "displayName": "Homebridge Shortcuts Buttons",
   "name": "homebridge-shortcuts-buttons",
-  "version": "0.0.1",
-  "description": "Homebridge Plugin to run any Apple Shortcuts from multiple Stateless Programmable Switches",
+  "version": "1.0.0",
+  "description": "Homebridge Plugin to run any Apple Shortcuts from multiple buttons (Switch or Outlet services), optionally waiting for result using x-callback-url protocol.",
   "license": "Apache-2.0",
   "author": "duddu",
   "repository": {
@@ -20,26 +20,38 @@
   "main": "dist/index.js",
   "scripts": {
     "lint": "eslint src/**/*.ts",
+    "schema2ts": "./bin/schema2ts.sh",
+    "bundle": "rimraf ./dist && tsc && cp -R ./bin ./dist",
+    "build": "npm run schema2ts && npm run bundle",
     "watch": "npm run build && npm link && nodemon",
-    "build": "rimraf ./dist && tsc",
     "prepublishOnly": "npm run lint && npm run build"
   },
-  "keywords": [
-    "homebridge-plugin",
-    "apple-shortcuts",
-    "stateless-programmable-switch"
-  ],
   "devDependencies": {
+    "@semantic-release/commit-analyzer": "^12.0.0",
+    "@semantic-release/github": "^10.0.3",
+    "@semantic-release/npm": "^12.0.0",
+    "@semantic-release/release-notes-generator": "^13.0.0",
     "@types/node": "^20.12.7",
     "@typescript-eslint/eslint-plugin": "^7.6.0",
     "@typescript-eslint/parser": "^7.7.0",
+    "cz-conventional-changelog": "^3.3.0",
     "eslint": "^8.57.0",
+    "eslint-plugin-unicorn": "^52.0.0",
     "homebridge": "^1.7.0",
+    "json-schema-to-typescript": "^13.1.2",
     "nodemon": "^3.1.0",
     "prettier": "^3.2.5",
     "prettier-eslint": "^16.3.0",
     "rimraf": "^5.0.5",
+    "semantic-release": "^23.0.8",
+    "source-map-support": "^0.5.21",
     "ts-node": "^10.9.2",
     "typescript": "^5.4.5"
-  }
+  },
+  "keywords": [
+    "homebridge-plugin",
+    "apple-shortcuts",
+    "x-callback-url",
+    "homekit"
+  ]
 }
