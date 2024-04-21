@@ -3,6 +3,7 @@ import { Characteristic, CharacteristicValue, Logger, Nullable, Service } from '
 import { ShortcutsButtonsPlatformConfig } from './platform';
 import { Shortcut } from './shortcut';
 import { ShortcutsButtonsUtils } from './utils';
+import { XCallbackUrlServer } from './server';
 
 export type ShortcutsButtonsPlatformServiceConfig =
   ShortcutsButtonsPlatformConfig['buttons'][number];
@@ -19,8 +20,8 @@ export class ShortcutsButtonsAccessoryService {
     private readonly log: Logger,
     private readonly service: Service,
     private readonly serviceConfig: ShortcutsButtonsPlatformServiceConfig,
+    server: Nullable<XCallbackUrlServer>,
     utils: ShortcutsButtonsUtils,
-    serverBaseUrl: Nullable<string>,
     _Characteristic: typeof Characteristic,
   ) {
     this.service
@@ -31,7 +32,7 @@ export class ShortcutsButtonsAccessoryService {
       .onSet(this.setOn.bind(this));
 
     this.state = new ShortcutsButtonsAccessoryServiceState();
-    this.shortcut = new Shortcut(serviceConfig.shortcut, service.UUID, serverBaseUrl, utils);
+    this.shortcut = new Shortcut(serviceConfig.shortcut, server, utils);
   }
 
   private async getOn(): Promise<CharacteristicValue> {

@@ -36,8 +36,8 @@ export class ShortcutsButtonsAccessory {
         this.platform.log,
         this.getOrAddService(this.platform.Service.Outlet, serviceConfig),
         serviceConfig,
+        this.platform.server,
         this.platform.utils,
-        this.platform.serverBaseUrl,
         this.platform.Characteristic,
       );
     }
@@ -51,6 +51,7 @@ export class ShortcutsButtonsAccessory {
       return this.accessory.getService(type as T) || this.accessory.addService(type as Service);
     }
 
+    // @TODO this.accessory.removeService(this.accessory.services[])
     return (
       this.accessory.getService(config.name) ||
       this.accessory.addService(

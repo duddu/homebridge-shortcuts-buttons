@@ -1,5 +1,6 @@
 import { Nullable } from 'homebridge';
 import { ShortcutsButtonsUtils } from './utils';
+import { XCallbackUrlServer } from './server';
 
 export const enum ShortcutStatus {
   SUCCESS = 'success',
@@ -10,8 +11,7 @@ export const enum ShortcutStatus {
 export class Shortcut {
   constructor(
     private readonly shortcutName: string,
-    private readonly serviceUUID: string,
-    private readonly serverBaseUrl: Nullable<string>,
+    private readonly server: Nullable<XCallbackUrlServer>,
     private readonly utils: ShortcutsButtonsUtils,
   ) {}
 
@@ -31,9 +31,9 @@ export class Shortcut {
   private getCallbackParam(status: ShortcutStatus): string {
     return (
       // eslint-disable-next-line no-useless-escape
-      `x-${status}="${this.serverBaseUrl}\?` +
+      `x-${status}="${this.server?.baseUrl}\?` +
+      `token=${this.server?.issueToken()}%26` +
       `shortcutName=${this.shortcutName}%26` +
-      `service=${this.serviceUUID}%26` +
       `status=${status}"`
     );
   }

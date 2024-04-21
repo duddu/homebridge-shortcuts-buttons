@@ -1,10 +1,9 @@
-import { API, Logger, Nullable } from 'homebridge';
+import { API, Logger } from 'homebridge';
 import { createServer, IncomingMessage, Server, ServerResponse } from 'http';
 import { Socket } from 'net';
 import { URLSearchParams } from 'url';
 
 import { ShortcutsButtonsPlatformConfig } from './platform';
-import { ShortcutsButtonsPlatformAccessory } from './accessory';
 import { ShortcutStatus } from './shortcut';
 import { join } from 'path';
 import { ShortcutsButtonsUtils } from './utils';
@@ -16,15 +15,17 @@ export class XCallbackUrlServer {
   private readonly pathname = '/x-callback-url';
 
   private readonly server: Server;
+  private readonly tokens: AuthorizationTokens;
   private readonly sockets: Set<Socket> = new Set();
-  private readonly requiredParamsKeys = ['service', 'shortcutName', 'status'] as const;
+  private readonly requiredParamsKeys = ['token', 'shortcutName', 'status'] as const;
 
   public get baseUrl(): string {
     return `${this.proto}://${this.hostname}:${this.port}${this.pathname}`;
   }
 
+  public issueToken: AuthorizationTokens['issue'];
+
   constructor(
-    private readonly accessory: Nullable<ShortcutsButtonsPlatformAccessory>,
     private readonly config: ShortcutsButtonsPlatformConfig,
     private readonly log: Logger,
     private readonly utils: ShortcutsButtonsUtils,
@@ -33,6 +34,8 @@ export class XCallbackUrlServer {
     this.hostname = config.shortcutResultCallback.callbackServerHostname;
     this.port = config.shortcutResultCallback.callbackServerPort;
 
+    this.tokens = new AuthorizationTokens(api);
+    this.issueToken = this.tokens.issue;
     this.server = this.create();
 
     api.on('shutdown', this.destroy);
@@ -102,17 +105,9 @@ export class XCallbackUrlServer {
       return;
     }
 
-    if (
-      !this.isValidServiceUUID(
-        requiredParamsMap.get('shortcutName'),
-        requiredParamsMap.get('service'),
-      )
-    ) {
-      this.log.error(
-        `Invalid service identifier: ${requiredParamsMap.get('shortcutName')}` +
-          `(${requiredParamsMap.get('service')})`,
-      );
-      res.writeHead(400).end();
+    if (!this.tokens.isValid(requiredParamsMap.get('token'))) {
+      this.log.error('Authorization token invalid or expired');
+      res.writeHead(401).end();
       return;
     }
 
@@ -120,7 +115,7 @@ export class XCallbackUrlServer {
       await this.runCallbackScript(requiredParamsMap, searchParams);
     } catch (e) {
       this.log.error('Unable to run callback script', e);
-      res.writeHead(400).end();
+      res.writeHead(500).end();
       return;
     }
 
@@ -142,20 +137,6 @@ export class XCallbackUrlServer {
       }
     }
     return new Map(requiredParamsEntries);
-  }
-
-  private isValidServiceUUID(shortcutName?: string, serviceUUID?: string): boolean {
-    if (!this.accessory || !shortcutName || !serviceUUID) {
-      return false;
-    }
-
-    const serviceConfig = this.config.buttons.find((service) => service.shortcut === shortcutName);
-
-    return (
-      this.accessory.services.findIndex(
-        (service) => service.UUID === serviceUUID && service.displayName === serviceConfig?.name,
-      ) !== -1
-    );
   }
 
   private async runCallbackScript(
@@ -209,5 +190,21 @@ export class XCallbackUrlServer {
       `--env SOUND="${sound}" ` +
       `--env PATHNAME="${this.pathname}"`
     );
+  }
+}
+
+class AuthorizationTokens {
+  private readonly tokens: Set<string> = new Set();
+
+  constructor(private readonly api: API) {}
+
+  public issue(): string {
+    const token = this.api.hap.uuid.generate(Date.now().toString());
+    this.tokens.add(token);
+    return token;
+  }
+
+  public isValid(token?: string): boolean {
+    return typeof token === 'string' && this.tokens.delete(token);
   }
 }
