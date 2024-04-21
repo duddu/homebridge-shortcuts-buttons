@@ -35,7 +35,7 @@ export class XCallbackUrlServer {
     this.port = config.shortcutResultCallback.callbackServerPort;
 
     this.tokens = new AuthorizationTokens(api);
-    this.issueToken = this.tokens.issue;
+    this.issueToken = () => this.tokens.issue();
     this.server = this.create();
 
     api.on('shutdown', this.destroy);
