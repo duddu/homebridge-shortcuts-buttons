@@ -1,8 +1,8 @@
 import { API } from 'homebridge';
 
 import { PLATFORM_NAME } from './settings';
-import { ShortcutsButtonsPlatform } from './platform';
+import { HSBPlatform } from './platform';
 
 export = (api: API) => {
-  api.registerPlatform(PLATFORM_NAME, ShortcutsButtonsPlatform);
+  api.registerPlatform(PLATFORM_NAME, HSBPlatform);
 };

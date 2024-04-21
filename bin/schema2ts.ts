@@ -5,7 +5,7 @@ import { compile, Options } from 'json-schema-to-typescript';
 
 import { schema } from '../config.schema.json';
 
-const configInterfaceName = 'ShortcutsButtonsUserConfig';
+const configInterfaceName = 'HSBConfig';
 const moduleName = 'SchemaForm2Ts';
 const outputRootPath = '/src/config.ts';
 const outputRelativePath = join(__dirname, '../', outputRootPath);
@@ -34,11 +34,8 @@ async function getCompileOptions(): Promise<Partial<Options>> {
 
   return {
     additionalProperties: false,
-    bannerComment:
-      '/**\n* DO NOT EDIT MANUALLY.\n' +
-      '* This file was automatically generated from `/config.schema.json`.\n' +
-      '* Update the source schema file and run `schema2ts` to regenerate this file.\n*/\n\n' +
-      '/* eslint-disable max-len */\n\n',
+    bannerComment: '',
+    enableConstEnums: true,
     ignoreMinAndMaxItems: true,
     strictIndexSignatures: true,
     style,
@@ -46,8 +43,20 @@ async function getCompileOptions(): Promise<Partial<Options>> {
 }
 
 async function writeConfig(config: string): Promise<void> {
+  const top =
+    '/**\n* DO NOT EDIT MANUALLY.\n' +
+    '* This file was automatically generated from `/config.schema.json`.\n' +
+    '* Update the source schema file and run `schema2ts` to regenerate this file.\n*/\n\n' +
+    '/* eslint-disable max-len */\n\n' +
+    'import { PlatformConfig } from \'homebridge\';\n\n';
+  config = config
+    .replaceAll('export type', 'type')
+    .replaceAll(
+      configInterfaceName,
+      configInterfaceName + ' extends Pick<PlatformConfig, \'platform\' | \'_bridge\'>',
+    );
   try {
-    return await writeFile(outputRelativePath, config, {
+    return await writeFile(outputRelativePath, top + config, {
       flag: 'w+',
       mode: 0o644,
     });

@@ -1,27 +1,26 @@
 import { Characteristic, CharacteristicValue, Logger, Nullable, Service } from 'homebridge';
 
-import { ShortcutsButtonsPlatformConfig } from './platform';
 import { Shortcut } from './shortcut';
-import { ShortcutsButtonsUtils } from './utils';
-import { XCallbackUrlServer } from './server';
+import { HSBUtils } from './utils';
+import { HSBServer } from './server';
+import { HSBConfig } from './config';
 
-export type ShortcutsButtonsPlatformServiceConfig =
-  ShortcutsButtonsPlatformConfig['buttons'][number];
+export type HSBServiceConfig = HSBConfig['services'][number];
 
-class ShortcutsButtonsAccessoryServiceState {
+class HSBServiceState {
   isOn: boolean = false;
 }
 
-export class ShortcutsButtonsAccessoryService {
-  private readonly state: ShortcutsButtonsAccessoryServiceState;
+export class HSBService {
+  private readonly state: HSBServiceState;
   private readonly shortcut: Shortcut;
 
   constructor(
     private readonly log: Logger,
     private readonly service: Service,
-    private readonly serviceConfig: ShortcutsButtonsPlatformServiceConfig,
-    server: Nullable<XCallbackUrlServer>,
-    utils: ShortcutsButtonsUtils,
+    private readonly serviceConfig: HSBServiceConfig,
+    server: Nullable<HSBServer>,
+    utils: HSBUtils,
     _Characteristic: typeof Characteristic,
   ) {
     this.service
@@ -31,7 +30,7 @@ export class ShortcutsButtonsAccessoryService {
       .onGet(this.getOn.bind(this))
       .onSet(this.setOn.bind(this));
 
-    this.state = new ShortcutsButtonsAccessoryServiceState();
+    this.state = new HSBServiceState();
     this.shortcut = new Shortcut(serviceConfig.shortcut, server, utils);
   }
 

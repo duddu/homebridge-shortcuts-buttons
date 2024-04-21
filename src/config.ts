@@ -1,12 +1,34 @@
 /**
- * DO NOT EDIT MANUALLY.
- * This file was automatically generated from `/config.schema.json`.
- * Update the source schema file and run `schema2ts` to regenerate this file.
- */
+* DO NOT EDIT MANUALLY.
+* This file was automatically generated from `/config.schema.json`.
+* Update the source schema file and run `schema2ts` to regenerate this file.
+*/
 
 /* eslint-disable max-len */
 
-export interface ShortcutsButtonsUserConfig {
+import { PlatformConfig } from 'homebridge';
+
+/**
+ * Display the buttons services as outlets or as switches.
+ */
+type DisplayButtonsAs = 'Outlet' | 'Switch';
+/**
+ * List of buttons configuration objects.
+ *
+ * @minItems 1
+ */
+type Buttons = {
+  /**
+   * Display name of the button.
+   */
+  name: string;
+  /**
+   * Name of the Apple Shortcut to trigger, as displayed in the Shortcuts app. The machine running Homebridge must have access to it (i.e. be logged to the correct iCloud account).
+   */
+  shortcut: string;
+}[];
+
+export interface HSBConfig extends Pick<PlatformConfig, 'platform' | '_bridge'> {
   /**
    * Name of the platform bridge.
    */
@@ -15,31 +37,14 @@ export interface ShortcutsButtonsUserConfig {
    * Display name of the accessory.
    */
   accessoryName: string;
-  /**
-   * Display the buttons services as outlets or as switches.
-   */
-  displayButtonsAs: 'Outlet' | 'Switch';
-  /**
-   * List of buttons configuration objects.
-   *
-   * @minItems 1
-   */
-  buttons: {
-    /**
-     * Display name of the button.
-     */
-    name: string;
-    /**
-     * Name of the Apple Shortcut to trigger, as displayed in the Shortcuts app. The machine running Homebridge must have access to it (i.e. be logged to the correct iCloud account).
-     */
-    shortcut: string;
-  }[];
+  serviceType: DisplayButtonsAs;
+  services: Buttons;
   /**
    * Wait for the triggered Shortcut to complete to invoke a callback.
    */
   waitForShortcutResult: boolean;
   /**
-   * All values in this section are ignored if `Wait For Shortcut Result` is toggled off.
+   * All fields in the following section are relevant to the x-callback-url server, thus will be ignored in case `Wait For Shortcut Result` is toggled off.
    */
   shortcutResultCallback: {
     /**

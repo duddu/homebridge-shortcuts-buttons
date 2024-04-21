@@ -8,35 +8,28 @@ import {
   Nullable,
 } from 'homebridge';
 
-import { ShortcutsButtonsUserConfig } from './config';
+import { HSBConfig } from './config';
 import { DEVICE_SERIAL, PLATFORM_NAME, PLUGIN_NAME } from './settings';
-import {
-  ShortcutsButtonsAccessory,
-  ShortcutsButtonsPlatformAccessory,
-  ShortcutsButtonsAccessoryContext,
-  ShortcutsButtonsAccessoryDevice,
-} from './accessory';
-import { XCallbackUrlServer } from './server';
-import { ShortcutsButtonsUtils } from './utils';
+import { HSBAccessory, HSBPlatformAccessory, HSBAccessoryContext, HSBDevice } from './accessory';
+import { HSBServer } from './server';
+import { HSBUtils } from './utils';
 
-export type ShortcutsButtonsPlatformConfig = PlatformConfig & ShortcutsButtonsUserConfig;
-
-export class ShortcutsButtonsPlatform implements DynamicPlatformPlugin {
+export class HSBPlatform implements DynamicPlatformPlugin {
   public readonly Service: typeof Service;
   public readonly Characteristic: typeof Characteristic;
-  public readonly config: ShortcutsButtonsPlatformConfig;
-  public readonly utils: ShortcutsButtonsUtils;
+  public readonly config: HSBConfig;
+  public readonly utils: HSBUtils;
 
-  public accessory: Nullable<ShortcutsButtonsPlatformAccessory> = null;
-  public server: Nullable<XCallbackUrlServer> = null;
+  public accessory: Nullable<HSBPlatformAccessory> = null;
+  public server: Nullable<HSBServer> = null;
 
   constructor(
     public readonly log: Logger,
     _config: PlatformConfig,
     public readonly api: API,
   ) {
-    this.config = _config as ShortcutsButtonsPlatformConfig;
-    this.utils = new ShortcutsButtonsUtils(log);
+    this.config = _config as HSBConfig;
+    this.utils = new HSBUtils(log);
     this.Service = this.api.hap.Service;
     this.Characteristic = this.api.hap.Characteristic;
 
@@ -49,7 +42,7 @@ export class ShortcutsButtonsPlatform implements DynamicPlatformPlugin {
     api.on('didFinishLaunching', () => {
       log.debug('Executed didFinishLaunching callback');
 
-      this.server = new XCallbackUrlServer(this.config, log, this.utils, api);
+      this.server = new HSBServer(this.config, log, this.utils, api);
 
       // run the method to discover / register your devices as accessories
       this.discoverDevices();
@@ -60,7 +53,7 @@ export class ShortcutsButtonsPlatform implements DynamicPlatformPlugin {
    * This function is invoked when homebridge restores cached accessories from disk at startup.
    * It should be used to setup event handlers for characteristics and update respective values.
    */
-  configureAccessory(accessory: ShortcutsButtonsPlatformAccessory) {
+  configureAccessory(accessory: HSBPlatformAccessory) {
     this.log.info('Loading accessory from cache:', accessory.displayName);
 
     // add the restored accessory to the accessories cache so we can track if it has already
@@ -95,7 +88,7 @@ export class ShortcutsButtonsPlatform implements DynamicPlatformPlugin {
 
       // create the accessory handler for the restored accessory
       // this is imported from `platformAccessory.ts`
-      new ShortcutsButtonsAccessory(this, this.accessory);
+      new HSBAccessory(this, this.accessory);
 
       // it is possible to remove platform accessories at any time using
       // `api.unregisterPlatformAccessories`, eg.:
@@ -107,7 +100,7 @@ export class ShortcutsButtonsPlatform implements DynamicPlatformPlugin {
       this.log.info('Adding new accessory:', this.device.displayName);
 
       // create a new accessory
-      const accessory = new this.api.platformAccessory<ShortcutsButtonsAccessoryContext>(
+      const accessory = new this.api.platformAccessory<HSBAccessoryContext>(
         this.device.displayName,
         uuid,
       );
@@ -118,7 +111,7 @@ export class ShortcutsButtonsPlatform implements DynamicPlatformPlugin {
 
       // create the accessory handler for the newly create accessory
       // this is imported from `platformAccessory.ts`
-      new ShortcutsButtonsAccessory(this, accessory);
+      new HSBAccessory(this, accessory);
 
       // link the accessory to your platform
       this.api.registerPlatformAccessories(PLUGIN_NAME, PLATFORM_NAME, [accessory]);
@@ -127,7 +120,7 @@ export class ShortcutsButtonsPlatform implements DynamicPlatformPlugin {
     }
   }
 
-  private get device(): ShortcutsButtonsAccessoryDevice {
+  private get device(): HSBDevice {
     return {
       displayName: this.config.accessoryName,
       serialNumber: DEVICE_SERIAL,

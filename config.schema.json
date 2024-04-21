@@ -15,14 +15,16 @@
         "description": "Display name of the accessory.",
         "default": "Shortcuts"
       },
-      "displayButtonsAs": {
+      "serviceType": {
         "type": "string",
+        "title": "Display buttons as",
         "enum": ["Outlet", "Switch"],
         "description": "Display the buttons services as outlets or as switches.",
         "default": "Outlet"
       },
-      "buttons": {
+      "services": {
         "type": "array",
+        "title": "Buttons",
         "description": "List of buttons configuration objects.",
         "uniqueItems": true,
         "minItems": 1,
@@ -48,7 +50,7 @@
       },
       "shortcutResultCallback": {
         "type": "object",
-        "description": "All values in this section are ignored if `Wait For Shortcut Result` is toggled off.",
+        "description": "All fields in the following section are relevant to the x-callback-url server, thus will be ignored in case `Wait For Shortcut Result` is toggled off.",
         "properties": {
           "callbackServerHostname": {
             "type": "string",
@@ -71,8 +73,8 @@
     "required": [
       "name",
       "accessoryName",
-      "displayButtonsAs",
-      "buttons",
+      "serviceType",
+      "services",
       "waitForShortcutResult",
       "shortcutResultCallback"
     ]

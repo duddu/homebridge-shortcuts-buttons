@@ -1,21 +1,21 @@
 import { API, Logger } from 'homebridge';
 import { createServer, IncomingMessage, Server, ServerResponse } from 'http';
 import { Socket } from 'net';
+import { join } from 'path';
 import { URLSearchParams } from 'url';
 
-import { ShortcutsButtonsPlatformConfig } from './platform';
+import { HSBConfig } from './config';
 import { ShortcutStatus } from './shortcut';
-import { join } from 'path';
-import { ShortcutsButtonsUtils } from './utils';
+import { HSBUtils } from './utils';
 
-export class XCallbackUrlServer {
+export class HSBServer {
   private readonly proto = 'http';
   private readonly hostname: string;
   private readonly port: number;
   private readonly pathname = '/x-callback-url';
 
   private readonly server: Server;
-  private readonly tokens: AuthorizationTokens;
+  private readonly tokens: HSBServerAuthTokens;
   private readonly sockets: Set<Socket> = new Set();
   private readonly requiredParamsKeys = ['token', 'shortcutName', 'status'] as const;
 
@@ -23,18 +23,18 @@ export class XCallbackUrlServer {
     return `${this.proto}://${this.hostname}:${this.port}${this.pathname}`;
   }
 
-  public issueToken: AuthorizationTokens['issue'];
+  public issueToken: HSBServerAuthTokens['issue'];
 
   constructor(
-    private readonly config: ShortcutsButtonsPlatformConfig,
+    private readonly config: HSBConfig,
     private readonly log: Logger,
-    private readonly utils: ShortcutsButtonsUtils,
+    private readonly utils: HSBUtils,
     api: API,
   ) {
     this.hostname = config.shortcutResultCallback.callbackServerHostname;
     this.port = config.shortcutResultCallback.callbackServerPort;
 
-    this.tokens = new AuthorizationTokens(api);
+    this.tokens = new HSBServerAuthTokens(api);
     this.issueToken = () => this.tokens.issue();
     this.server = this.create();
 
@@ -193,7 +193,7 @@ export class XCallbackUrlServer {
   }
 }
 
-class AuthorizationTokens {
+class HSBServerAuthTokens {
   private readonly tokens: Set<string> = new Set();
 
   constructor(private readonly api: API) {}

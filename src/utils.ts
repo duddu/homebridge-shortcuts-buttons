@@ -3,7 +3,7 @@ import { ObjectEncodingOptions } from 'fs';
 import { Logger } from 'homebridge';
 import { promisify } from 'util';
 
-export class ShortcutsButtonsUtils {
+export class HSBUtils {
   constructor(private readonly log: Logger) {}
 
   public async execAsync(

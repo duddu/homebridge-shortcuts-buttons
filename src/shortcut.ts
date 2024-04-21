@@ -1,6 +1,6 @@
 import { Nullable } from 'homebridge';
-import { ShortcutsButtonsUtils } from './utils';
-import { XCallbackUrlServer } from './server';
+import { HSBUtils } from './utils';
+import { HSBServer } from './server';
 
 export const enum ShortcutStatus {
   SUCCESS = 'success',
@@ -11,8 +11,8 @@ export const enum ShortcutStatus {
 export class Shortcut {
   constructor(
     private readonly shortcutName: string,
-    private readonly server: Nullable<XCallbackUrlServer>,
-    private readonly utils: ShortcutsButtonsUtils,
+    private readonly server: Nullable<HSBServer>,
+    private readonly utils: HSBUtils,
   ) {}
 
   public async run(): Promise<void> {

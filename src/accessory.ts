@@ -1,24 +1,24 @@
 import { PlatformAccessory, Service, WithUUID } from 'homebridge';
 
-import { ShortcutsButtonsPlatform } from './platform';
-import { ShortcutsButtonsAccessoryService, ShortcutsButtonsPlatformServiceConfig } from './service';
+import { HSBPlatform } from './platform';
+import { HSBService, HSBServiceConfig } from './service';
 import { PLATFORM_NAME } from './settings';
 
-export interface ShortcutsButtonsAccessoryDevice {
+export interface HSBDevice {
   displayName: string;
   serialNumber: string;
 }
 
-export interface ShortcutsButtonsAccessoryContext {
-  device: ShortcutsButtonsAccessoryDevice;
+export interface HSBAccessoryContext {
+  device: HSBDevice;
 }
 
-export type ShortcutsButtonsPlatformAccessory = PlatformAccessory<ShortcutsButtonsAccessoryContext>;
+export type HSBPlatformAccessory = PlatformAccessory<HSBAccessoryContext>;
 
-export class ShortcutsButtonsAccessory {
+export class HSBAccessory {
   constructor(
-    private readonly platform: ShortcutsButtonsPlatform,
-    private readonly accessory: ShortcutsButtonsPlatformAccessory,
+    private readonly platform: HSBPlatform,
+    private readonly accessory: HSBPlatformAccessory,
   ) {
     this.getOrAddService(this.platform.Service.AccessoryInformation)
       .setCharacteristic(this.platform.Characteristic.Manufacturer, PLATFORM_NAME)
@@ -31,8 +31,8 @@ export class ShortcutsButtonsAccessory {
         this.accessory.context.device.serialNumber,
       );
 
-    for (const serviceConfig of this.platform.config.buttons) {
-      new ShortcutsButtonsAccessoryService(
+    for (const serviceConfig of this.platform.config.services) {
+      new HSBService(
         this.platform.log,
         this.getOrAddService(this.platform.Service.Outlet, serviceConfig),
         serviceConfig,
@@ -45,7 +45,7 @@ export class ShortcutsButtonsAccessory {
 
   private getOrAddService<T extends WithUUID<typeof Service>>(
     type: T | Service,
-    config?: ShortcutsButtonsPlatformServiceConfig,
+    config?: HSBServiceConfig,
   ): Service {
     if (typeof config?.name !== 'string') {
       return this.accessory.getService(type as T) || this.accessory.addService(type as Service);
