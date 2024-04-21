@@ -21,11 +21,8 @@ export class HSBAccessory {
     private readonly accessory: HSBPlatformAccessory,
   ) {
     this.getOrAddService(this.platform.Service.AccessoryInformation)
-      .setCharacteristic(this.platform.Characteristic.Manufacturer, PLATFORM_NAME)
-      .setCharacteristic(
-        this.platform.Characteristic.Model,
-        this.accessory.context.device.displayName,
-      )
+      .setCharacteristic(this.platform.Characteristic.Manufacturer, 'Homebridge.io')
+      .setCharacteristic(this.platform.Characteristic.Model, PLATFORM_NAME)
       .setCharacteristic(
         this.platform.Characteristic.SerialNumber,
         this.accessory.context.device.serialNumber,

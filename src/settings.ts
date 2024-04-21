@@ -12,4 +12,4 @@ export const PLUGIN_NAME = 'homebridge-shortcuts-buttons';
 /**
  * This plugin uses a single device/accessory just as a wrapper for the services
  */
-export const DEVICE_SERIAL = '634EA8671D59F1898';
+export const DEVICE_SERIAL = '634EA867A81D59F1898';
