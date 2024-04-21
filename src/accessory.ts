@@ -1,7 +1,7 @@
-import { PlatformAccessory, Service, WithUUID } from 'homebridge';
+import { PlatformAccessory } from 'homebridge';
 
 import { HSBPlatform } from './platform';
-import { HSBService, HSBServiceConfig } from './service';
+import { HSBService } from './service';
 import { PLATFORM_NAME } from './settings';
 
 export interface HSBDevice {
@@ -20,18 +20,36 @@ export class HSBAccessory {
     private readonly platform: HSBPlatform,
     private readonly accessory: HSBPlatformAccessory,
   ) {
-    this.getOrAddService(this.platform.Service.AccessoryInformation)
+    this.addAccessoryInformationService();
+    this.addShortcutButtonServices();
+  }
+
+  private addAccessoryInformationService() {
+    (
+      this.accessory.getService(this.platform.Service.AccessoryInformation) ??
+      this.accessory.addService(this.platform.Service.AccessoryInformation)
+    )
       .setCharacteristic(this.platform.Characteristic.Manufacturer, 'Homebridge.io')
       .setCharacteristic(this.platform.Characteristic.Model, PLATFORM_NAME)
       .setCharacteristic(
         this.platform.Characteristic.SerialNumber,
         this.accessory.context.device.serialNumber,
       );
+  }
+
+  private addShortcutButtonServices() {
+    const serviceType = this.shortcutButtonServiceType;
 
     for (const serviceConfig of this.platform.config.services) {
+      const subtype = this.platform.api.hap.uuid.generate(JSON.stringify(serviceConfig));
+
+      const service =
+        this.accessory.getServiceById(serviceType, subtype) ??
+        this.accessory.addService(serviceType, serviceConfig.name, subtype);
+
       new HSBService(
         this.platform.log,
-        this.getOrAddService(this.platform.Service.Outlet, serviceConfig),
+        service,
         serviceConfig,
         this.platform.server,
         this.platform.utils,
@@ -40,22 +58,16 @@ export class HSBAccessory {
     }
   }
 
-  private getOrAddService<T extends WithUUID<typeof Service>>(
-    type: T | Service,
-    config?: HSBServiceConfig,
-  ): Service {
-    if (typeof config?.name !== 'string') {
-      return this.accessory.getService(type as T) || this.accessory.addService(type as Service);
+  private get shortcutButtonServiceType():
+    | typeof this.platform.Service.Outlet
+    | typeof this.platform.Service.Switch {
+    switch (this.platform.config.serviceType) {
+      case 'Outlet':
+        return this.platform.Service.Outlet;
+      case 'Switch':
+        return this.platform.Service.Switch;
+      default:
+        return this.platform.Service.Outlet;
     }
-
-    // @TODO this.accessory.removeService(this.accessory.services[])
-    return (
-      this.accessory.getService(config.name) ||
-      this.accessory.addService(
-        type as typeof Service,
-        config.name,
-        this.platform.api.hap.uuid.generate(this.accessory.UUID + JSON.stringify(config)),
-      )
-    );
   }
 }
