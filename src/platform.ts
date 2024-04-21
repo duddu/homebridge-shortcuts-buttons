@@ -5,14 +5,16 @@ import {
   PlatformConfig,
   Service,
   Characteristic,
+  Nullable,
 } from 'homebridge';
 
 import { ShortcutsButtonsUserConfig } from './config';
-import { PLATFORM_NAME, PLUGIN_NAME } from './settings';
+import { DEVICE_SERIAL, PLATFORM_NAME, PLUGIN_NAME } from './settings';
 import {
   ShortcutsButtonsAccessory,
   ShortcutsButtonsPlatformAccessory,
   ShortcutsButtonsAccessoryContext,
+  ShortcutsButtonsAccessoryDevice,
 } from './accessory';
 import { XCallbackUrlServer } from './server';
 
@@ -21,9 +23,10 @@ export type ShortcutsButtonsPlatformConfig = PlatformConfig & ShortcutsButtonsUs
 export class ShortcutsButtonsPlatform implements DynamicPlatformPlugin {
   public readonly Service: typeof Service;
   public readonly Characteristic: typeof Characteristic;
-
   public readonly config: ShortcutsButtonsPlatformConfig;
-  public accessory: ShortcutsButtonsPlatformAccessory | null = null;
+
+  public accessory: Nullable<ShortcutsButtonsPlatformAccessory> = null;
+  public serverBaseUrl: Nullable<string> = null;
 
   constructor(
     public readonly log: Logger,
@@ -43,7 +46,8 @@ export class ShortcutsButtonsPlatform implements DynamicPlatformPlugin {
     api.on('didFinishLaunching', () => {
       log.debug('Executed didFinishLaunching callback');
 
-      new XCallbackUrlServer(log, this.config, api, this.accessory);
+      const { baseUrl } = new XCallbackUrlServer(this.accessory, this.config, log, api);
+      this.serverBaseUrl = baseUrl;
 
       // run the method to discover / register your devices as accessories
       this.discoverDevices();
@@ -71,7 +75,7 @@ export class ShortcutsButtonsPlatform implements DynamicPlatformPlugin {
     // generate a unique id for the accessory this should be generated from
     // something globally unique, but constant, for example, the device serial
     // number or MAC address
-    const uuid = this.api.hap.uuid.generate(this.device.uniqueId);
+    const uuid = this.api.hap.uuid.generate(this.device.serialNumber);
 
     // see if an accessory with the same uuid has already been registered and restored from
     // the cached devices we stored in the `configureAccessory` method above
@@ -121,10 +125,10 @@ export class ShortcutsButtonsPlatform implements DynamicPlatformPlugin {
     }
   }
 
-  private get device() {
+  private get device(): ShortcutsButtonsAccessoryDevice {
     return {
-      uniqueId: '93d1bc30-eb1a-491e-bb8b-c9485974947d',
       displayName: this.config.accessoryName,
+      serialNumber: DEVICE_SERIAL,
     };
   }
 }

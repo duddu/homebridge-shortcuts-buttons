@@ -35,7 +35,7 @@
             },
             "shortcut": {
               "type": "string",
-              "description": "Name of the Apple Shortcut to trigger (without extension)."
+              "description": "Name of the Apple Shortcut to trigger, as displayed in the Shortcuts app. The machine running Homebridge must have access to it (i.e. be logged to the correct iCloud account)."
             }
           },
           "required": ["name", "shortcut"]
@@ -48,32 +48,31 @@
       },
       "shortcutResultCallback": {
         "type": "object",
-        "description": "All values in this section are ignored if `waitForShortcutResult` is off.",
+        "description": "All values in this section are ignored if `Wait For Shortcut Result` is toggled off.",
         "properties": {
-          "callbackServerHost": {
+          "callbackServerHostname": {
             "type": "string",
-            "description": "IP address (or hostname) and port where the server handling the x-callback-url will be exposed.",
-            "default": "0.0.0.0:9090"
+            "description": "IP address or hostname to expose the internal x-callback-url server (i.e. must be accessible from a browser).",
+            "default": "127.0.0.1"
           },
-          "waitUntilSeconds": {
-            "type": "integer",
-            "description": "@TODO? Seconds to wait for the triggered Shortcut to produce a result before timing out.",
-            "default": 10,
-            "minimum": 1,
-            "maximum": 60
+          "callbackServerPort": {
+            "type": "number",
+            "description": "Available port number to run the internal x-callback-url server.",
+            "default": 59845
           },
           "callbackCustomCommand": {
             "type": "string",
-            "description": "By default (field left empty), after the Shortcut completes, a notification is shown on the host running Homebrige, and a relevant sound effect (\"Glass\" for success, \"Sosumi\" for failure) is played. \n\nIf any value is present in this field, after the Apple Shortcut completes the service will treat this value as a unix command and will try to run it via node `child_process.exec` (at your own risk). \nIn your command you have at your disposal the following environment variables: \n- SHORTCUT_NAME: string \n- SHORTCUT_RESULT: \"success\" | \"error\" | \"cancel\""
+            "description": "By default (field left empty), after the Shortcut completes, a notification is shown on the host running Homebrige, and a relevant sound effect (\"Glass\" for success, \"Sosumi\" for failure) is played. \n\nIf any value is present in this field, after the Apple Shortcut completes the service will treat this value as a unix command and will try to run it via node `child_process.exec` (unsanitised, at your own risk). \nIn your command you have at your disposal the following environment variables: \n- SHORTCUT_NAME: string \n- SHORTCUT_RESULT: \"success\" | \"error\" | \"cancel\""
           }
-        }
+        },
+        "required": ["callbackServerHostname", "callbackServerPort"]
       }
     },
     "required": [
       "name",
       "accessoryName",
-      "buttons",
       "displayButtonsAs",
+      "buttons",
       "waitForShortcutResult",
       "shortcutResultCallback"
     ]

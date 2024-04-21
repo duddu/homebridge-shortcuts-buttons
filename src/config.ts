@@ -30,7 +30,7 @@ export interface ShortcutsButtonsUserConfig {
      */
     name: string;
     /**
-     * Name of the Apple Shortcut to trigger (without extension).
+     * Name of the Apple Shortcut to trigger, as displayed in the Shortcuts app. The machine running Homebridge must have access to it (i.e. be logged to the correct iCloud account).
      */
     shortcut: string;
   }[];
@@ -39,21 +39,21 @@ export interface ShortcutsButtonsUserConfig {
    */
   waitForShortcutResult: boolean;
   /**
-   * All values in this section are ignored if `waitForShortcutResult` is off.
+   * All values in this section are ignored if `Wait For Shortcut Result` is toggled off.
    */
   shortcutResultCallback: {
     /**
-     * IP address (or hostname) and port where the server handling the x-callback-url will be exposed.
+     * IP address or hostname to expose the internal x-callback-url server (i.e. must be accessible from a browser).
      */
-    callbackServerHost?: string;
+    callbackServerHostname: string;
     /**
-     * @TODO? Seconds to wait for the triggered Shortcut to produce a result before timing out.
+     * Available port number to run the internal x-callback-url server.
      */
-    waitUntilSeconds?: number;
+    callbackServerPort: number;
     /**
      * By default (field left empty), after the Shortcut completes, a notification is shown on the host running Homebrige, and a relevant sound effect ("Glass" for success, "Sosumi" for failure) is played.
      *
-     * If any value is present in this field, after the Apple Shortcut completes the service will treat this value as a unix command and will try to run it via node `child_process.exec` (at your own risk).
+     * If any value is present in this field, after the Apple Shortcut completes the service will treat this value as a unix command and will try to run it via node `child_process.exec` (unsanitised, at your own risk).
      * In your command you have at your disposal the following environment variables:
      * - SHORTCUT_NAME: string
      * - SHORTCUT_RESULT: "success" | "error" | "cancel"

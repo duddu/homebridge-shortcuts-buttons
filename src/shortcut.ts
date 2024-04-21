@@ -1,6 +1,6 @@
-import { execSync } from 'child_process';
-
-import { XCallbackUrlServer } from './server';
+import { execFile } from 'child_process';
+import { Logger, Nullable } from 'homebridge';
+import { promisify } from 'util';
 
 export const enum ShortcutStatus {
   SUCCESS = 'success',
@@ -12,13 +12,21 @@ export class Shortcut {
   constructor(
     private readonly shortcutName: string,
     private readonly serviceUUID: string,
+    private readonly serverBaseUrl: Nullable<string>,
+    private readonly log: Logger,
   ) {}
 
-  public run(): void {
-    execSync(`open -gj ${this.shortcutUrl}`, {
-      stdio: 'inherit',
-      shell: 'bash',
-    });
+  public async run(): Promise<void> {
+    const { stdout, stderr } = await promisify(execFile).call(
+      null,
+      'open',
+      ['-gj', this.shortcutUrl],
+      {
+        timeout: 5000,
+      },
+    );
+    this.log.error(stderr.toString());
+    this.log.debug(stdout.toString());
   }
 
   private get shortcutUrl(): string {
@@ -33,7 +41,7 @@ export class Shortcut {
   private getCallbackParam(status: ShortcutStatus): string {
     return (
       // eslint-disable-next-line no-useless-escape
-      `x-${status}="${XCallbackUrlServer.baseUrl}\?` +
+      `x-${status}="${this.serverBaseUrl}\?` +
       `shortcutName=${this.shortcutName}%26` +
       `service=${this.serviceUUID}%26` +
       `status=${status}"`

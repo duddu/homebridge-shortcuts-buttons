@@ -1,30 +1,38 @@
-import { API, Logger } from 'homebridge';
-import { createServer, IncomingMessage, RequestListener, Server, ServerResponse } from 'http';
+import { API, Logger, Nullable } from 'homebridge';
+import { createServer, IncomingMessage, Server, ServerResponse } from 'http';
 import { Socket } from 'net';
-import { execSync } from 'child_process';
+import { execFile } from 'child_process';
 import { URLSearchParams } from 'url';
 
-import { ShortcutsButtonsPlatform } from './platform';
+import { ShortcutsButtonsPlatformConfig } from './platform';
 import { ShortcutsButtonsPlatformAccessory } from './accessory';
 import { ShortcutStatus } from './shortcut';
 import { join } from 'path';
+import { promisify } from 'util';
 
 export class XCallbackUrlServer {
-  private static readonly hostname: string = '127.0.0.1'; // TODO: get from config
-  private static readonly port: number = 9090;
-  private static readonly pathname: string = '/x-callback-url';
-  public static readonly baseUrl = `http://${this.hostname}:${this.port}${this.pathname}`;
+  private readonly proto = 'http';
+  private readonly hostname: string;
+  private readonly port: number;
+  private readonly pathname = '/x-callback-url';
 
   private readonly server: Server;
   private readonly sockets: Set<Socket> = new Set();
   private readonly requiredParamsKeys = ['service', 'shortcutName', 'status'] as const;
 
+  public get baseUrl(): string {
+    return `${this.proto}://${this.hostname}:${this.port}${this.pathname}`;
+  }
+
   constructor(
+    private readonly accessory: Nullable<ShortcutsButtonsPlatformAccessory>,
+    private readonly config: ShortcutsButtonsPlatformConfig,
     private readonly log: Logger,
-    private readonly config: ShortcutsButtonsPlatform['config'],
-    private readonly api: API,
-    private readonly accessory: ShortcutsButtonsPlatformAccessory | null,
+    api: API,
   ) {
+    this.hostname = config.shortcutResultCallback.callbackServerHostname;
+    this.port = config.shortcutResultCallback.callbackServerPort;
+
     this.server = this.create();
 
     api.on('shutdown', this.destroy);
@@ -33,7 +41,7 @@ export class XCallbackUrlServer {
   private create(): Server {
     const server = createServer(this.reqListener);
 
-    server.listen(XCallbackUrlServer.port, XCallbackUrlServer.hostname);
+    server.listen(this.port, this.hostname);
 
     server.on('error', (error) => {
       this.log.error(`${error}`);
@@ -51,7 +59,7 @@ export class XCallbackUrlServer {
   }
 
   private destroy(): void {
-    if (typeof this.sockets?.has !== 'undefined') {
+    if (typeof this.sockets?.size === 'number') {
       for (const socket of this.sockets) {
         socket.destroy();
         this.sockets.delete(socket);
@@ -65,10 +73,10 @@ export class XCallbackUrlServer {
     });
   }
 
-  private reqListener: RequestListener<typeof IncomingMessage, typeof ServerResponse> = (
-    { headers, method, url },
-    res,
-  ): void => {
+  private async reqListener(
+    { headers, method, url }: IncomingMessage,
+    res: ServerResponse,
+  ): Promise<void> {
     if (typeof url !== 'string' || method !== 'GET') {
       this.log.error('Unsupported http request', headers);
       res.writeHead(404).end();
@@ -77,7 +85,7 @@ export class XCallbackUrlServer {
 
     const { pathname, searchParams } = new URL(url, `http://${headers.host}`);
 
-    if (pathname !== XCallbackUrlServer.pathname) {
+    if (pathname !== this.pathname) {
       this.log.error('Invalid url pathname', url);
       res.writeHead(404).end();
       return;
@@ -106,20 +114,20 @@ export class XCallbackUrlServer {
       return;
     }
 
-    const defaultScript = this.getDefaultCallbackScript(requiredParamsMap, searchParams);
+    try {
+      await this.runCallbackScript(requiredParamsMap, searchParams);
+    } catch (e) {
+      this.log.error('Unable to run callback script', e);
+      res.writeHead(400).end();
+      return;
+    }
 
-    execSync(defaultScript, {
-      stdio: 'inherit',
-      env: {
-        SHORTCUT_NAME: requiredParamsMap.get('shortcutName'),
-        SHORTCUT_RESULT: requiredParamsMap.get('status'),
-      },
-      shell: 'bash',
-    });
-
-    this.log.info(`Executed callback script for url ${url}`);
+    this.log.success(
+      `Executed callback script for shortcut ${requiredParamsMap.get('shortcutName')}`,
+      url,
+    );
     res.writeHead(200).end();
-  };
+  }
 
   private getValidatedRequiredParams(
     searchParams: URLSearchParams,
@@ -148,6 +156,28 @@ export class XCallbackUrlServer {
     );
   }
 
+  private async runCallbackScript(
+    requiredParamsMap: ReturnType<typeof this.getValidatedRequiredParams>,
+    searchParams: URLSearchParams,
+  ): Promise<void> {
+    let script = this.config.shortcutResultCallback.callbackCustomCommand;
+    if (typeof script !== 'string' || script.trim().length === 0) {
+      script = this.getDefaultCallbackScript(requiredParamsMap, searchParams);
+    }
+
+    const [cmd, ...args] = script.split(RegExp('\\s+'));
+
+    const { stdout, stderr } = await promisify(execFile).call(null, cmd, args, {
+      timeout: 10000,
+      env: {
+        SHORTCUT_NAME: requiredParamsMap.get('shortcutName'),
+        SHORTCUT_RESULT: requiredParamsMap.get('status'),
+      },
+    });
+    this.log.error(stderr.toString());
+    this.log.debug(stdout.toString());
+  }
+
   private getDefaultCallbackScript(
     requiredParamsMap: ReturnType<typeof this.getValidatedRequiredParams>,
     searchParams: URLSearchParams,
@@ -174,11 +204,11 @@ export class XCallbackUrlServer {
     }
 
     return (
-      `open ${join(__dirname, 'bin/defaultCallbackScript.app')} ` +
+      `open ${join(__dirname, './bin/defaultCallbackScript.app')} ` +
       `--env TITLE="${this.config.name}" ` +
       `--env SUBTITLE="${requiredParamsMap.get('shortcutName')} ${subtitle}" ` +
       `--env SOUND="${sound}" ` +
-      `--env PATHNAME="${XCallbackUrlServer.pathname}"`
+      `--env PATHNAME="${this.pathname}"`
     );
   }
 }

@@ -8,3 +8,8 @@ export const PLATFORM_NAME = 'HomebridgeShortcutsButtons';
  * This must match the name of your plugin as defined the package.json
  */
 export const PLUGIN_NAME = 'homebridge-shortcuts-buttons';
+
+/**
+ * This plugin uses a single device/accessory just as a wrapper for the services
+ */
+export const DEVICE_SERIAL = '634E8FDC-A867-4E82-A17D-1D35D59F1898';

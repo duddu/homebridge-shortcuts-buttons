@@ -1,9 +1,6 @@
-import { CharacteristicValue, Service } from 'homebridge';
+import { Characteristic, CharacteristicValue, Logger, Nullable, Service } from 'homebridge';
 
-import {
-  ShortcutsButtonsPlatform,
-  ShortcutsButtonsPlatformConfig,
-} from './platform';
+import { ShortcutsButtonsPlatformConfig } from './platform';
 import { Shortcut } from './shortcut';
 
 export type ShortcutsButtonsPlatformServiceConfig =
@@ -11,7 +8,6 @@ export type ShortcutsButtonsPlatformServiceConfig =
 
 class ShortcutsButtonsAccessoryServiceState {
   isOn: boolean = false;
-  isBusy: boolean = false;
 }
 
 export class ShortcutsButtonsAccessoryService {
@@ -19,44 +15,46 @@ export class ShortcutsButtonsAccessoryService {
   private readonly shortcut: Shortcut;
 
   constructor(
-    private readonly platform: ShortcutsButtonsPlatform,
+    private readonly log: Logger,
     private readonly service: Service,
-    private readonly config: ShortcutsButtonsPlatformServiceConfig,
+    private readonly serviceConfig: ShortcutsButtonsPlatformServiceConfig,
+    serverBaseUrl: Nullable<string>,
+    _Characteristic: typeof Characteristic,
   ) {
     this.service
-      .setCharacteristic(this.platform.Characteristic.Name, this.config.name)
-      .setCharacteristic(
-        this.platform.Characteristic.ConfiguredName,
-        this.config.name,
-      )
-      .getCharacteristic(this.platform.Characteristic.On)
+      .setCharacteristic(_Characteristic.Name, serviceConfig.name)
+      .setCharacteristic(_Characteristic.ConfiguredName, serviceConfig.name)
+      .getCharacteristic(_Characteristic.On)
       .onGet(this.getOn.bind(this))
       .onSet(this.setOn.bind(this));
 
     this.state = new ShortcutsButtonsAccessoryServiceState();
-    this.shortcut = new Shortcut(this.config.shortcut, this.service.UUID);
+    this.shortcut = new Shortcut(serviceConfig.shortcut, service.UUID, serverBaseUrl, log);
   }
 
   private async getOn(): Promise<CharacteristicValue> {
     const isOn = this.state.isOn;
 
-    this.platform.log.debug(
-      `Get Characteristic On for ${this.service.displayName} ->`,
-      isOn,
-    );
+    this.log.debug(`Get Characteristic On for ${this.service.displayName} ->`, isOn);
 
     return isOn;
   }
 
   private async setOn(value: CharacteristicValue): Promise<void> {
-    // @TODO: return error busy if shortcut in progress
-    this.state.isOn = value as boolean;
+    if (value === false) {
+      return;
+    }
 
-    this.platform.log.debug(
-      `Set Characteristic On for button ${this.service.displayName} ->`,
-      value,
-    );
+    this.state.isOn = true;
 
-    return this.shortcut.run();
+    this.log.debug(`Set Characteristic On for button ${this.service.displayName} ->`, value);
+
+    try {
+      await this.shortcut.run();
+    } catch (e) {
+      this.log.error(`Unable to run shortcut named ${this.serviceConfig.shortcut}`, e);
+    }
+
+    this.state.isOn = false;
   }
 }
