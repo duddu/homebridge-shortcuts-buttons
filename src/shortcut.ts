@@ -1,6 +1,5 @@
-import { execFile } from 'child_process';
-import { Logger, Nullable } from 'homebridge';
-import { promisify } from 'util';
+import { Nullable } from 'homebridge';
+import { ShortcutsButtonsUtils } from './utils';
 
 export const enum ShortcutStatus {
   SUCCESS = 'success',
@@ -13,20 +12,11 @@ export class Shortcut {
     private readonly shortcutName: string,
     private readonly serviceUUID: string,
     private readonly serverBaseUrl: Nullable<string>,
-    private readonly log: Logger,
+    private readonly utils: ShortcutsButtonsUtils,
   ) {}
 
   public async run(): Promise<void> {
-    const { stdout, stderr } = await promisify(execFile).call(
-      null,
-      'open',
-      ['-gj', this.shortcutUrl],
-      {
-        timeout: 5000,
-      },
-    );
-    this.log.error(stderr.toString());
-    this.log.debug(stdout.toString());
+    return this.utils.execAsync(`open -gj ${this.shortcutUrl}`, { timeout: 5000 });
   }
 
   private get shortcutUrl(): string {

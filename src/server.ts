@@ -1,14 +1,13 @@
 import { API, Logger, Nullable } from 'homebridge';
 import { createServer, IncomingMessage, Server, ServerResponse } from 'http';
 import { Socket } from 'net';
-import { execFile } from 'child_process';
 import { URLSearchParams } from 'url';
 
 import { ShortcutsButtonsPlatformConfig } from './platform';
 import { ShortcutsButtonsPlatformAccessory } from './accessory';
 import { ShortcutStatus } from './shortcut';
 import { join } from 'path';
-import { promisify } from 'util';
+import { ShortcutsButtonsUtils } from './utils';
 
 export class XCallbackUrlServer {
   private readonly proto = 'http';
@@ -28,6 +27,7 @@ export class XCallbackUrlServer {
     private readonly accessory: Nullable<ShortcutsButtonsPlatformAccessory>,
     private readonly config: ShortcutsButtonsPlatformConfig,
     private readonly log: Logger,
+    private readonly utils: ShortcutsButtonsUtils,
     api: API,
   ) {
     this.hostname = config.shortcutResultCallback.callbackServerHostname;
@@ -66,17 +66,19 @@ export class XCallbackUrlServer {
       }
     }
 
-    this.server.close((error) => {
-      if (error instanceof Error) {
-        throw error;
-      }
-    });
+    if (typeof this.server?.close === 'function') {
+      this.server.close((error) => {
+        if (error instanceof Error) {
+          throw error;
+        }
+      });
+    }
   }
 
-  private async reqListener(
+  private reqListener = async (
     { headers, method, url }: IncomingMessage,
     res: ServerResponse,
-  ): Promise<void> {
+  ): Promise<void> => {
     if (typeof url !== 'string' || method !== 'GET') {
       this.log.error('Unsupported http request', headers);
       res.writeHead(404).end();
@@ -127,7 +129,7 @@ export class XCallbackUrlServer {
       url,
     );
     res.writeHead(200).end();
-  }
+  };
 
   private getValidatedRequiredParams(
     searchParams: URLSearchParams,
@@ -147,7 +149,7 @@ export class XCallbackUrlServer {
       return false;
     }
 
-    const serviceConfig = this.config.buttons.find((button) => button.shortcut === shortcutName);
+    const serviceConfig = this.config.buttons.find((service) => service.shortcut === shortcutName);
 
     return (
       this.accessory.services.findIndex(
@@ -161,21 +163,18 @@ export class XCallbackUrlServer {
     searchParams: URLSearchParams,
   ): Promise<void> {
     let script = this.config.shortcutResultCallback.callbackCustomCommand;
+
     if (typeof script !== 'string' || script.trim().length === 0) {
       script = this.getDefaultCallbackScript(requiredParamsMap, searchParams);
     }
 
-    const [cmd, ...args] = script.split(RegExp('\\s+'));
-
-    const { stdout, stderr } = await promisify(execFile).call(null, cmd, args, {
+    await this.utils.execAsync(script, {
       timeout: 10000,
       env: {
         SHORTCUT_NAME: requiredParamsMap.get('shortcutName'),
         SHORTCUT_RESULT: requiredParamsMap.get('status'),
       },
     });
-    this.log.error(stderr.toString());
-    this.log.debug(stdout.toString());
   }
 
   private getDefaultCallbackScript(

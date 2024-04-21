@@ -17,6 +17,7 @@ import {
   ShortcutsButtonsAccessoryDevice,
 } from './accessory';
 import { XCallbackUrlServer } from './server';
+import { ShortcutsButtonsUtils } from './utils';
 
 export type ShortcutsButtonsPlatformConfig = PlatformConfig & ShortcutsButtonsUserConfig;
 
@@ -24,6 +25,7 @@ export class ShortcutsButtonsPlatform implements DynamicPlatformPlugin {
   public readonly Service: typeof Service;
   public readonly Characteristic: typeof Characteristic;
   public readonly config: ShortcutsButtonsPlatformConfig;
+  public readonly utils: ShortcutsButtonsUtils;
 
   public accessory: Nullable<ShortcutsButtonsPlatformAccessory> = null;
   public serverBaseUrl: Nullable<string> = null;
@@ -34,6 +36,7 @@ export class ShortcutsButtonsPlatform implements DynamicPlatformPlugin {
     public readonly api: API,
   ) {
     this.config = _config as ShortcutsButtonsPlatformConfig;
+    this.utils = new ShortcutsButtonsUtils(log);
     this.Service = this.api.hap.Service;
     this.Characteristic = this.api.hap.Characteristic;
 
@@ -46,7 +49,7 @@ export class ShortcutsButtonsPlatform implements DynamicPlatformPlugin {
     api.on('didFinishLaunching', () => {
       log.debug('Executed didFinishLaunching callback');
 
-      const { baseUrl } = new XCallbackUrlServer(this.accessory, this.config, log, api);
+      const { baseUrl } = new XCallbackUrlServer(this.accessory, this.config, log, this.utils, api);
       this.serverBaseUrl = baseUrl;
 
       // run the method to discover / register your devices as accessories

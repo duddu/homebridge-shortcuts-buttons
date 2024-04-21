@@ -36,6 +36,7 @@ export class ShortcutsButtonsAccessory {
         this.platform.log,
         this.getOrAddService(this.platform.Service.Outlet, serviceConfig),
         serviceConfig,
+        this.platform.utils,
         this.platform.serverBaseUrl,
         this.platform.Characteristic,
       );
