@@ -23,7 +23,8 @@
     "schema2ts": "./bin/schema2ts.sh",
     "bundle": "rimraf ./dist && tsc && cp -R ./src/bin ./dist",
     "build": "npm run schema2ts && npm run bundle",
-    "watch": "npm run build && npm link && nodemon",
+    "link": "npm run build && npm link",
+    "watch": "npm run link && nodemon",
     "prepublishOnly": "npm run lint && npm run build"
   },
   "devDependencies": {
