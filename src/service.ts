@@ -1,8 +1,11 @@
-import { Characteristic, CharacteristicValue, Logger, Nullable, Service } from 'homebridge';
+import {
+  Characteristic as TCharacteristic,
+  CharacteristicValue,
+  Logger,
+  Nullable,
+  Service,
+} from 'homebridge';
 
-import { Shortcut } from './shortcut';
-import { HSBUtils } from './utils';
-import { HSBServer } from './server';
 import { HSBConfig } from './config';
 import { HSBXCallbackUrlServer } from './server';
 import { HSBShortcut } from './shortcut';
@@ -24,44 +27,54 @@ export class HSBService {
     private readonly serviceConfig: HSBServiceConfig,
     server: Nullable<HSBXCallbackUrlServer>,
     utils: HSBUtils,
-    _Characteristic: typeof Characteristic,
+    private readonly Characteristic: typeof TCharacteristic,
   ) {
     this.state = new HSBServiceState();
     this.shortcut = new HSBShortcut(serviceConfig.shortcut, server, utils);
+
     this.service
-      .setCharacteristic(_Characteristic.Name, serviceConfig.name)
-      .setCharacteristic(_Characteristic.ConfiguredName, serviceConfig.name)
-      .getCharacteristic(_Characteristic.On)
+      .setCharacteristic(Characteristic.Name, serviceConfig.name)
+      .setCharacteristic(Characteristic.ConfiguredName, serviceConfig.name)
+      .getCharacteristic(Characteristic.On)
       .onGet(this.getOn.bind(this))
       .onSet(this.setOn.bind(this));
-
-    this.state = new HSBServiceState();
-    this.shortcut = new Shortcut(serviceConfig.shortcut, server, utils);
   }
 
   private async getOn(): Promise<CharacteristicValue> {
     const isOn = this.state.isOn;
 
-    this.log.debug(`Get Characteristic On for ${this.service.displayName} ->`, isOn);
+    this.log.debug(`Service(${this.service.displayName}):On:onGet`, `value=${isOn}`);
 
     return isOn;
   }
 
   private async setOn(value: CharacteristicValue): Promise<void> {
+    const logHandlerContext = `Service(${this.service.displayName}):On:onSet`;
+    const logShortcutContext = `${logHandlerContext} Shortcut(${this.serviceConfig.shortcut})`;
+    this.log.debug(logHandlerContext, `value=${value}`);
+
     if (value === false) {
+      if (this.state.isOn === false) {
+        this.log.debug(logHandlerContext, 'State value was already false, skipping handler');
+        return;
+      }
+      this.state.isOn = false;
+      this.log.debug(logHandlerContext, 'State value was true, skipping shortcut run');
       return;
     }
 
     this.state.isOn = true;
 
-    this.log.debug(`Set Characteristic On for button ${this.service.displayName} ->`, value);
-
     try {
       await this.shortcut.run();
+      this.log.debug(logShortcutContext, 'Exec success');
     } catch (e) {
-      this.log.error(`Unable to run shortcut named ${this.serviceConfig.shortcut}`, e);
+      this.log.error(logShortcutContext, 'Exec failure', e);
     }
 
     this.state.isOn = false;
+    this.service.updateCharacteristic(this.Characteristic.On, false);
+
+    this.log.debug(logHandlerContext, `value=${value}`);
   }
 }
