@@ -1,8 +1,8 @@
 /**
-* DO NOT EDIT MANUALLY.
-* This file was automatically generated from `/config.schema.json`.
-* Update the source schema file and run `schema2ts` to regenerate this file.
-*/
+ * DO NOT EDIT MANUALLY.
+ * This file was automatically generated from `/config.schema.json`.
+ * Update the source schema file and run `schema2ts` to regenerate this file.
+ */
 
 /* eslint-disable max-len */
 
@@ -28,7 +28,7 @@ type Buttons = {
   shortcut: string;
 }[];
 
-export interface HSBConfig extends Pick<PlatformConfig, 'platform' | '_bridge'> {
+export interface HSBConfig extends Pick<PlatformConfig, '_bridge' | 'platform'> {
   /**
    * Name of the platform bridge.
    */
