@@ -11,7 +11,7 @@ import {
 import { HSBConfig } from './config';
 import { DEVICE_SERIAL, PLATFORM_NAME, PLUGIN_NAME } from './settings';
 import { HSBAccessory, HSBPlatformAccessory, HSBAccessoryContext, HSBDevice } from './accessory';
-import { HSBServer } from './server';
+import { HSBXCallbackUrlServer } from './server';
 import { HSBUtils } from './utils';
 
 export class HSBPlatform implements DynamicPlatformPlugin {
@@ -21,7 +21,7 @@ export class HSBPlatform implements DynamicPlatformPlugin {
   public readonly utils: HSBUtils;
 
   public accessory: Nullable<HSBPlatformAccessory> = null;
-  public server: Nullable<HSBServer> = null;
+  public server: Nullable<HSBXCallbackUrlServer> = null;
 
   constructor(
     public readonly log: Logger,
@@ -48,7 +48,9 @@ export class HSBPlatform implements DynamicPlatformPlugin {
     api.on('didFinishLaunching', () => {
       log.debug('Executed didFinishLaunching callback');
 
-      this.server = new HSBServer(this.config, log, this.utils, api);
+      if (this.config.waitForShortcutResult === true) {
+        this.server = new HSBXCallbackUrlServer(this.config, log, this.utils, api);
+      }
 
       // run the method to discover / register your devices as accessories
       this.discoverDevices();

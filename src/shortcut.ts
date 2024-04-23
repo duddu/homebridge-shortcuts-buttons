@@ -1,38 +1,44 @@
 import { Nullable } from 'homebridge';
 import { HSBUtils } from './utils';
-import { HSBServer } from './server';
+import { HSBXCallbackUrlServer } from './server';
 
-export const enum ShortcutStatus {
+export const enum HSBShortcutStatus {
   SUCCESS = 'success',
   ERROR = 'error',
   CANCEL = 'cancel',
 }
 
-export class Shortcut {
+export class HSBShortcut {
   constructor(
     private readonly shortcutName: string,
-    private readonly server: Nullable<HSBServer>,
+    private readonly server: Nullable<HSBXCallbackUrlServer>,
     private readonly utils: HSBUtils,
   ) {}
 
   public async run(): Promise<void> {
-    return this.utils.execAsync(`open -gj ${this.shortcutUrl}`, { timeout: 5000 });
+    return this.utils.execAsync(`open -gj ${this.shortcutUrl}`);
   }
 
   private get shortcutUrl(): string {
+    if (this.server === null) {
+      return `shortcuts://run-shortcut\\?name=${this.shortcutName}`;
+    }
     return (
       `shortcuts://x-callback-url/run-shortcut\\?name=${this.shortcutName}\\&` +
-      `${this.getCallbackParam(ShortcutStatus.SUCCESS)}\\&` +
-      `${this.getCallbackParam(ShortcutStatus.ERROR)}\\&` +
-      `${this.getCallbackParam(ShortcutStatus.CANCEL)}`
+      `${this.getCallbackXParam(HSBShortcutStatus.SUCCESS)}\\&` +
+      `${this.getCallbackXParam(HSBShortcutStatus.ERROR)}\\&` +
+      `${this.getCallbackXParam(HSBShortcutStatus.CANCEL)}`
     );
   }
 
-  private getCallbackParam(status: ShortcutStatus): string {
+  private getCallbackXParam(status: HSBShortcutStatus): string {
+    if (this.server === null) {
+      throw new ReferenceError('cannot invoke getCallbackParam whilst server is null');
+    }
     return (
       // eslint-disable-next-line no-useless-escape
-      `x-${status}="${this.server?.baseUrl}\?` +
-      `token=${this.server?.issueToken()}%26` +
+      `x-${status}="${this.server.baseUrl}\?` +
+      `token=${this.server.issueToken()}%26` +
       `shortcutName=${this.shortcutName}%26` +
       `status=${status}"`
     );

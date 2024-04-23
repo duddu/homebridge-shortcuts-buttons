@@ -4,6 +4,9 @@ import { Shortcut } from './shortcut';
 import { HSBUtils } from './utils';
 import { HSBServer } from './server';
 import { HSBConfig } from './config';
+import { HSBXCallbackUrlServer } from './server';
+import { HSBShortcut } from './shortcut';
+import { HSBUtils } from './utils';
 
 export type HSBServiceConfig = HSBConfig['services'][number];
 
@@ -13,16 +16,18 @@ class HSBServiceState {
 
 export class HSBService {
   private readonly state: HSBServiceState;
-  private readonly shortcut: Shortcut;
+  private readonly shortcut: HSBShortcut;
 
   constructor(
     private readonly log: Logger,
     private readonly service: Service,
     private readonly serviceConfig: HSBServiceConfig,
-    server: Nullable<HSBServer>,
+    server: Nullable<HSBXCallbackUrlServer>,
     utils: HSBUtils,
     _Characteristic: typeof Characteristic,
   ) {
+    this.state = new HSBServiceState();
+    this.shortcut = new HSBShortcut(serviceConfig.shortcut, server, utils);
     this.service
       .setCharacteristic(_Characteristic.Name, serviceConfig.name)
       .setCharacteristic(_Characteristic.ConfiguredName, serviceConfig.name)

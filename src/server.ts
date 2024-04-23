@@ -5,40 +5,46 @@ import { join } from 'path';
 import { URLSearchParams } from 'url';
 
 import { HSBConfig } from './config';
-import { ShortcutStatus } from './shortcut';
+import { HSBShortcutStatus } from './shortcut';
 import { HSBUtils } from './utils';
 
-export class HSBServer {
+export class HSBXCallbackUrlServer {
+  private readonly pathname = '/x-callback-url';
   private readonly proto = 'http';
+  private readonly requiredParamsKeys = ['token', 'shortcutName', 'status'] as const;
+  private readonly sockets: Set<Socket> = new Set();
+  private readonly tokens: Set<string> = new Set();
+
   private readonly hostname: string;
   private readonly port: number;
-  private readonly pathname = '/x-callback-url';
-
   private readonly server: Server;
-  private readonly tokens: HSBServerAuthTokens;
-  private readonly sockets: Set<Socket> = new Set();
-  private readonly requiredParamsKeys = ['token', 'shortcutName', 'status'] as const;
-
-  public get baseUrl(): string {
-    return `${this.proto}://${this.hostname}:${this.port}${this.pathname}`;
-  }
-
-  public issueToken: HSBServerAuthTokens['issue'];
 
   constructor(
     private readonly config: HSBConfig,
     private readonly log: Logger,
     private readonly utils: HSBUtils,
-    api: API,
+    private readonly api: API,
   ) {
     this.hostname = config.shortcutResultCallback.callbackServerHostname;
     this.port = config.shortcutResultCallback.callbackServerPort;
 
-    this.tokens = new HSBServerAuthTokens(api);
-    this.issueToken = () => this.tokens.issue();
     this.server = this.create();
 
     api.on('shutdown', this.destroy);
+  }
+
+  public get baseUrl(): string {
+    return `${this.proto}://${this.hostname}:${this.port}${this.pathname}`;
+  }
+
+  public issueToken(): string {
+    const token = this.api.hap.uuid.generate(Date.now().toString());
+    this.tokens.add(token);
+    return token;
+  }
+
+  private isValidToken(token?: string): boolean {
+    return typeof token === 'string' && this.tokens.delete(token);
   }
 
   private create(): Server {
@@ -105,7 +111,7 @@ export class HSBServer {
       return;
     }
 
-    if (!this.tokens.isValid(requiredParamsMap.get('token'))) {
+    if (!this.isValidToken(requiredParamsMap.get('token'))) {
       this.log.error('Authorization token invalid or expired');
       res.writeHead(401).end();
       return;
@@ -132,7 +138,7 @@ export class HSBServer {
     const requiredParamsEntries: [(typeof this.requiredParamsKeys)[number], string][] =
       this.requiredParamsKeys.map((key) => [key, searchParams.get(key) as string]);
     for (const [key, value] of requiredParamsEntries) {
-      if (typeof value !== 'string' || value === '') {
+      if (!this.utils.isNonEmptyString(value)) {
         throw key;
       }
     }
@@ -165,15 +171,15 @@ export class HSBServer {
     let subtitle: string;
     let sound: string;
     switch (requiredParamsMap.get('status')) {
-      case ShortcutStatus.SUCCESS:
+      case HSBShortcutStatus.SUCCESS:
         subtitle = `was executed successfully. Result:\n${searchParams.get('result')}`;
         sound = 'Glass';
         break;
-      case ShortcutStatus.ERROR:
+      case HSBShortcutStatus.ERROR:
         subtitle = `execution failed. Error:\n${searchParams.get('errorMessage')}`;
         sound = 'Sosumi';
         break;
-      case ShortcutStatus.CANCEL:
+      case HSBShortcutStatus.CANCEL:
         subtitle = 'execution was cancelled';
         sound = 'Sosumi';
         break;
@@ -190,21 +196,5 @@ export class HSBServer {
       `--env SOUND="${sound}" ` +
       `--env PATHNAME="${this.pathname}"`
     );
-  }
-}
-
-class HSBServerAuthTokens {
-  private readonly tokens: Set<string> = new Set();
-
-  constructor(private readonly api: API) {}
-
-  public issue(): string {
-    const token = this.api.hap.uuid.generate(Date.now().toString());
-    this.tokens.add(token);
-    return token;
-  }
-
-  public isValid(token?: string): boolean {
-    return typeof token === 'string' && this.tokens.delete(token);
   }
 }
