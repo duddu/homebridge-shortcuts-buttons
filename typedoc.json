@@ -1,0 +1,19 @@
+{
+  "$schema": "https://typedoc.org/schema.json",
+  "cleanOutputDir": true,
+  "entryPoints": ["./src/**/*.ts"],
+  "entryPointStrategy": "resolve",
+  "exclude": ["./src/index.ts"],
+  "includeVersion": true,
+  "name": "Homebridge Shortcuts Buttons Plugin",
+  "out": "typedoc",
+  "readme": "none",
+  "sort": ["kind", "alphabetical", "instance-first"],
+  "tsconfig": "./tsconfig.json",
+  "visibilityFilters": {
+    "external": true,
+    "inherited": true,
+    "private": true,
+    "protected": true
+  }
+}

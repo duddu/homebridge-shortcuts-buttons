@@ -4,8 +4,9 @@ src
 # dev-only local executables
 /bin/
 
-# dev-only configurations
+# dev-only modules configurations
 .*rc
+typedoc.json
 
 # MacOS
 .DS_Store
