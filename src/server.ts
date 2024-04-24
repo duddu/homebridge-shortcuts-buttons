@@ -5,6 +5,7 @@ import { join } from 'path';
 import { URLSearchParams } from 'url';
 
 import { HSBConfig } from './config';
+import { PLATFORM_NAME } from './settings';
 import { HSBShortcutStatus } from './shortcut';
 import { HSBUtils } from './utils';
 
@@ -72,24 +73,24 @@ export class HSBXCallbackUrlServer {
     return server;
   }
 
-  private destroy(): void {
-    if (typeof this.sockets?.size === 'number') {
-      for (const socket of this.sockets) {
-        socket.destroy();
-        this.sockets.delete(socket);
-      }
+  private destroy = (): void => {
+    this.log.debug('Server::destroy', `Destroying ${this.sockets.size} sockets`);
+
+    for (const socket of this.sockets) {
+      socket.destroy();
+      this.sockets.delete(socket);
     }
 
-    if (typeof this.server?.close === 'function') {
-      this.server.close((error) => {
-        if (error instanceof Error) {
-          throw error;
-        }
-      });
-    }
+    this.log.debug('Server::destroy', 'Emitting server close event');
+
+    this.server.close((error) => {
+      if (error instanceof Error) {
+        throw error;
+      }
+    });
 
     this.log.info('X-Callback-Url Server destroyed');
-  }
+  };
 
   private requestListener = async (
     { headers, method, url }: IncomingMessage,
@@ -128,7 +129,7 @@ export class HSBXCallbackUrlServer {
       'Server::requestListener',
       `Executed callback script for shortcut ${parsedSearchParams.shortcut}`,
     );
-    res.writeHead(200).end();
+    return this.endWithStatusAndHtml(res, 200);
   };
 
   private endWithError(
@@ -137,14 +138,14 @@ export class HSBXCallbackUrlServer {
     errorMessage: string,
     errorPayload?: unknown,
   ): void {
-    this.log.error(
-      'Server::requestListener',
-      `StatusCode=${statusCode}`,
-      errorMessage,
-      errorPayload,
-    );
-    res.writeHead(statusCode).end();
-    return;
+    this.log.error(`Server::requestListener StatusCode=${statusCode}`, errorMessage, errorPayload);
+    this.endWithStatusAndHtml(res, statusCode);
+  }
+
+  private endWithStatusAndHtml(res: ServerResponse, statusCode: number): void {
+    res.writeHead(statusCode);
+    res.write(CALLBACK_HTML_CONTENT);
+    res.end();
   }
 
   private async runCallbackScript(
@@ -243,3 +244,12 @@ class HSBXCallbackUrlParsedSearchParams implements HSBXCallbackUrlParsedSearchPa
     return requiredParamsKeysList.every((key) => this.utils.isNonEmptyString(this[key]));
   };
 }
+
+const CALLBACK_HTML_CONTENT = `<!DOCTYPE html>
+<html class="default" lang="en">
+  <head>
+    <meta charSet="utf-8">
+    <title>${PLATFORM_NAME} - X-Callback-Url</title>
+    <script>typeof window !== "undefined" && window.close()</script>
+  </head>
+</html>`;
