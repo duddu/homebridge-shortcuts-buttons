@@ -2,7 +2,7 @@
   "private": true,
   "displayName": "Homebridge Shortcuts Buttons",
   "name": "homebridge-shortcuts-buttons",
-  "version": "1.7.0",
+  "version": "1.7.1",
   "description": "Homebridge Plugin to run any Apple Shortcuts from multiple buttons (Switch or Outlet services), optionally waiting for result using x-callback-url protocol.",
   "license": "Apache-2.0",
   "author": "duddu",
