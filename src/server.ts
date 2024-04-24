@@ -171,13 +171,13 @@ export class HSBXCallbackUrlServer {
     let sound: string;
     switch (searchParams.status) {
       case HSBShortcutStatus.SUCCESS:
-        subtitle = 'was executed successfully.';
-        searchParams.result && (subtitle += ` Result:\n${searchParams.result}`);
+        subtitle = 'executed successfully';
+        searchParams.result && (subtitle += `\nResult: ${searchParams.result}`);
         sound = 'Glass';
         break;
       case HSBShortcutStatus.ERROR:
-        subtitle = 'execution failed.';
-        searchParams.errorMessage && (subtitle += ` Error:\n${searchParams.errorMessage}`);
+        subtitle = 'execution failed';
+        searchParams.errorMessage && (subtitle += `\nError: ${searchParams.errorMessage}`);
         sound = 'Sosumi';
         break;
       case HSBShortcutStatus.CANCEL:
@@ -191,11 +191,10 @@ export class HSBXCallbackUrlServer {
     }
 
     return (
-      `open ${join(__dirname, './bin/defaultCallbackScript.app')} ` +
-      `--env TITLE="${this.config.name}" ` +
-      `--env SUBTITLE="${searchParams.shortcut} ${subtitle}" ` +
-      `--env SOUND="${sound}" ` +
-      `--env TOKEN="${searchParams.token}"`
+      `open ${join(__dirname, './bin/HomebridgeShortcutsButtons - Notify Shortcut Result.app')} ` +
+      `--env NOTIFICATION_TITLE="${this.config.name}" ` +
+      `--env NOTIFICATION_SUBTITLE="${searchParams.shortcut} ${subtitle}" ` +
+      `--env NOTIFICATION_SOUND="${sound}"`
     );
   }
 }
