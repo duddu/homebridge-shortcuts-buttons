@@ -10,7 +10,7 @@ export const enum HSBShortcutStatus {
 
 export class HSBShortcut {
   constructor(
-    private readonly shortcutName: string,
+    private readonly name: string,
     private readonly server: Nullable<HSBXCallbackUrlServer>,
     private readonly utils: HSBUtils,
   ) {}
@@ -21,10 +21,10 @@ export class HSBShortcut {
 
   private get shortcutUrl(): string {
     if (this.server === null) {
-      return `shortcuts://run-shortcut\\?name=${this.shortcutName}`;
+      return `shortcuts://run-shortcut\\?name=${this.name}`;
     }
     return (
-      `shortcuts://x-callback-url/run-shortcut\\?name=${this.shortcutName}\\&` +
+      `shortcuts://x-callback-url/run-shortcut\\?name=${this.name}\\&` +
       `${this.getCallbackXParam(HSBShortcutStatus.SUCCESS)}\\&` +
       `${this.getCallbackXParam(HSBShortcutStatus.ERROR)}\\&` +
       `${this.getCallbackXParam(HSBShortcutStatus.CANCEL)}`
@@ -39,7 +39,7 @@ export class HSBShortcut {
       // eslint-disable-next-line no-useless-escape
       `x-${status}="${this.server.baseUrl}\?` +
       `token=${this.server.issueToken()}%26` +
-      `shortcutName=${this.shortcutName}%26` +
+      `shortcut=${this.name}%26` +
       `status=${status}"`
     );
   }

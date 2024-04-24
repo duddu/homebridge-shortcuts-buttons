@@ -11,7 +11,6 @@ import { HSBUtils } from './utils';
 export class HSBXCallbackUrlServer {
   private readonly pathname = '/x-callback-url';
   private readonly proto = 'http';
-  private readonly requiredParamsKeys = ['token', 'shortcutName', 'status'] as const;
   private readonly sockets: Set<Socket> = new Set();
   private readonly tokens: Set<string> = new Set();
 
@@ -48,9 +47,15 @@ export class HSBXCallbackUrlServer {
   }
 
   private create(): Server {
-    const server = createServer(this.reqListener);
+    if (this.config.waitForShortcutResult !== true) {
+      throw new Error('Server::create Attemped to create server when waitForShortcutResult is off');
+    }
 
-    server.listen(this.port, this.hostname);
+    const server = createServer(this.requestListener);
+
+    server.listen(this.port, this.hostname, () => {
+      this.log.info(`X-Callback-Url Server listening at ${this.hostname}:${this.port}`);
+    });
 
     server.on('error', (error) => {
       this.log.error(`${error}`);
@@ -82,101 +87,96 @@ export class HSBXCallbackUrlServer {
         }
       });
     }
+
+    this.log.info('X-Callback-Url Server destroyed');
   }
 
-  private reqListener = async (
+  private requestListener = async (
     { headers, method, url }: IncomingMessage,
     res: ServerResponse,
   ): Promise<void> => {
+    this.log.debug('Server::requestListener', 'Incoming request, starting validation');
+
     if (typeof url !== 'string' || method !== 'GET') {
-      this.log.error('Unsupported http request', headers);
-      res.writeHead(404).end();
-      return;
+      return this.endWithError(res, 405, 'Unsupported request', `${method}:${url}`);
     }
 
-    const { pathname, searchParams } = new URL(url, `http://${headers.host}`);
+    const { pathname, searchParams } = new URL(url, `${this.proto}://${headers.host}`);
 
     if (pathname !== this.pathname) {
-      this.log.error('Invalid url pathname', url);
-      res.writeHead(404).end();
-      return;
+      return this.endWithError(res, 404, 'Invalid url pathname', pathname);
     }
 
-    let requiredParamsMap: ReturnType<typeof this.getValidatedRequiredParams>;
-    try {
-      requiredParamsMap = this.getValidatedRequiredParams(searchParams);
-    } catch (key) {
-      this.log.error(`Missing required query parameter "${key}"`);
-      res.writeHead(400).end();
-      return;
+    const { areValidRequiredParamsValues: areRequiredParamsValuesValid, ...parsedSearchParams } =
+      new HSBXCallbackUrlParsedSearchParams(searchParams, this.utils);
+
+    if (!areRequiredParamsValuesValid()) {
+      return this.endWithError(res, 400, 'Missing required search param(s)', parsedSearchParams);
     }
 
-    if (!this.isValidToken(requiredParamsMap.get('token'))) {
-      this.log.error('Authorization token invalid or expired');
-      res.writeHead(401).end();
-      return;
+    if (!this.isValidToken(parsedSearchParams.token)) {
+      return this.endWithError(res, 401, 'Authorization token invalid or expired');
     }
 
     try {
-      await this.runCallbackScript(requiredParamsMap, searchParams);
+      await this.runCallbackScript(parsedSearchParams);
     } catch (e) {
-      this.log.error('Unable to run callback script', e);
-      res.writeHead(500).end();
-      return;
+      return this.endWithError(res, 500, 'Failed to run callback script', e);
     }
 
-    this.log.success(
-      `Executed callback script for shortcut ${requiredParamsMap.get('shortcutName')}`,
-      url,
+    this.log.info(
+      'Server::requestListener',
+      `Executed callback script for shortcut ${parsedSearchParams.shortcut}`,
     );
     res.writeHead(200).end();
   };
 
-  private getValidatedRequiredParams(
-    searchParams: URLSearchParams,
-  ): Map<(typeof this.requiredParamsKeys)[number], string> {
-    const requiredParamsEntries: [(typeof this.requiredParamsKeys)[number], string][] =
-      this.requiredParamsKeys.map((key) => [key, searchParams.get(key) as string]);
-    for (const [key, value] of requiredParamsEntries) {
-      if (!this.utils.isNonEmptyString(value)) {
-        throw key;
-      }
-    }
-    return new Map(requiredParamsEntries);
+  private endWithError(
+    res: ServerResponse,
+    statusCode: number,
+    errorMessage: string,
+    errorPayload?: unknown,
+  ): void {
+    this.log.error(
+      'Server::requestListener',
+      `StatusCode=${statusCode}`,
+      errorMessage,
+      errorPayload,
+    );
+    res.writeHead(statusCode).end();
+    return;
   }
 
   private async runCallbackScript(
-    requiredParamsMap: ReturnType<typeof this.getValidatedRequiredParams>,
-    searchParams: URLSearchParams,
+    searchParams: HSBXCallbackUrlParsedSearchParamsType,
   ): Promise<void> {
     let script = this.config.shortcutResultCallback.callbackCustomCommand;
 
-    if (typeof script !== 'string' || script.trim().length === 0) {
-      script = this.getDefaultCallbackScript(requiredParamsMap, searchParams);
+    if (!this.utils.isNonEmptyString(script)) {
+      script = this.getDefaultCallbackScript(searchParams);
     }
 
     await this.utils.execAsync(script, {
-      timeout: 10000,
       env: {
-        SHORTCUT_NAME: requiredParamsMap.get('shortcutName'),
-        SHORTCUT_RESULT: requiredParamsMap.get('status'),
+        SHORTCUT_NAME: searchParams.shortcut,
+        SHORTCUT_RESULT: searchParams.status,
       },
+      timeout: 10000,
     });
   }
 
-  private getDefaultCallbackScript(
-    requiredParamsMap: ReturnType<typeof this.getValidatedRequiredParams>,
-    searchParams: URLSearchParams,
-  ): string {
+  private getDefaultCallbackScript(searchParams: HSBXCallbackUrlParsedSearchParamsType): string {
     let subtitle: string;
     let sound: string;
-    switch (requiredParamsMap.get('status')) {
+    switch (searchParams.status) {
       case HSBShortcutStatus.SUCCESS:
-        subtitle = `was executed successfully. Result:\n${searchParams.get('result')}`;
+        subtitle = 'was executed successfully.';
+        searchParams.result && (subtitle += ` Result:\n${searchParams.result}`);
         sound = 'Glass';
         break;
       case HSBShortcutStatus.ERROR:
-        subtitle = `execution failed. Error:\n${searchParams.get('errorMessage')}`;
+        subtitle = 'execution failed.';
+        searchParams.errorMessage && (subtitle += ` Error:\n${searchParams.errorMessage}`);
         sound = 'Sosumi';
         break;
       case HSBShortcutStatus.CANCEL:
@@ -192,9 +192,54 @@ export class HSBXCallbackUrlServer {
     return (
       `open ${join(__dirname, './bin/defaultCallbackScript.app')} ` +
       `--env TITLE="${this.config.name}" ` +
-      `--env SUBTITLE="${requiredParamsMap.get('shortcutName')} ${subtitle}" ` +
+      `--env SUBTITLE="${searchParams.shortcut} ${subtitle}" ` +
       `--env SOUND="${sound}" ` +
-      `--env PATHNAME="${this.pathname}"`
+      `--env TOKEN="${searchParams.token}"`
     );
   }
+}
+
+enum HSBXCallbackUrlRequiredSearchParamsKeys {
+  SHORTCUT = 'shortcut',
+  STATUS = 'status',
+  TOKEN = 'token',
+}
+
+enum HSBXCallbackUrlOptionalSearchParamsKeys {
+  ERROR_MESSAGE = 'errorMessage',
+  RESULT = 'result',
+}
+
+const requiredParamsKeysList = Object.values(HSBXCallbackUrlRequiredSearchParamsKeys);
+const optionalParamsKeysList = Object.values(HSBXCallbackUrlOptionalSearchParamsKeys);
+
+type HSBXCallbackUrlParsedSearchParamsType = {
+  [K in HSBXCallbackUrlRequiredSearchParamsKeys]: string;
+} & {
+  [K in HSBXCallbackUrlOptionalSearchParamsKeys]: string | undefined;
+};
+
+class HSBXCallbackUrlParsedSearchParams implements HSBXCallbackUrlParsedSearchParamsType {
+  public readonly shortcut!: string;
+  public readonly status!: string;
+  public readonly token!: string;
+  public readonly result: string | undefined;
+  public readonly errorMessage: string | undefined;
+
+  constructor(
+    searchParams: URLSearchParams,
+    private readonly utils: HSBUtils,
+  ) {
+    for (const key of requiredParamsKeysList) {
+      this[key] = searchParams.get(key) || '';
+    }
+    for (const key of optionalParamsKeysList) {
+      const value = searchParams.get(key);
+      this[key] = utils.isNonEmptyString(value) ? value : undefined;
+    }
+  }
+
+  public areValidRequiredParamsValues = (): boolean => {
+    return requiredParamsKeysList.every((key) => this.utils.isNonEmptyString(this[key]));
+  };
 }
