@@ -60,14 +60,19 @@
           "callbackServerPort": {
             "type": "number",
             "description": "Available port number to run the internal x-callback-url server.",
-            "default": 59845
+            "default": 63963
           },
           "callbackCustomCommand": {
             "type": "string",
-            "description": "By default (field left empty), after the Shortcut completes, a notification is shown on the host running Homebrige, and a relevant sound effect (\"Glass\" for success, \"Sosumi\" for failure) is played. \n\nIf any value is present in this field, after the Apple Shortcut completes the service will treat this value as a unix command and will try to run it via node `child_process.exec` (unsanitised, at your own risk). \nIn your command you have at your disposal the following environment variables: \n- SHORTCUT_NAME: string \n- SHORTCUT_RESULT: \"success\" | \"error\" | \"cancel\""
+            "description": "By default, after the shortcut completes, a notification with a brief summary is displayed on the host running Homebrige (with sound effect 'Glass' for success and 'Sosumi' for failure). \n\nIf you input any value in this field, it will be treated as a unix command and executed via node's `child_process.exec` (at your own risk). \nIn your command you have at your disposal the following environment variables: \n- SHORTCUT_NAME: string \n- SHORTCUT_RESULT: \"success\" | \"error\" | \"cancel\""
+          },
+          "callbackCommandTimeout": {
+            "type": "number",
+            "description": "The time in milliseconds that the x-callback-url server should wait for the callback command execution to complete before timing out.",
+            "default": 5000
           }
         },
-        "required": ["callbackServerHostname", "callbackServerPort"]
+        "required": ["callbackServerHostname", "callbackServerPort", "callbackCommandTimeout"]
       }
     },
     "required": [

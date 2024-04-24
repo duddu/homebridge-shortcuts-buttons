@@ -162,7 +162,7 @@ export class HSBXCallbackUrlServer {
         SHORTCUT_NAME: searchParams.shortcut,
         SHORTCUT_RESULT: searchParams.status,
       },
-      timeout: 10000,
+      timeout: this.config.shortcutResultCallback.callbackCommandTimeout,
     });
   }
 
