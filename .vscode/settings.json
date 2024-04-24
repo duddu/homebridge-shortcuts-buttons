@@ -5,7 +5,7 @@
   "editor.formatOnSave": true,
   "editor.formatOnSaveMode": "file",
   "editor.rulers": [100],
-  "files.autoSave": "onFocusChange",
+  "files.autoSave": "off",
   "files.eol": "\n",
   "vs-code-prettier-eslint.prettierLast": false,
   "typescript.tsdk": "node_modules/typescript/lib",
