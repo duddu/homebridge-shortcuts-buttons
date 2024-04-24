@@ -1,12 +1,4 @@
-import {
-  API,
-  DynamicPlatformPlugin,
-  Logger,
-  PlatformConfig,
-  Service,
-  Characteristic,
-  Nullable,
-} from 'homebridge';
+import { API, DynamicPlatformPlugin, Logger, PlatformConfig, Nullable } from 'homebridge';
 
 import { HSBConfig } from './config';
 import { PLATFORM_NAME, PLUGIN_NAME } from './settings';
@@ -15,8 +7,6 @@ import { HSBXCallbackUrlServer } from './server';
 import { HSBUtils } from './utils';
 
 export class HSBPlatform implements DynamicPlatformPlugin {
-  public readonly Service: typeof Service;
-  public readonly Characteristic: typeof Characteristic;
   public readonly config: HSBConfig;
   public readonly utils: HSBUtils;
   private readonly device: HSBDevice;
@@ -32,8 +22,6 @@ export class HSBPlatform implements DynamicPlatformPlugin {
     this.config = _config as HSBConfig;
     this.device = new HSBDevice(this.config);
     this.utils = new HSBUtils(log);
-    this.Service = this.api.hap.Service;
-    this.Characteristic = this.api.hap.Characteristic;
 
     this.log.debug('Finished initializing platform:', this.config.name);
 

@@ -1,4 +1,4 @@
-import { PlatformAccessory } from 'homebridge';
+import { Characteristic, PlatformAccessory, Service } from 'homebridge';
 
 import { HSBPlatform } from './platform';
 import { HSBService, HSBServiceType } from './service';
@@ -12,12 +12,16 @@ export interface HSBAccessoryContext {
 }
 
 export class HSBAccessory {
+  private readonly Service: typeof Service;
+  private readonly Characteristic: typeof Characteristic;
   private readonly serviceType: HSBServiceType;
 
   constructor(
     private readonly platform: HSBPlatform,
     private readonly accessory: HSBPlatformAccessory,
   ) {
+    this.Service = this.platform.api.hap.Service;
+    this.Characteristic = this.platform.api.hap.Characteristic;
     this.serviceType = this.getShortcutButtonServiceType();
 
     this.addAccessoryInformationService();
@@ -26,13 +30,13 @@ export class HSBAccessory {
 
   private addAccessoryInformationService() {
     (
-      this.accessory.getService(this.platform.Service.AccessoryInformation) ??
-      this.accessory.addService(this.platform.Service.AccessoryInformation)
+      this.accessory.getService(this.Service.AccessoryInformation) ??
+      this.accessory.addService(this.Service.AccessoryInformation)
     )
-      .setCharacteristic(this.platform.Characteristic.Manufacturer, 'Homebridge.io')
-      .setCharacteristic(this.platform.Characteristic.Model, PLATFORM_NAME)
+      .setCharacteristic(this.Characteristic.Manufacturer, 'Homebridge.io')
+      .setCharacteristic(this.Characteristic.Model, PLATFORM_NAME)
       .setCharacteristic(
-        this.platform.Characteristic.SerialNumber,
+        this.Characteristic.SerialNumber,
         this.accessory.context.device.serialNumber,
       );
   }
@@ -59,7 +63,7 @@ export class HSBAccessory {
         serviceConfig,
         this.platform.server,
         this.platform.utils,
-        this.platform.Characteristic,
+        this.Characteristic,
       );
     }
   }
@@ -67,11 +71,11 @@ export class HSBAccessory {
   private getShortcutButtonServiceType(): HSBServiceType {
     switch (this.platform.config.serviceType) {
       case 'Outlet':
-        return this.platform.Service.Outlet;
+        return this.Service.Outlet;
       case 'Switch':
-        return this.platform.Service.Switch;
+        return this.Service.Switch;
       default:
-        return this.platform.Service.Outlet;
+        return this.Service.Outlet;
     }
   }
 }
