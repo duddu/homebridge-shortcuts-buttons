@@ -55,7 +55,7 @@ export class HSBXCallbackUrlServer {
     const server = createServer(this.requestListener);
 
     server.listen(this.port, this.hostname, () => {
-      this.log.info(`X-Callback-Url Server listening at ${this.hostname}:${this.port}`);
+      this.log.info(`X-Callback-Url server listening at ${this.hostname}:${this.port}`);
     });
 
     server.on('error', (error) => {
@@ -89,7 +89,7 @@ export class HSBXCallbackUrlServer {
       }
     });
 
-    this.log.info('X-Callback-Url Server destroyed');
+    this.log.info('X-Callback-Url server destroyed');
   };
 
   private requestListener = async (
@@ -98,36 +98,40 @@ export class HSBXCallbackUrlServer {
   ): Promise<void> => {
     this.log.debug('Server::requestListener', 'Incoming request, starting validation');
 
+    const { pathname, searchParams: URLSearchParams } = new URL(
+      url || '',
+      `${this.proto}://${headers.host}`,
+    );
+    const { areValidRequiredParamsValues, ...searchParams } = new HSBXCallbackUrlSearchParams(
+      URLSearchParams,
+      this.utils,
+    );
+
     if (typeof url !== 'string' || method !== 'GET') {
       return this.endWithError(res, 405, 'Unsupported request', `${method}:${url}`);
     }
-
-    const { pathname, searchParams } = new URL(url, `${this.proto}://${headers.host}`);
 
     if (pathname !== this.pathname) {
       return this.endWithError(res, 404, 'Invalid url pathname', pathname);
     }
 
-    const { areValidRequiredParamsValues: areRequiredParamsValuesValid, ...parsedSearchParams } =
-      new HSBXCallbackUrlParsedSearchParams(searchParams, this.utils);
-
-    if (!areRequiredParamsValuesValid()) {
-      return this.endWithError(res, 400, 'Missing required search param(s)', parsedSearchParams);
+    if (!areValidRequiredParamsValues()) {
+      return this.endWithError(res, 400, 'Missing required search param(s)', searchParams);
     }
 
-    if (!this.isValidToken(parsedSearchParams.token)) {
-      return this.endWithError(res, 401, 'Authorization token invalid or expired');
+    if (!this.isValidToken(searchParams.token)) {
+      return this.endWithError(res, 403, 'Authorization token invalid or expired');
     }
 
     try {
-      await this.runCallbackScript(parsedSearchParams);
+      await this.runCallbackScript(searchParams);
     } catch (e) {
       return this.endWithError(res, 500, 'Failed to run callback script', e);
     }
 
     this.log.info(
       'Server::requestListener',
-      `Executed callback script for shortcut ${parsedSearchParams.shortcut}`,
+      `Executed callback script for shortcut ${searchParams.shortcut}`,
     );
     return this.endWithStatusAndHtml(res, 200);
   };
@@ -148,9 +152,7 @@ export class HSBXCallbackUrlServer {
     res.end();
   }
 
-  private async runCallbackScript(
-    searchParams: HSBXCallbackUrlParsedSearchParamsType,
-  ): Promise<void> {
+  private async runCallbackScript(searchParams: HSBXCallbackUrlSearchParamsType): Promise<void> {
     let script = this.config.shortcutResultCallback.callbackCustomCommand;
 
     if (!this.utils.isNonEmptyString(script)) {
@@ -166,7 +168,7 @@ export class HSBXCallbackUrlServer {
     });
   }
 
-  private getDefaultCallbackScript(searchParams: HSBXCallbackUrlParsedSearchParamsType): string {
+  private getDefaultCallbackScript(searchParams: HSBXCallbackUrlSearchParamsType): string {
     let subtitle: string;
     let sound: string;
     switch (searchParams.status) {
@@ -218,13 +220,13 @@ enum HSBXCallbackUrlOptionalSearchParamsKeys {
 const requiredParamsKeysList = Object.values(HSBXCallbackUrlRequiredSearchParamsKeys);
 const optionalParamsKeysList = Object.values(HSBXCallbackUrlOptionalSearchParamsKeys);
 
-type HSBXCallbackUrlParsedSearchParamsType = {
+type HSBXCallbackUrlSearchParamsType = {
   [K in HSBXCallbackUrlRequiredSearchParamsKeys]: string;
 } & {
   [K in HSBXCallbackUrlOptionalSearchParamsKeys]: string | undefined;
 };
 
-class HSBXCallbackUrlParsedSearchParams implements HSBXCallbackUrlParsedSearchParamsType {
+class HSBXCallbackUrlSearchParams implements HSBXCallbackUrlSearchParamsType {
   public readonly shortcut!: string;
   public readonly status!: string;
   public readonly token!: string;
