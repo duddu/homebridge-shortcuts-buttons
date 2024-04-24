@@ -1,25 +1,25 @@
 import { PlatformAccessory } from 'homebridge';
 
 import { HSBPlatform } from './platform';
-import { HSBService } from './service';
+import { HSBService, HSBServiceType } from './service';
 import { PLATFORM_NAME } from './settings';
+import { HSBConfig } from './config';
 
-export interface HSBDevice {
-  displayName: string;
-  serialNumber: string;
-}
+export type HSBPlatformAccessory = PlatformAccessory<HSBAccessoryContext>;
 
 export interface HSBAccessoryContext {
   device: HSBDevice;
 }
 
-export type HSBPlatformAccessory = PlatformAccessory<HSBAccessoryContext>;
-
 export class HSBAccessory {
+  private readonly serviceType: HSBServiceType;
+
   constructor(
     private readonly platform: HSBPlatform,
     private readonly accessory: HSBPlatformAccessory,
   ) {
+    this.serviceType = this.getShortcutButtonServiceType();
+
     this.addAccessoryInformationService();
     this.addShortcutButtonServices();
   }
@@ -38,14 +38,20 @@ export class HSBAccessory {
   }
 
   private addShortcutButtonServices() {
-    const serviceType = this.shortcutButtonServiceType;
-
     for (const serviceConfig of this.platform.config.services) {
       const subtype = this.platform.api.hap.uuid.generate(JSON.stringify(serviceConfig));
 
-      const service =
-        this.accessory.getServiceById(serviceType, subtype) ??
-        this.accessory.addService(serviceType, serviceConfig.name, subtype);
+      let service = this.accessory.getServiceById(this.serviceType, subtype);
+      let logServiceOrigin: string = 'Restored from cache';
+      if (!service) {
+        service = this.accessory.addService(this.serviceType, serviceConfig.name, subtype);
+        logServiceOrigin = 'Created from fresh config';
+      }
+      this.platform.log.debug(
+        'Accessory::addShortcutButtonServices',
+        `Service(${service.displayName})`,
+        logServiceOrigin,
+      );
 
       new HSBService(
         this.platform.log,
@@ -58,9 +64,7 @@ export class HSBAccessory {
     }
   }
 
-  private get shortcutButtonServiceType():
-    | typeof this.platform.Service.Outlet
-    | typeof this.platform.Service.Switch {
+  private getShortcutButtonServiceType(): HSBServiceType {
     switch (this.platform.config.serviceType) {
       case 'Outlet':
         return this.platform.Service.Outlet;
@@ -69,5 +73,15 @@ export class HSBAccessory {
       default:
         return this.platform.Service.Outlet;
     }
+  }
+}
+
+export class HSBDevice {
+  constructor(private readonly config: HSBConfig) {}
+
+  public readonly serialNumber = '634EA867A81D59F1898';
+
+  public get displayName(): string {
+    return this.config.accessoryName;
   }
 }

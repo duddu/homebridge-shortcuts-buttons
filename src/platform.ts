@@ -9,7 +9,7 @@ import {
 } from 'homebridge';
 
 import { HSBConfig } from './config';
-import { DEVICE_SERIAL, PLATFORM_NAME, PLUGIN_NAME } from './settings';
+import { PLATFORM_NAME, PLUGIN_NAME } from './settings';
 import { HSBAccessory, HSBPlatformAccessory, HSBAccessoryContext, HSBDevice } from './accessory';
 import { HSBXCallbackUrlServer } from './server';
 import { HSBUtils } from './utils';
@@ -19,6 +19,7 @@ export class HSBPlatform implements DynamicPlatformPlugin {
   public readonly Characteristic: typeof Characteristic;
   public readonly config: HSBConfig;
   public readonly utils: HSBUtils;
+  private readonly device: HSBDevice;
 
   public accessory: Nullable<HSBPlatformAccessory> = null;
   public server: Nullable<HSBXCallbackUrlServer> = null;
@@ -29,6 +30,7 @@ export class HSBPlatform implements DynamicPlatformPlugin {
     public readonly api: API,
   ) {
     this.config = _config as HSBConfig;
+    this.device = new HSBDevice(this.config);
     this.utils = new HSBUtils(log);
     this.Service = this.api.hap.Service;
     this.Characteristic = this.api.hap.Characteristic;
@@ -37,9 +39,7 @@ export class HSBPlatform implements DynamicPlatformPlugin {
 
     // Homebridge 1.8.0 introduced a `log.success` method that can be used to log success messages
     // For users that are on a version prior to 1.8.0, we need a 'polyfill' for this method
-    if (!log.success) {
-      log.success = log.info;
-    }
+    !log.success && (log.success = log.info);
 
     // When this event is fired it means Homebridge has restored all cached accessories from disk.
     // Dynamic Platform plugins should only register new accessories after this event was fired,
@@ -90,7 +90,7 @@ export class HSBPlatform implements DynamicPlatformPlugin {
         this.log.info('Update existing accessory display name to:', this.device.displayName);
 
         this.accessory.displayName = this.device.displayName;
-        this.accessory.context.device.displayName = this.device.displayName;
+        this.accessory.context.device = this.device;
         this.api.updatePlatformAccessories([this.accessory]);
       }
 
@@ -126,12 +126,5 @@ export class HSBPlatform implements DynamicPlatformPlugin {
 
       this.accessory = accessory;
     }
-  }
-
-  private get device(): HSBDevice {
-    return {
-      displayName: this.config.accessoryName,
-      serialNumber: DEVICE_SERIAL,
-    };
   }
 }

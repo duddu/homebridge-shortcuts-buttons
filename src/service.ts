@@ -11,6 +11,8 @@ import { HSBXCallbackUrlServer } from './server';
 import { HSBShortcut } from './shortcut';
 import { HSBUtils } from './utils';
 
+export type HSBServiceType = typeof Service.Outlet | typeof Service.Switch;
+
 export type HSBServiceConfig = HSBConfig['services'][number];
 
 class HSBServiceState {
@@ -48,7 +50,7 @@ export class HSBService {
     this.state = new HSBServiceState();
     this.shortcut = new HSBShortcut(serviceConfig.shortcut, server, utils);
 
-    this.service
+    service
       .setCharacteristic(Characteristic.Name, serviceConfig.name)
       .setCharacteristic(Characteristic.ConfiguredName, serviceConfig.name)
       .getCharacteristic(Characteristic.On)
@@ -65,15 +67,18 @@ export class HSBService {
   }
 
   private async setOn(value: CharacteristicValue): Promise<void> {
-    this.log.debug(this.logHandlerContext, `Value=${value}`);
+    this.log.debug(this.logSetHandlerContext, `Value=${value}`);
 
     if (value === false) {
       if (this.state.isOn === false) {
-        this.log.debug(this.logHandlerContext, 'State value was already false, skipping handler');
+        this.log.debug(
+          this.logSetHandlerContext,
+          'State value was already false, skipping handler',
+        );
         return;
       }
       this.state.isOn = false;
-      this.log.debug(this.logHandlerContext, 'State value was true, skipping shortcut run');
+      this.log.debug(this.logSetHandlerContext, 'State value was true, skipping shortcut run');
       return;
     }
 
@@ -83,9 +88,9 @@ export class HSBService {
 
     try {
       await this.shortcut.run();
-      this.log.debug(this.logShortcutContext, 'Exec succeded');
+      this.log.debug(this.logShortcutRunContext, 'Exec succeded');
     } catch (e) {
-      this.log.error(this.logShortcutContext, 'Exec failed', e);
+      this.log.error(this.logShortcutRunContext, 'Exec failed', e);
     }
 
     this.toggleBackOffTimeout.set();
@@ -94,14 +99,14 @@ export class HSBService {
   private readonly toggleBackOffTimeout = new HSBServiceToggleBackOffTimeout(() => {
     this.state.isOn = false;
     this.service.updateCharacteristic(this.Characteristic.On, false);
-    this.log.debug(this.logHandlerContext, 'Characteristic value set back to false');
+    this.log.debug(this.logSetHandlerContext, 'Characteristic value set back to false');
   });
 
-  private get logHandlerContext(): string {
+  private get logSetHandlerContext(): string {
     return `Service(${this.service.displayName})::setOn`;
   }
 
-  private get logShortcutContext(): string {
-    return `${this.logHandlerContext} Shortcut(${this.serviceConfig.shortcut})::run`;
+  private get logShortcutRunContext(): string {
+    return `${this.logSetHandlerContext} Shortcut(${this.serviceConfig.shortcut})::run`;
   }
 }
