@@ -191,12 +191,17 @@ export class HSBXCallbackUrlServer {
     }
 
     return (
-      `open ${join(__dirname, './bin/HomebridgeShortcutsButtons - Notify Shortcut Result.app')} ` +
+      `open ${this.defaultCallbackScriptPath} ` +
       `--env NOTIFICATION_TITLE="${this.config.name}" ` +
       `--env NOTIFICATION_SUBTITLE="${searchParams.shortcut} ${subtitle}" ` +
       `--env NOTIFICATION_SOUND="${sound}"`
     );
   }
+
+  private readonly defaultCallbackScriptPath = join(
+    __dirname,
+    './bin/HomebridgeShortcutsButtons\\ -\\ Notify\\ Shortcut\\ Result.app',
+  );
 }
 
 enum HSBXCallbackUrlRequiredSearchParamsKeys {
