@@ -12,9 +12,12 @@ jobs:
         node-version: [18.x, 20.x]
 
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
 
-      - name: Use Node.js ${{ matrix.node-version }}
+      - name: Setup Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
@@ -22,10 +25,13 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Lint the project
+      - name: Lint
         run: npm run lint
 
-      - name: Build the project
+      - name: Test
+        run: npm run test
+
+      - name: Build
         run: npm run build
 
       - name: List, audit, fix outdated dependencies and build again
