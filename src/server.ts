@@ -55,11 +55,11 @@ export class HSBXCallbackUrlServer {
     const server = createServer(this.requestListener);
 
     server.listen(this.port, this.hostname, () => {
-      this.log.info(`X-Callback-Url server listening at ${this.hostname}:${this.port}`);
+      this.log.info(`XCallbackUrlServer listening at ${this.hostname}:${this.port}`);
     });
 
     server.on('error', (error) => {
-      this.log.error(`${error}`);
+      this.log.error('XCallbackUrlServer::on(error)', error);
     });
 
     server.on('connection', (socket) => {
@@ -74,14 +74,14 @@ export class HSBXCallbackUrlServer {
   }
 
   private destroy = (): void => {
-    this.log.debug('Server::destroy', `Destroying ${this.sockets.size} sockets`);
+    this.log.debug('XCallbackUrlServer::destroy', `Destroying ${this.sockets.size} sockets`);
 
     for (const socket of this.sockets) {
       socket.destroy();
       this.sockets.delete(socket);
     }
 
-    this.log.debug('Server::destroy', 'Emitting server close event');
+    this.log.debug('XCallbackUrlServer::destroy', 'Emitting server close event');
 
     this.server.close((error) => {
       if (error instanceof Error) {
@@ -89,14 +89,14 @@ export class HSBXCallbackUrlServer {
       }
     });
 
-    this.log.info('X-Callback-Url server destroyed');
+    this.log.info('XCallbackUrlServer destroyed');
   };
 
   private requestListener = async (
     { headers, method, url }: IncomingMessage,
     res: ServerResponse,
   ): Promise<void> => {
-    this.log.debug('Server::requestListener', 'Incoming request, starting validation');
+    this.log.debug('XCallbackUrlServer::requestListener', 'Incoming request, starting validation');
 
     const { pathname, searchParams: URLSearchParams } = new URL(
       url || '',
@@ -106,6 +106,13 @@ export class HSBXCallbackUrlServer {
       URLSearchParams,
       this.utils,
     );
+
+    // const asdf = [{
+    //   condition:
+    //   statusCode: number,
+    //   errorMessage: string,
+    //   errorPayload?: unknown,
+    // }];
 
     if (typeof url !== 'string' || method !== 'GET') {
       return this.endWithError(res, 405, 'Unsupported request', `${method}:${url}`);
@@ -124,15 +131,16 @@ export class HSBXCallbackUrlServer {
     }
 
     try {
-      await this.runCallbackScript(searchParams);
+      await this.runCallbackCommand(searchParams);
     } catch (e) {
-      return this.endWithError(res, 500, 'Failed to run callback script', e);
+      return this.endWithError(res, 500, 'Failed to run callback command', e);
     }
 
-    this.log.info(
-      'Server::requestListener',
-      `Executed callback script for shortcut ${searchParams.shortcut}`,
+    this.log.success(
+      'XCallbackUrlServer::requestListener',
+      `Executed callback command for shortcut ${searchParams.shortcut}`,
     );
+
     return this.endWithStatusAndHtml(res, 200);
   };
 
@@ -142,7 +150,11 @@ export class HSBXCallbackUrlServer {
     errorMessage: string,
     errorPayload?: unknown,
   ): void {
-    this.log.error(`Server::requestListener StatusCode=${statusCode}`, errorMessage, errorPayload);
+    this.log.error(
+      `XCallbackUrlServer::requestListener StatusCode=${statusCode}`,
+      errorMessage,
+      errorPayload,
+    );
     this.endWithStatusAndHtml(res, statusCode);
   }
 
@@ -152,14 +164,14 @@ export class HSBXCallbackUrlServer {
     res.end();
   }
 
-  private async runCallbackScript(searchParams: HSBXCallbackUrlSearchParamsType): Promise<void> {
-    let script = this.config.shortcutResultCallback.callbackCustomCommand;
+  private async runCallbackCommand(searchParams: HSBXCallbackUrlSearchParamsType): Promise<void> {
+    let command = this.config.shortcutResultCallback.callbackCustomCommand;
 
-    if (!this.utils.isNonEmptyString(script)) {
-      script = this.getDefaultCallbackScript(searchParams);
+    if (!this.utils.isNonEmptyString(command)) {
+      command = this.getDefaultCallbackCommand(searchParams);
     }
 
-    await this.utils.execAsync(script, {
+    await this.utils.execAsync(command, {
       env: {
         SHORTCUT_NAME: searchParams.shortcut,
         SHORTCUT_RESULT: searchParams.status,
@@ -168,7 +180,7 @@ export class HSBXCallbackUrlServer {
     });
   }
 
-  private getDefaultCallbackScript(searchParams: HSBXCallbackUrlSearchParamsType): string {
+  private getDefaultCallbackCommand(searchParams: HSBXCallbackUrlSearchParamsType): string {
     let subtitle: string;
     let sound: string;
     switch (searchParams.status) {
@@ -193,14 +205,14 @@ export class HSBXCallbackUrlServer {
     }
 
     return (
-      `open ${this.defaultCallbackScriptPath} ` +
+      `open ${this.defaultCallbackCommandAppPath} ` +
       `--env NOTIFICATION_TITLE="${this.config.name}" ` +
       `--env NOTIFICATION_SUBTITLE="${searchParams.shortcut} ${subtitle}" ` +
       `--env NOTIFICATION_SOUND="${sound}"`
     );
   }
 
-  private readonly defaultCallbackScriptPath = join(
+  private readonly defaultCallbackCommandAppPath = join(
     __dirname,
     './bin/HomebridgeShortcutsButtons\\ -\\ Notify\\ Shortcut\\ Result.app',
   );

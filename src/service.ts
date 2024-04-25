@@ -88,9 +88,9 @@ export class HSBService {
 
     try {
       await this.shortcut.run();
-      this.log.debug(this.logShortcutRunContext, 'Exec succeded');
+      this.log.success(`${this.logShortcutRunContext} Executed successfully`);
     } catch (e) {
-      this.log.error(this.logShortcutRunContext, 'Exec failed', e);
+      this.log.error(`${this.logShortcutRunContext} Execution failed`, e);
     }
 
     this.toggleBackOffTimeout.set();

@@ -22,10 +22,10 @@ export class HSBAccessory {
   ) {
     this.Service = this.platform.api.hap.Service;
     this.Characteristic = this.platform.api.hap.Characteristic;
-    this.serviceType = this.getShortcutButtonServiceType();
+    this.serviceType = this.getShortcutsServiceType();
 
     this.addAccessoryInformationService();
-    this.addShortcutButtonServices();
+    this.addShortcutsServices();
   }
 
   private addAccessoryInformationService() {
@@ -41,7 +41,7 @@ export class HSBAccessory {
       );
   }
 
-  private addShortcutButtonServices() {
+  private addShortcutsServices() {
     for (const serviceConfig of this.platform.config.services) {
       const subtype = this.platform.api.hap.uuid.generate(JSON.stringify(serviceConfig));
 
@@ -52,7 +52,7 @@ export class HSBAccessory {
         logServiceOrigin = 'Created from fresh config';
       }
       this.platform.log.debug(
-        'Accessory::addShortcutButtonServices',
+        'Accessory::addShortcutsServices',
         `Service(${service.displayName})`,
         logServiceOrigin,
       );
@@ -68,7 +68,7 @@ export class HSBAccessory {
     }
   }
 
-  private getShortcutButtonServiceType(): HSBServiceType {
+  private getShortcutsServiceType(): HSBServiceType {
     switch (this.platform.config.serviceType) {
       case 'Outlet':
         return this.Service.Outlet;

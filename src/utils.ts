@@ -10,14 +10,20 @@ export class HSBUtils {
 
   public async execAsync(
     command: string,
-    options: ObjectEncodingOptions & ExecOptions = { timeout: EXEC_DEFAULT_TIMEOUT },
+    options?: ObjectEncodingOptions & ExecOptions,
   ): Promise<void> {
-    const { stdout, stderr } = await promisify(exec).call(null, command, options);
+    this.log.debug('Utils::execAsync Executing:', command);
+    const { stdout, stderr } = await promisify(exec).call(null, command, {
+      timeout: EXEC_DEFAULT_TIMEOUT,
+      ...options,
+    });
     this.isNonEmptyString(stdout.toString()) && this.log.debug(stdout.toString());
     this.isNonEmptyString(stderr.toString()) && this.log.error(stderr.toString());
   }
 
-  public isNonEmptyString(str: unknown): str is string {
-    return typeof str === 'string' && str.trim() !== '';
-  }
+  public isNonEmptyString = isNonEmptyString;
 }
+
+export const isNonEmptyString = (str: unknown): str is string => {
+  return typeof str === 'string' && str.trim() !== '';
+};
