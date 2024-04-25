@@ -9,5 +9,6 @@
   "files.eol": "\n",
   "vs-code-prettier-eslint.prettierLast": false,
   "typescript.tsdk": "node_modules/typescript/lib",
-  "sarif-viewer.connectToGithubCodeScanning": "off"
+  "sarif-viewer.connectToGithubCodeScanning": "off",
+  "editor.tabSize": 2
 }
