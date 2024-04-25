@@ -6,6 +6,7 @@ src
 
 # dev-only modules configurations
 .*rc
+jest.config.ts
 typedoc.json
 
 # MacOS
