@@ -2,7 +2,7 @@ import { Nullable } from 'homebridge';
 import { HSBUtils } from './utils';
 import { HSBXCallbackUrlServer } from './server';
 
-export const enum HSBShortcutStatus {
+export enum HSBShortcutStatus {
   SUCCESS = 'success',
   ERROR = 'error',
   CANCEL = 'cancel',
@@ -20,27 +20,26 @@ export class HSBShortcut {
   }
 
   private get shortcutUrl(): string {
-    if (this.server === null) {
-      return `shortcuts://run-shortcut\\?name=${this.name}`;
-    }
-    return (
-      `shortcuts://x-callback-url/run-shortcut\\?name=${this.name}\\&` +
-      `${this.getCallbackXParam(HSBShortcutStatus.SUCCESS)}\\&` +
-      `${this.getCallbackXParam(HSBShortcutStatus.ERROR)}\\&` +
-      `${this.getCallbackXParam(HSBShortcutStatus.CANCEL)}`
-    );
+    let url = 'shortcuts://';
+    this.server !== null && (url += 'x-callback-url/');
+    url += `run-shortcut\\?name=${this.name}`;
+    this.server !== null && (url += `\\&${this.callbackXParams}`);
+    return url;
+  }
+
+  private get callbackXParams(): string {
+    return Object.values(HSBShortcutStatus)
+      .map((status) => this.getCallbackXParam(status))
+      .join('\\&');
   }
 
   private getCallbackXParam(status: HSBShortcutStatus): string {
-    if (this.server === null) {
-      throw new ReferenceError('cannot invoke getCallbackParam whilst server is null');
-    }
     return (
       // eslint-disable-next-line no-useless-escape
-      `x-${status}="${this.server.baseUrl}\?` +
-      `token=${this.server.issueToken()}%26` +
+      `x-${status}="${this.server?.baseUrl}\?` +
       `shortcut=${this.name}%26` +
-      `status=${status}"`
+      `status=${status}%26` +
+      `token=${this.server?.issueToken()}"`
     );
   }
 }
