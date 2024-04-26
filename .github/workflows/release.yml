@@ -8,9 +8,8 @@ permissions:
 
 jobs:
   release:
-    name: Release
+    name: Semantic Release
     runs-on: ubuntu-latest
-
     permissions:
       contents: write
       issues: write
@@ -33,9 +32,6 @@ jobs:
 
       - name: Verify dependencies signatures
         run: npm audit signatures
-
-      - name: Build
-        run: npm run build
 
       - name: Release
         env:

@@ -11,8 +11,8 @@ permissions:
 
 jobs:
   build:
+    name: Test and Build (Node v${{ matrix.node-version }})
     runs-on: ubuntu-latest
-
     strategy:
       fail-fast: false
       matrix:
@@ -41,17 +41,17 @@ jobs:
       - name: Build
         run: npm run build
 
-      - name: List, audit, fix outdated dependencies and build again
+      - name: Audit, fix outdated dependencies and rebuild
         run: |
           npm list --outdated
-          npm audit || true  # ignore failures
+          npm audit || true
           npm audit fix || true
           npm list --outdated
           npm run build
 
   trigger-release:
     if: github.ref == 'refs/heads/latest'
-    name: Trigger release on branch latest
+    name: Trigger release on latest
     needs: build
     uses: ./.github/workflows/release.yml
     secrets: inherit
