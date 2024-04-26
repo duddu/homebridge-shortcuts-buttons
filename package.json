@@ -9,6 +9,7 @@
     "type": "git",
     "url": "git+https://github.com/duddu/homebridge-shortcuts-buttons.git"
   },
+  "homepage": "https://github.com/duddu/homebridge-shortcuts-buttons",
   "bugs": {
     "url": "https://github.com/duddu/homebridge-shortcuts-buttons/issues"
   },
