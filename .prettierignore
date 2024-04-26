@@ -4,8 +4,10 @@ coverage
 dist
 docs
 src/bin
+src/config.ts
 typedoc
 **/*.md
+**/*.js
 
 # Defaults
 

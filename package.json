@@ -20,14 +20,15 @@
   "main": "dist/index.js",
   "scripts": {
     "lint": "eslint src/**/*.ts",
-    "test": "jest --verbose",
+    "prettier": "prettier -w .",
+    "typedoc": "typedoc",
     "convertSchema": "./bin/convertSchema.sh",
     "bundle": "rimraf ./dist && tsc && cp -R ./src/bin ./dist",
     "build": "npm run convertSchema && npm run bundle",
     "link": "npm run build && npm link",
     "watch": "npm run link && nodemon",
-    "prepublishOnly": "npm run lint && npm run test && npm run build",
-    "typedoc": "typedoc"
+    "test": "jest --verbose",
+    "prepublishOnly": "npm run lint && npm run test && npm run build"
   },
   "devDependencies": {
     "@jest/globals": "^29.7.0",

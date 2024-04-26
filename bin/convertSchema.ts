@@ -83,7 +83,7 @@ async function writeConfig(config: string): Promise<void> {
     ' * This file was automatically generated from `/config.schema.json`.\n' +
     ' * Update the source schema file and run `convertSchema` to regenerate this file.\n */\n\n' +
     '/* eslint-disable max-len */\n\n' +
-    'import { PlatformConfig } from \'homebridge\';\n\n';
+    "import { PlatformConfig } from 'homebridge';\n\n";
   config = config
     .replaceAll(
       configInterfaceName,

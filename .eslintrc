@@ -11,7 +11,7 @@
   },
   "ignorePatterns": ["dist"],
   "rules": {
-    "quotes": ["warn", "single"],
+    "quotes": ["off"],
     "indent": ["warn", 2, { "SwitchCase": 1 }],
     "semi": ["off"],
     "comma-dangle": ["warn", "always-multiline"],
