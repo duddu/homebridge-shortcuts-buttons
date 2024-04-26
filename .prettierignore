@@ -1,0 +1,15 @@
+.github
+assets
+coverage
+dist
+docs
+src/bin
+typedoc
+**/*.md
+
+# Defaults
+
+**/.git
+**/.svn
+**/.hg
+**/node_modules

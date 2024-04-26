@@ -8,6 +8,7 @@ src
 .*rc
 jest.config.ts
 typedoc.json
+.prettierignore
 
 # ignore assets
 /assets/
