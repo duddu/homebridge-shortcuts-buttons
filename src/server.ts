@@ -11,10 +11,10 @@ import { HSBUtils } from './utils';
 
 export class HSBXCallbackUrlServer {
   private readonly pathname = '/x-callback-url';
-  private readonly proto = 'http';
   private readonly sockets: Set<Socket> = new Set();
   private readonly tokens: Set<string> = new Set();
 
+  private readonly proto: HSBConfig['callbackServerProtocol'];
   private readonly hostname: string;
   private readonly port: number;
   private readonly server: Server;
@@ -25,6 +25,7 @@ export class HSBXCallbackUrlServer {
     private readonly utils: HSBUtils,
     private readonly api: API,
   ) {
+    this.proto = config.callbackServerProtocol;
     this.hostname = config.callbackServerHostname;
     this.port = config.callbackServerPort;
 

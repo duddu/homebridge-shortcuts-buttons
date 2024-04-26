@@ -61,6 +61,12 @@
         "description": "A free port number to be used by the internal x-callback-url http server.",
         "default": 63963
       },
+      "callbackServerProtocol": {
+        "type": "string",
+        "enum": ["http", "https"],
+        "description": "If you access other Homebridge services (e.g. UI) behind a reverse proxy with TLS certificate installed, you may want to access the x-callback-url server via https as well.",
+        "default": "http"
+      },
       "callbackCustomCommand": {
         "type": "string",
         "description": "By default, after the shortcut completion, a notification with a brief summary is displayed on the host running Homebrige (with sound effect 'Glass' for success and 'Sosumi' for failure).<br>\n<br>\nIf you input any value here it will be treated as a unix command and executed via node's `child_process.exec` (at your own risk).<br>\nIn your command you have at your disposal the following environment variables:<br>\n- SHORTCUT_NAME: string<br>\n- SHORTCUT_RESULT: \"success\" | \"error\" | \"cancel\""
@@ -79,6 +85,7 @@
       "callbackServerEnabled",
       "callbackServerHostname",
       "callbackServerPort",
+      "callbackServerProtocol",
       "callbackCommandTimeout"
     ]
   }

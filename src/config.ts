@@ -62,6 +62,12 @@ export interface HSBConfig extends Pick<PlatformConfig, '_bridge' | 'platform'> 
    */
   callbackServerPort: number;
   /**
+   * If you access other Homebridge services (e.g. UI) behind a reverse proxy with TLS certificate installed, you may want to access the x-callback-url server via https as well.
+   *
+   * @default "http"
+   */
+  callbackServerProtocol: 'http' | 'https';
+  /**
    * By default, after the shortcut completion, a notification with a brief summary is displayed on the host running Homebrige (with sound effect 'Glass' for success and 'Sosumi' for failure).
    *
    * If you input any value here it will be treated as a unix command and executed via node's `child_process.exec` (at your own risk).
