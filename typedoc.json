@@ -8,7 +8,7 @@
   "name": "Homebridge Shortcuts Buttons Plugin",
   "out": "typedoc",
   "readme": "none",
-  "sort": ["kind", "alphabetical", "instance-first"],
+  "sort": ["kind", "source-order", "instance-first", "alphabetical"],
   "tsconfig": "./tsconfig.json",
   "visibilityFilters": {
     "external": true,
