@@ -8,7 +8,7 @@
       "name": {
         "type": "string",
         "description": "Name of the platform bridge.",
-        "default": "Shortcuts Buttons"
+        "default": "Homebridge Shortcuts Buttons"
       },
       "accessoryName": {
         "type": "string",

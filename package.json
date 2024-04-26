@@ -1,9 +1,8 @@
 {
-  "private": true,
   "displayName": "Homebridge Shortcuts Buttons",
   "name": "homebridge-shortcuts-buttons",
   "version": "1.7.1",
-  "description": "Homebridge Plugin to run any Apple Shortcuts from multiple buttons (Switch or Outlet services), optionally waiting for result using x-callback-url protocol.",
+  "description": "Homebridge plugin to run any Apple Shortcuts simply from buttons in your Home app, and execute a custom command after shortcut success/failure via x-callback-url.",
   "license": "Apache-2.0",
   "author": "duddu",
   "repository": {

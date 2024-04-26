@@ -1,195 +1,93 @@
-<p align="center">
+<img src="./assets/banner.png" width="100%" alt="Homebridge Shortcuts Buttons" title="Homebridge Shortcuts Buttons">
 
-<img src="https://github.com/homebridge/branding/raw/latest/logos/homebridge-wordmark-logo-vertical.png" width="150">
+# Homebridge Shortcuts Buttons Plugin
 
-</p>
+[//]: [![verified-by-homebridge](https://badgen.net/badge/homebridge/verified/purple)](https://github.com/homebridge/homebridge/wiki/Verified-Plugins)
 
-<span align="center">
+### Features highlights
 
-# Homebridge Platform Plugin Template
+- Run your Apple Shortcuts directly from your Home (or HomeKit compatible) app.
+- Optionally, choose a custom command to execute once the shortcut completes (success/failure/cancel), leveraging an integrated x-callback-url server.
+- Choose to display your shortcuts buttons as Outlets or Switches.
+- All via UI plugin configuration, no other setup required.
+- Super fast and light, with zero package dependencies (a plus just to brag).
 
-</span>
+### Apple Home preview
 
-This is a template Homebridge dynamic platform plugin and can be used as a base to help you get started developing your own plugin.
+<img src="./assets/demo-outlets-single-tile.jpeg" width="31%" alt="Demo outlets single tile" title="a) Demo outlets single tile">&ensp;
+<img src="./assets/demo-switches-single-tile.jpeg" width="31%" alt="Demo switches single tile" title="b) Demo switches single tile">&ensp;
+<img src="./assets/demo-switches-separate-tiles.jpeg" width="31%" alt="Demo switches separate tiles" title="c) Demo switches separate tiles">
 
-This template should be used in conjunction with the [developer documentation](https://developers.homebridge.io/). A full list of all supported service types, and their characteristics is available on this site.
+<small>a) _Outlets - Single tile (Services view)&emsp;b) Switches - Single tile (Services view)&emsp;c) Switches - Separate tiles (Accessory view)_</small>
 
-### Clone As Template
+## How it works
 
-Click the link below to create a new GitHub Repository using this template, or click the _Use This Template_ button above.
+1. When you tap the button/switch, the plugin executes a command on the machine where Homebridge is running which runs the relevant Apple Shortcut.<br>
 
-<span align="center">
+   > _There are no restrictions on the content of the shortcuts to run, including ones running scripts over SSH on other hosts. The plugin has no role in this, as it only instructs Shortcuts to run them via native url schema._
 
-### [Create New Repository From Template](https://github.com/homebridge/homebridge-plugin-template/generate)
+2. If you left enabled the option `Wait for shortcut result` (see description [below](#configuration)), the plugin will inform Shortcuts to give a signal back once the shortcut execution is completed.
 
-</span>
+   > _This is done using the [x-callback-url](https://x-callback-url.com) standard, which effectively appends to the shortcut execution request the instructions on what to do when it succeds, fails, or is canceled._
 
-### Setup Development Environment
+3. Once the shortcut has been executed the plugin receives the callback and, depending on the status of the shortcut execution, runs the relevant command (either the default callback command or a custom one if provided, see [below](#callback-command)).
 
-To develop Homebridge plugins you must have Node.js 18 or later installed, and a modern code editor such as [VS Code](https://code.visualstudio.com/). This plugin template uses [TypeScript](https://www.typescriptlang.org/) to make development easier and comes with pre-configured settings for [VS Code](https://code.visualstudio.com/) and ESLint. If you are using VS Code install these extensions:
+   > _This is possible because the plugin includes a (very light) http server running locally within Homebridge, which receives the callback from Shortcuts and determines the next command to run._
 
-- [ESLint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint)
+## Configuration
 
-### Install Development Dependencies
+| Field                    | Type                                    | Default                          | Description                                                                                                                                                                                                                                                                      |
+| ------------------------ | --------------------------------------- | -------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Name                     | `string`                                | `"Homebridge Shortcuts Buttons"` | Name of the platform bridge.                                                                                                                                                                                                                                                     |
+| Accessory name           | `string`                                | `"Shortcuts"`                    | Display name of the accessory.                                                                                                                                                                                                                                                   |
+| Display buttons as       | `"Outlet" \| "Switch"`                  | `"Outlet"`                       | Display the buttons services as outlets or as switches.                                                                                                                                                                                                                          |
+| Buttons                  | `{ name: string; shortcut: string; }[]` |                                  | List of buttons configuration objects.<br>- `name`: Display name of the button.<br>- `shortcut`: Name of the Apple Shortcut to trigger, as displayed in the Shortcuts app. The machine running Homebridge must have access to it (i.e. be logged to the correct iCloud account). |
+| Wait for shortcut result | `boolean`                               | `true`                           | Wait for the triggered Shortcut to complete to invoke a callback.                                                                                                                                                                                                                |
+| Callback server hostname | `string`                                | `"127.0.0.1"`                    | IP address or hostname to expose the internal x-callback-url server (i.e. must be accessible from a browser).                                                                                                                                                                    |
+| Callback server port     | `number`                                | `63963`                          | Available port number to run the internal x-callback-url server.                                                                                                                                                                                                                 |
+| Callback custom command  | `string \| undefined`                   |                                  | The unix command to execute once the shortcut execution completed, which will replace a default behaviour provided out of the box.<br>More detailed info on this in the dedicated [section below](#callback-command).                                                            |
+| Callback command timeout | `number`                                | `5000`                           | The time in milliseconds that the x-callback-url server should wait for the callback command execution to complete before timing out.                                                                                                                                            |
 
-Using a terminal, navigate to the project folder and run this command to install the development dependencies:
+## Callback command
 
-```shell
-npm install
-```
+By default, after the shortcut completes, a notification with a brief summary is displayed on the host machine running Homebrige (with native sound effect _Glass_ for success and _Sosumi_ for failure).
 
-### Update package.json
+If any input is provided in the `Callback custom command` configuration field, it will be treated as a unix command and executed via node's `child_process.exec` (at your own risk).
+In your command you have at your disposal the following environment variables:
 
-Open the [`package.json`](./package.json) and change the following attributes:
+| Variable          | Type                               |
+| ----------------- | ---------------------------------- |
+| `SHORTCUT_NAME`   | `string`                           |
+| `SHORTCUT_RESULT` | `"success" \| "error" \| "cancel"` |
 
-- `name` - this should be prefixed with `homebridge-` or `@username/homebridge-`, is case-sensitive, and contains no spaces nor special characters apart from a dash `-`
-- `displayName` - this is the "nice" name displayed in the Homebridge UI
-- `repository.url` - Link to your GitHub repo
-- `bugs.url` - Link to your GitHub repo issues page
+## Development
 
-When you are ready to publish the plugin you should set `private` to false, or remove the attribute entirely.
+Please feel free to open PRs from forked repo against the `latest` branch, I'll do my best to have a look asap. The plugin is pretty extensible and there are plenty of potential easy enhancements to make in case people find it useful.
 
-### Update Plugin Defaults
-
-Open the [`src/settings.ts`](./src/settings.ts) file and change the default values:
-
-- `PLATFORM_NAME` - Set this to be the name of your platform. This is the name of the platform that users will use to register the plugin in the Homebridge `config.json`.
-- `PLUGIN_NAME` - Set this to be the same name you set in the [`package.json`](./package.json) file.
-
-Open the [`config.schema.json`](./config.schema.json) file and change the following attribute:
-
-- `pluginAlias` - set this to match the `PLATFORM_NAME` you defined in the previous step.
-
-### Build Plugin
-
-TypeScript needs to be compiled into JavaScript before it can run. The following command will compile the contents of your [`src`](./src) directory and put the resulting code into the `dist` folder.
-
-```shell
-npm run build
-```
-
-### Link To Homebridge
-
-Run this command so your global installation of Homebridge can discover the plugin in your development environment:
+Main npm scripts for local development:
 
 ```shell
-npm link
+npm install # Install dev dependencies
+npm run test # Run unit tests with Jest
+npm run build # Build the plugin
+npm run watch # Run homebridge in background and build on changes
+npm run schema2ts # Generate new config interface from schema json
+
 ```
 
-You can now start Homebridge, use the `-D` flag, so you can see debug log messages in your plugin:
+### Semantic release and conventional changelog
+
+This repo uses [semantic-release](https://github.com/semantic-release/semantic-release) to publish github releases and npm packages. Among the other things, it perform commits analysis in order to determine when a new release is needed, so it's important that all commits messages follow the conventional-changelog syntax. To facilitate this, the repo supports the use of [commitizen](https://github.com/commitizen/cz-cli), which you can use this way:
 
 ```shell
-homebridge -D
+npm install -g commitizen
+git cz # instead of git commit
+
+# OR (to avoid global dependencies)
+
+npx cz
 ```
 
-### Watch For Changes and Build Automatically
+## Homebridge plugin verification
 
-If you want to have your code compile automatically as you make changes, and restart Homebridge automatically between changes, you first need to add your plugin as a platform in `~/.homebridge/config.json`:
-
-```
-{
-...
-    "platforms": [
-        {
-            "name": "Config",
-            "port": 8581,
-            "platform": "config"
-        },
-        {
-            "name": "<PLUGIN_NAME>",
-            //... any other options, as listed in config.schema.json ...
-            "platform": "<PLATFORM_NAME>"
-        }
-    ]
-}
-```
-
-and then you can run:
-
-```shell
-npm run watch
-```
-
-This will launch an instance of Homebridge in debug mode which will restart every time you make a change to the source code. It will load the config stored in the default location under `~/.homebridge`. You may need to stop other running instances of Homebridge while using this command to prevent conflicts. You can adjust the Homebridge startup command in the [`nodemon.json`](./nodemon.json) file.
-
-### Customise Plugin
-
-You can now start customising the plugin template to suit your requirements.
-
-- [`src/platform.ts`](./src/platform.ts) - this is where your device setup and discovery should go.
-- [`src/platformAccessory.ts`](./src/platformAccessory.ts) - this is where your accessory control logic should go, you can rename or create multiple instances of this file for each accessory type you need to implement as part of your platform plugin. You can refer to the [developer documentation](https://developers.homebridge.io/) to see what characteristics you need to implement for each service type.
-- [`config.schema.json`](./config.schema.json) - update the config schema to match the config you expect from the user. See the [Plugin Config Schema Documentation](https://developers.homebridge.io/#/config-schema).
-
-### Versioning Your Plugin
-
-Given a version number `MAJOR`.`MINOR`.`PATCH`, such as `1.4.3`, increment the:
-
-1. **MAJOR** version when you make breaking changes to your plugin,
-2. **MINOR** version when you add functionality in a backwards compatible manner, and
-3. **PATCH** version when you make backwards compatible bug fixes.
-
-You can use the `npm version` command to help you with this:
-
-```shell
-# major update / breaking changes
-npm version major
-
-# minor update / new features
-npm version update
-
-# patch / bugfixes
-npm version patch
-```
-
-### Publish Package
-
-When you are ready to publish your plugin to [npm](https://www.npmjs.com/), make sure you have removed the `private` attribute from the [`package.json`](./package.json) file then run:
-
-```shell
-npm publish
-```
-
-If you are publishing a scoped plugin, i.e. `@username/homebridge-xxx` you will need to add `--access=public` to command the first time you publish.
-
-#### Publishing Beta Versions
-
-You can publish _beta_ versions of your plugin for other users to test before you release it to everyone.
-
-```shell
-# create a new pre-release version (eg. 2.1.0-beta.1)
-npm version prepatch --preid beta
-
-# publish to @beta
-npm publish --tag=beta
-```
-
-Users can then install the _beta_ version by appending `@beta` to the install command, for example:
-
-```shell
-sudo npm install -g homebridge-example-plugin@beta
-```
-
-### Best Practices
-
-Consider creating your plugin with the [Homebridge Verified](https://github.com/homebridge/verified) criteria in mind. This will help you to create a plugin that is easy to use and works well with Homebridge.
-You can then submit your plugin to the Homebridge Verified list for review.
-The most up-to-date criteria can be found [here](https://github.com/homebridge/verified#requirements).
-For reference, the current criteria are:
-
-- The plugin must successfully install.
-- The plugin must implement the [Homebridge Plugin Settings GUI](https://github.com/oznu/homebridge-config-ui-x/wiki/Developers:-Plugin-Settings-GUI).
-- The plugin must not start unless it is configured.
-- The plugin must not execute post-install scripts that modify the users' system in any way.
-- The plugin must not contain any analytics or calls that enable you to track the user.
-- The plugin must not throw unhandled exceptions, the plugin must catch and log its own errors.
-- The plugin must be published to npm and the source code available on GitHub.
-  - A GitHub release - with patch notes - should be created for every new version of your plugin.
-- The plugin must run on all [supported LTS versions of Node.js](https://github.com/homebridge/homebridge/wiki/How-To-Update-Node.js), at the time of writing this is Node.js v16 and v18.
-- The plugin must not require the user to run Homebridge in a TTY or with non-standard startup parameters, even for initial configuration.
-- If the plugin needs to write files to disk (cache, keys, etc.), it must store them inside the Homebridge storage directory.
-
-### Useful Links
-
-Note these links are here for help but are not supported/verified by the Homebridge team
-
-- [Custom Characteristics](https://github.com/homebridge/homebridge-plugin-template/issues/20)
+I just made the repo public and submitted the request to mark the plugin as verified by Homebridge. So till the process completes it's expected to see the plugin as unverified on the Homebridge GUI.
