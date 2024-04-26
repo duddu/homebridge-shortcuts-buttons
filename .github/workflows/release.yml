@@ -1,8 +1,6 @@
 name: Release
 on:
-  push:
-    branches:
-      - latest
+  workflow_call:
   repository_dispatch:
     types: [semantic-release]
 
@@ -36,12 +34,6 @@ jobs:
 
       - name: Verify dependencies signatures
         run: npm audit signatures
-
-      - name: Lint
-        run: npm run lint
-
-      - name: Test
-        run: npm run test
 
       - name: Build
         run: npm run build
