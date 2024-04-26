@@ -111,22 +111,22 @@ export class HSBXCallbackUrlServer {
 
     const requestValidators = this.createRequestValidators({
       isSupported: {
-        condition: () => typeof url !== 'string' || method !== 'GET',
+        condition: () => typeof url === 'string' || method === 'GET',
         errorMessage: `Unsupported request: ${method}:${url}`,
         errorCode: 405,
       },
       hasValidPathname: {
-        condition: () => pathname !== this.pathname,
+        condition: () => pathname === this.pathname,
         errorMessage: `Invalid url pathname: ${pathname}`,
         errorCode: 404,
       },
       hasValidSearchParams: {
-        condition: () => !areValidRequiredParamsValues(),
+        condition: () => areValidRequiredParamsValues(),
         errorMessage: `Missing required search params: ${searchParams}`,
         errorCode: 400,
       },
       hasValidAuthToken: {
-        condition: () => !this.isValidToken(searchParams.token),
+        condition: () => this.isValidToken(searchParams.token),
         errorMessage: 'Authorization token invalid or already consumed',
         errorCode: 403,
       },
