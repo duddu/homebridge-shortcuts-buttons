@@ -102,33 +102,42 @@ export class HSBXCallbackUrlServer {
       url || '',
       `${this.proto}://${headers.host}`,
     );
+
     const { areValidRequiredParamsValues, ...searchParams } = new HSBXCallbackUrlSearchParams(
       URLSearchParams,
       this.utils,
     );
 
-    // const asdf = [{
-    //   condition:
-    //   statusCode: number,
-    //   errorMessage: string,
-    //   errorPayload?: unknown,
-    // }];
+    const requestValidators = this.createRequestValidators({
+      isSupported: {
+        condition: () => typeof url !== 'string' || method !== 'GET',
+        errorMessage: `Unsupported request: ${method}:${url}`,
+        errorCode: 405,
+      },
+      hasValidPathname: {
+        condition: () => pathname !== this.pathname,
+        errorMessage: `Invalid url pathname: ${pathname}`,
+        errorCode: 404,
+      },
+      hasValidSearchParams: {
+        condition: () => !areValidRequiredParamsValues(),
+        errorMessage: `Missing required search params: ${searchParams}`,
+        errorCode: 400,
+      },
+      hasValidAuthToken: {
+        condition: () => !this.isValidToken(searchParams.token),
+        errorMessage: 'Authorization token invalid or already consumed',
+        errorCode: 403,
+      },
+    });
 
-    if (typeof url !== 'string' || method !== 'GET') {
-      return this.endWithError(res, 405, 'Unsupported request', `${method}:${url}`);
+    for (const validator of requestValidators) {
+      if (!validator.passed) {
+        return this.endWithError(res, validator.errorCode, validator.errorMessage);
+      }
     }
 
-    if (pathname !== this.pathname) {
-      return this.endWithError(res, 404, 'Invalid url pathname', pathname);
-    }
-
-    if (!areValidRequiredParamsValues()) {
-      return this.endWithError(res, 400, 'Missing required search param(s)', searchParams);
-    }
-
-    if (!this.isValidToken(searchParams.token)) {
-      return this.endWithError(res, 403, 'Authorization token invalid or expired');
-    }
+    this.log.debug('XCallbackUrlServer::requestListener Request validators passed');
 
     try {
       await this.runCallbackCommand(searchParams);
@@ -143,6 +152,15 @@ export class HSBXCallbackUrlServer {
 
     return this.endWithStatusAndHtml(res, 200);
   };
+
+  private createRequestValidators(
+    validatorsMap: HSBXCallbackUrlRequestValidatorsMap,
+  ): HSBXCallbackUrlRequestValidator[] {
+    return Object.values(validatorsMap).map(
+      ({ condition, errorCode, errorMessage }) =>
+        new HSBXCallbackUrlRequestValidator(condition, errorCode, errorMessage),
+    );
+  }
 
   private endWithError(
     res: ServerResponse,
@@ -263,11 +281,38 @@ class HSBXCallbackUrlSearchParams implements HSBXCallbackUrlSearchParamsType {
   };
 }
 
+interface HSBXCallbackUrlRequestValidatorMembersBase {
+  errorCode: number;
+  errorMessage: string;
+}
+
+class HSBXCallbackUrlRequestValidator implements HSBXCallbackUrlRequestValidatorMembersBase {
+  constructor(
+    private readonly condition: () => boolean,
+    public readonly errorCode: number,
+    public readonly errorMessage: string,
+  ) {}
+
+  public get passed(): boolean {
+    try {
+      return this.condition() === true;
+    } catch (e) {
+      return false;
+    }
+  }
+}
+
+type HSBXCallbackUrlRequestValidatorsMap = {
+  [K: string]: HSBXCallbackUrlRequestValidatorMembersBase & {
+    condition: HSBXCallbackUrlRequestValidator['condition'];
+  };
+};
+
 const CALLBACK_HTML_CONTENT = `<!DOCTYPE html>
 <html class="default" lang="en">
   <head>
     <meta charSet="utf-8">
-    <title>${PLATFORM_NAME} - X-Callback-Url</title>
+    <title>${PLATFORM_NAME} - X-Callback-Url Server</title>
     <script>typeof window !== "undefined" && window.close()</script>
   </head>
 </html>`;
