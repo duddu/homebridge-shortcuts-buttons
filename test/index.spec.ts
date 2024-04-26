@@ -12,7 +12,7 @@ jest.mock('homebridge/lib/api', () => ({
 }));
 
 describe('API.registerPlatform', () => {
-  test('should ', () => {
+  test('should request platform registration with correct arguments', () => {
     index(HomebridgeAPIMock as unknown as API);
     expect(HomebridgeAPIMock.registerPlatform).toHaveBeenNthCalledWith(
       1,
