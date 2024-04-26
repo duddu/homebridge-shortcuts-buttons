@@ -32,7 +32,7 @@ export class HSBPlatform implements DynamicPlatformPlugin {
     api.on('didFinishLaunching', () => {
       log.debug('Platform::api.on(didFinishLaunching) callback');
 
-      if (this.config.waitForShortcutResult === true) {
+      if (this.config.callbackServerEnabled === true) {
         this.server = new HSBXCallbackUrlServer(this.config, log, this.utils, api);
       }
 

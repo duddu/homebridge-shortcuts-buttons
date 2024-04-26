@@ -48,7 +48,7 @@ export class HSBAccessory {
       let service = this.accessory.getServiceById(this.serviceType, subtype);
       let logServiceOrigin: string = 'Restored from cache';
       if (!service) {
-        service = this.accessory.addService(this.serviceType, serviceConfig.name, subtype);
+        service = this.accessory.addService(this.serviceType, serviceConfig.serviceName, subtype);
         logServiceOrigin = 'Created from fresh config';
       }
       this.platform.log.debug(

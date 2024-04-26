@@ -48,11 +48,11 @@ export class HSBService {
     private readonly Characteristic: typeof TCharacteristic,
   ) {
     this.state = new HSBServiceState();
-    this.shortcut = new HSBShortcut(serviceConfig.shortcut, server, utils);
+    this.shortcut = new HSBShortcut(serviceConfig.shortcutName, server, utils);
 
     service
-      .setCharacteristic(Characteristic.Name, serviceConfig.name)
-      .setCharacteristic(Characteristic.ConfiguredName, serviceConfig.name)
+      .setCharacteristic(Characteristic.Name, serviceConfig.serviceName)
+      .setCharacteristic(Characteristic.ConfiguredName, serviceConfig.serviceName)
       .getCharacteristic(Characteristic.On)
       .onGet(this.getOn.bind(this))
       .onSet(this.setOn.bind(this));
@@ -107,6 +107,6 @@ export class HSBService {
   }
 
   private get logShortcutRunContext(): string {
-    return `${this.logSetHandlerContext} Shortcut(${this.serviceConfig.shortcut})::run`;
+    return `${this.logSetHandlerContext} Shortcut(${this.serviceConfig.shortcutName})::run`;
   }
 }

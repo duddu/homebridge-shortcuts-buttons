@@ -25,8 +25,8 @@ export class HSBXCallbackUrlServer {
     private readonly utils: HSBUtils,
     private readonly api: API,
   ) {
-    this.hostname = config.shortcutResultCallback.callbackServerHostname;
-    this.port = config.shortcutResultCallback.callbackServerPort;
+    this.hostname = config.callbackServerHostname;
+    this.port = config.callbackServerPort;
 
     this.server = this.create();
 
@@ -48,7 +48,7 @@ export class HSBXCallbackUrlServer {
   }
 
   private create(): Server {
-    if (this.config.waitForShortcutResult !== true) {
+    if (this.config.callbackServerEnabled !== true) {
       throw new Error('Server::create Attemped to create server when waitForShortcutResult is off');
     }
 
@@ -165,7 +165,7 @@ export class HSBXCallbackUrlServer {
   }
 
   private async runCallbackCommand(searchParams: HSBXCallbackUrlSearchParamsType): Promise<void> {
-    let command = this.config.shortcutResultCallback.callbackCustomCommand;
+    let command = this.config.callbackCustomCommand;
 
     if (!this.utils.isNonEmptyString(command)) {
       command = this.getDefaultCallbackCommand(searchParams);
@@ -176,7 +176,7 @@ export class HSBXCallbackUrlServer {
         SHORTCUT_NAME: searchParams.shortcut,
         SHORTCUT_RESULT: searchParams.status,
       },
-      timeout: this.config.shortcutResultCallback.callbackCommandTimeout,
+      timeout: this.config.callbackCommandTimeout,
     });
   }
 
