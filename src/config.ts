@@ -1,7 +1,7 @@
 /**
  * DO NOT EDIT MANUALLY.
  * This file was automatically generated from `/config.schema.json`.
- * Update the source schema file and run `schema2ts` to regenerate this file.
+ * Update the source schema file and run `convertSchema` to regenerate this file.
  */
 
 /* eslint-disable max-len */
@@ -68,12 +68,12 @@ export interface HSBConfig extends Pick<PlatformConfig, '_bridge' | 'platform'> 
    */
   callbackServerProtocol: 'http' | 'https';
   /**
-   * By default, after the shortcut completion, a notification with a brief summary is displayed on the host running Homebrige (with sound effect 'Glass' for success and 'Sosumi' for failure).
+   * By default, after the shortcut completion, a notification with a brief summary is displayed on the host running Homebrige (with sound 'Glass' for success and 'Sosumi' for failure).
    *
    * If you input any value here it will be treated as a unix command and executed via node's `child_process.exec` (at your own risk).
    * In your command you have at your disposal the following environment variables:
-   * - SHORTCUT_NAME: string
-   * - SHORTCUT_RESULT: "success" | "error" | "cancel"
+   * - SHORTCUT_NAME: `string`
+   * - SHORTCUT_RESULT: `"success" | "error" | "cancel"`
    */
   callbackCustomCommand?: string;
   /**

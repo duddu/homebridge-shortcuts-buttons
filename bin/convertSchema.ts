@@ -5,37 +5,47 @@ import { compile, Options } from 'json-schema-to-typescript';
 
 import { schema } from '../config.schema.json';
 
+/* eslint-disable max-len, @typescript-eslint/no-var-requires */
+
+const moduleName = 'SchemaConverter';
 const configInterfaceName = 'HSBConfig';
-const moduleName = 'SchemaForm2Ts';
-const outputRootPath = '/src/config.ts';
-const outputRelativePath = join(__dirname, '../', outputRootPath);
+const interfaceOutputRootPath = '/src/config.ts';
+const interfaceOutputRelativePath = join(__dirname, '../', interfaceOutputRootPath);
+const readmeOutputRootPath = '/README.md';
+const readmeOutputRelativePath = join(__dirname, '../', readmeOutputRootPath);
 const prettierrcPath = join(__dirname, '../.prettierrc');
 
 async function main(): Promise<void> {
-  deleteTitles(schema.properties);
+  recursiveParse(schema.properties);
 
   const config = await compile(schema as never, configInterfaceName, await getCompileOptions());
 
   await writeConfig(config);
 
-  stdout.write(
-    `🚀 ${moduleName}: Plugin configuration interface generated at ${outputRootPath}\n\n`,
-  );
-
   exit(0);
 }
 
-function deleteTitles(root: object) {
+let md = '| Field | Type | Default | Description |\n| :- | :- | :- | :- |\n';
+
+function recursiveParse(root: object, subLevel = false) {
   for (const key of Object.keys(root)) {
     const fieldConfig = root[key as never];
+    const toCase = require('to-case');
+    let fieldName = toCase.title(toCase.lower(key));
     if (fieldConfig['title']) {
+      fieldName = fieldConfig['title'];
       delete fieldConfig['title'];
     }
+    md +=
+      `| ${(subLevel ? '&ensp;↳ ' : '') + fieldName} ` +
+      `| \`${fieldConfig['enum'] ? (fieldConfig['enum'] as []).map((str) => `"${str}"`).join(' \\| ') : fieldConfig['type']}\` ` +
+      `| ${!fieldConfig['default'] ? '-' : typeof fieldConfig['default'] === 'string' ? `\`"${fieldConfig['default']}"\`` : `\`${fieldConfig['default']}\``} ` +
+      `| ${(fieldConfig['description'] as string).replaceAll('\n', '').replaceAll('|', '\\|')} |\n`;
     if (fieldConfig['properties']) {
-      deleteTitles(fieldConfig['properties']);
+      recursiveParse(fieldConfig['properties'], true);
     }
     if (fieldConfig['items'] && fieldConfig['items']['properties']) {
-      deleteTitles(fieldConfig['items']['properties']);
+      recursiveParse(fieldConfig['items']['properties'], true);
     }
   }
 }
@@ -46,7 +56,10 @@ async function getCompileOptions(): Promise<Partial<Options>> {
     const prettierConfig = await readFile(prettierrcPath);
     style = await JSON.parse(prettierConfig.toString());
   } catch (e) {
-    throw new SchemaForm2TsError(`Unable to read Prettier configuration from ${prettierrcPath}`, e);
+    throw new SchemaConverterError(
+      `Unable to read Prettier configuration from ${prettierrcPath}`,
+      e,
+    );
   }
 
   return {
@@ -59,11 +72,16 @@ async function getCompileOptions(): Promise<Partial<Options>> {
   };
 }
 
+const writeFileOpts = {
+  flag: 'w+',
+  mode: 0o644,
+};
+
 async function writeConfig(config: string): Promise<void> {
   const bannerComment =
     '/**\n * DO NOT EDIT MANUALLY.\n' +
     ' * This file was automatically generated from `/config.schema.json`.\n' +
-    ' * Update the source schema file and run `schema2ts` to regenerate this file.\n */\n\n' +
+    ' * Update the source schema file and run `convertSchema` to regenerate this file.\n */\n\n' +
     '/* eslint-disable max-len */\n\n' +
     'import { PlatformConfig } from \'homebridge\';\n\n';
   config = config
@@ -86,36 +104,26 @@ async function writeConfig(config: string): Promise<void> {
       return a;
     });
 
-  // for (const key of Object.keys(schema.properties)) {
-  //   const fieldConfig = schema.properties[key as never];
-  //   const defaultValue = fieldConfig['default'] as string | undefined;
-  //   if (typeof defaultValue === 'string') {
-  //     const titleValue = fieldConfig['title'] as string | undefined;
-  //     config = config.replace(
-  //       /(([^\n]*)\*\/)(\n\s*(\w+\s)?(\w+)(:|\s=))/gm,
-  //       (_a, _b, _c, _d, _e, f) => {
-  //         if ()
-  //         return '';
-  //       },
-  //     );
-
-  //     if (typeof titleValue === 'string') {
-  //       config = config.replace(/(([^\n]*)\*\/)(\n\s*\w*\s*(Buttons|name)(:|\s=))/gm, '');
-  //     } else {
-  //     }
-  //   }
-  // }
   try {
-    return await writeFile(outputRelativePath, bannerComment + config, {
-      flag: 'w+',
-      mode: 0o644,
-    });
+    await writeFile(interfaceOutputRelativePath, bannerComment + config, writeFileOpts);
+    stdout.write(`[${moduleName}]\n`);
+    stdout.write(` ‣ Plugin configuration interface compiled in ${interfaceOutputRootPath}\n`);
+    const readme = (await readFile(readmeOutputRelativePath)).toString();
+    await writeFile(
+      readmeOutputRelativePath,
+      readme.replace(
+        /(<!-- %COMPILED_CONFIG_START% .*-->)([\s\w\W]*)(<!-- %COMPILED_CONFIG_END% -->)/gm,
+        (_a, b, _c, d) => `${b}\n\n${md.trim()}\n\n${d}`,
+      ),
+      writeFileOpts,
+    );
+    stdout.write(` ‣ Plugin configuration markdown compiled in ${readmeOutputRootPath}\n\n`);
   } catch (e) {
-    throw new SchemaForm2TsError(`Unable to write output at ${outputRootPath}`, e);
+    throw new SchemaConverterError('Unable to write output', e);
   }
 }
 
-class SchemaForm2TsError extends Error {
+class SchemaConverterError extends Error {
   constructor(message: string, exception: unknown) {
     super(`${message}\n\n   ${exception}\n`);
     Error.captureStackTrace(this, this.constructor);

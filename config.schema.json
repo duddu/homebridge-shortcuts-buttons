@@ -69,7 +69,7 @@
       },
       "callbackCustomCommand": {
         "type": "string",
-        "description": "By default, after the shortcut completion, a notification with a brief summary is displayed on the host running Homebrige (with sound effect 'Glass' for success and 'Sosumi' for failure).<br>\n<br>\nIf you input any value here it will be treated as a unix command and executed via node's `child_process.exec` (at your own risk).<br>\nIn your command you have at your disposal the following environment variables:<br>\n- SHORTCUT_NAME: string<br>\n- SHORTCUT_RESULT: \"success\" | \"error\" | \"cancel\""
+        "description": "By default, after the shortcut completion, a notification with a brief summary is displayed on the host running Homebrige (with sound 'Glass' for success and 'Sosumi' for failure).<br>\n<br>\nIf you input any value here it will be treated as a unix command and executed via node's `child_process.exec` (at your own risk).<br>\nIn your command you have at your disposal the following environment variables:<br>\n- SHORTCUT_NAME: `string`<br>\n- SHORTCUT_RESULT: `\"success\" | \"error\" | \"cancel\"`"
       },
       "callbackCommandTimeout": {
         "type": "number",

@@ -2,23 +2,23 @@
 
 # Homebridge Shortcuts Buttons Plugin
 
-[//]: [![verified-by-homebridge](https://badgen.net/badge/homebridge/verified/purple)](https://github.com/homebridge/homebridge/wiki/Verified-Plugins)
+<!-- [![verified-by-homebridge](https://badgen.net/badge/homebridge/verified/purple)](https://github.com/homebridge/homebridge/wiki/Verified-Plugins) -->
 
 ### Features highlights
 
-- Run your Apple Shortcuts directly from your Home (or HomeKit compatible) app.
-- Optionally, choose a custom command to execute once the shortcut completes (success/failure/cancel), leveraging an integrated x-callback-url server.
-- Choose to display your shortcuts buttons as Outlets or Switches.
+- Run your **Apple Shortcuts** directly from your **Home app** (or any HomeKit compatible integration).
+- Optionally, choose a **custom callback command** to execute once the shortcut completes (success/failure/cancel), leveraging an integrated **x-callback-url server**.
+- Choose to display your shortcuts buttons as **Outlets** or **Switches**.
 - All via UI plugin configuration, no other setup required.
-- Super fast and light, with zero package dependencies (a plus just to brag).
+- Super fast and light, zero runtime package dependencies.
 
 ### Apple Home preview
 
-<img src="https://github.com/duddu/homebridge-shortcuts-buttons/blob/latest/assets/demo-outlets-single-tile.jpeg?raw=true" width="31%" alt="Demo outlets single tile" title="(a) Outlets - single tile - accessory view">&ensp;
-<img src="https://github.com/duddu/homebridge-shortcuts-buttons/blob/latest/assets/demo-switches-single-tile.jpeg?raw=true" width="31%" alt="Demo switches single tile" title="(b) Switches - single tile - accessory view">&ensp;
-<img src="https://github.com/duddu/homebridge-shortcuts-buttons/blob/latest/assets/demo-switches-separate-tiles.jpeg?raw=true" width="31%" alt="Demo switches separate tiles" title="(c) Switches - separate tiles - room view">
+<img src="https://github.com/duddu/homebridge-shortcuts-buttons/blob/latest/assets/demo-outlets-single-tile.jpeg?raw=true" width="30%" alt="Demo outlets single tile" title="(a) Outlets - single tile - accessory view">&ensp;
+<img src="https://github.com/duddu/homebridge-shortcuts-buttons/blob/latest/assets/demo-switches-single-tile.jpeg?raw=true" width="30%" alt="Demo switches single tile" title="(b) Switches - single tile - accessory view">&ensp;
+<img src="https://github.com/duddu/homebridge-shortcuts-buttons/blob/latest/assets/demo-switches-separate-tiles.jpeg?raw=true" width="30%" alt="Demo switches separate tiles" title="(c) Switches - separate tiles - room view">
 
-<small>(a) Outlets - single tile - accessory view, &ensp;(b) Switches - single tile - accessory view, &ensp;(c) Switches - separate tiles - room view.</small>
+<small>a) Outlets, single tile, accessory view&ensp;-&ensp;b) Switches, single tile, accessory view&ensp;-&ensp;c) Switches, separate tiles, room view.</small>
 
 > <small>_Bear in mind that in order to obtain same screens as above, you may have to add a few shortcuts buttons in the config. E.g. by default, Apple Home won't display the "power on" button - as in (a) - for a single service, but rather display it as an outlet on the room view and as a switch on the accessory view._</small>
 
@@ -38,18 +38,24 @@
 
 ## Configuration
 
-| Field                    | Type                                             | Default                          | Description                                                                                                                                                                                                                                                                                               |
-| ------------------------ | ------------------------------------------------ | -------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Name                     | `string`                                         | `"Homebridge Shortcuts Buttons"` | Name of the platform bridge.                                                                                                                                                                                                                                                                              |
-| Accessory name           | `string`                                         | `"Shortcuts"`                    | Display name of the accessory.                                                                                                                                                                                                                                                                            |
-| Display buttons as       | `"Outlet" \| "Switch"`                           | `"Outlet"`                       | Display the buttons services as outlets or as switches.                                                                                                                                                                                                                                                   |
-| Buttons                  | `{ buttonName: string; serviceName: string; }[]` |                                  | List of buttons configuration objects.<br>- `Button name`: Display name of the button.<br>- `Shortcut name`: Name of the Apple Shortcut to trigger, as displayed in the Shortcuts app. The machine running Homebridge must have access to it (i.e. be logged to the correct iCloud account).              |
-| Enable Callback Command  | `boolean`                                        | `true`                           | Whether the plugin should execute a command once a shortcut run completes. This determines whether to run an internal x-callback-url http server in the background.<br>All fields below depend on this one: any value inserted in the following inputs will be ignored if this one field is set to false. |
-| Callback server hostname | `string`                                         | `"127.0.0.1"`                    | IP address or hostname to expose the internal x-callback-url server (i.e. must be accessible from a browser).                                                                                                                                                                                             |
-| Callback server port     | `number`                                         | `63963`                          | Available port number to run the internal x-callback-url server.                                                                                                                                                                                                                                          |
-| Callback server protocol | `"http" \| "https"`                              | `"http"`                         | If you access other Homebridge services (e.g. UI) behind a reverse proxy with TLS certificate installed, you may want to access the x-callback-url server via https as well.                                                                                                                              |
-| Callback custom command  | `string \| undefined`                            |                                  | The unix command to execute once the shortcut execution completed, which will replace a default behaviour provided out of the box.<br>More detailed info on this in the dedicated [section below](#callback-command).                                                                                     |
-| Callback command timeout | `number`                                         | `5000`                           | The time in milliseconds that the x-callback-url server should wait for the callback command execution to complete before timing out.                                                                                                                                                                     |
+<!-- %COMPILED_CONFIG_START% (Auto-generated, do not edit manually) -->
+
+| Field | Type | Default | Description |
+| :- | :- | :- | :- |
+| Name | `string` | `"Homebridge Shortcuts Buttons"` | Name of the platform bridge. |
+| Accessory Name | `string` | `"Shortcuts"` | Display name of the accessory. |
+| Display buttons as | `"Outlet" \| "Switch"` | `"Outlet"` | Display the buttons services as outlets or as switches. |
+| Buttons | `array` | - | List of buttons configuration objects. |
+| &ensp;↳ Button name | `string` | - | A name to display for this button. |
+| &ensp;↳ Shortcut name | `string` | - | Name of the Apple Shortcut to trigger, as displayed in the Shortcuts app. The machine running Homebridge must have access to it (i.e. be logged to the correct iCloud account). |
+| Enable Callback Command | `boolean` | `true` | Whether the plugin should execute a command once a shortcut run completes. This determines whether to run an internal x-callback-url http server in the background.<br>All fields below depend on this one: any value inserted in the following inputs will be ignored if this one field is set to false. |
+| Callback Server Hostname | `string` | `"127.0.0.1"` | IP address or hostname to expose the internal x-callback-url http server (must be accessible from a browser on the machine running Homebridge). |
+| Callback Server Port | `number` | `63963` | A free port number to be used by the internal x-callback-url http server. |
+| Callback Server Protocol | `"http" \| "https"` | `"http"` | If you access other Homebridge services (e.g. UI) behind a reverse proxy with TLS certificate installed, you may want to access the x-callback-url server via https as well. |
+| Callback Custom Command | `string` | - | By default, after the shortcut completion, a notification with a brief summary is displayed on the host running Homebrige (with sound 'Glass' for success and 'Sosumi' for failure).<br><br>If you input any value here it will be treated as a unix command and executed via node's `child_process.exec` (at your own risk).<br>In your command you have at your disposal the following environment variables:<br>- SHORTCUT_NAME: `string`<br>- SHORTCUT_RESULT: `"success" \| "error" \| "cancel"` |
+| Callback Command Timeout | `number` | `5000` | The time in milliseconds that the x-callback-url server should wait for the callback command execution to complete before timing out. |
+
+<!-- %COMPILED_CONFIG_END% -->
 
 ## Callback command
 
@@ -59,7 +65,7 @@ If any input is provided in the _Callback Custom Command_ configuration field, i
 In your command you have at your disposal the following environment variables:
 
 | Variable          | Type                               |
-| ----------------- | ---------------------------------- |
+| :---------------- | :--------------------------------- |
 | `SHORTCUT_NAME`   | `string`                           |
 | `SHORTCUT_RESULT` | `"success" \| "error" \| "cancel"` |
 
@@ -74,7 +80,7 @@ npm install # Install dev dependencies
 npm run test # Run unit tests with Jest
 npm run build # Build the plugin
 npm run watch # Run homebridge in background and build on changes
-npm run schema2ts # Generate new config interface from schema json
+npm run convertSchema # Generate new config interface from schema json
 
 ```
 

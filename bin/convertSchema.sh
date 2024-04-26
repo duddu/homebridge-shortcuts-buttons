@@ -6,5 +6,5 @@ CWD=$(dirname $(readlink -f "$0"))
 
 rm -f "$CWD"/*.js
 tsc -p "$CWD"
-chmod 744 "$CWD/schema2ts.js"
-node "$CWD/schema2ts.js"
+chmod 744 "$CWD/convertSchema.js"
+node "$CWD/convertSchema.js"
