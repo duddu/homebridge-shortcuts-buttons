@@ -9,6 +9,12 @@ src
 jest.config.ts
 typedoc.json
 
+# ignore assets
+/assets/
+
+# ignore tests
+test
+
 # MacOS
 .DS_Store
 
