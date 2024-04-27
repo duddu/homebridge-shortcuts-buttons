@@ -18,7 +18,6 @@ export class HSBXCallbackUrlServer {
   private readonly hostname: string;
   private readonly port: number;
   private readonly server: Server;
-  private readonly command: HSBXCallbackUrlServerCommand;
 
   constructor(
     private readonly config: HSBConfig,
@@ -31,8 +30,6 @@ export class HSBXCallbackUrlServer {
     this.port = config.callbackServerPort;
 
     this.server = this.create();
-
-    this.command = new HSBXCallbackUrlServerCommand(this.log, this.config, this.utils);
 
     api.on('shutdown', this.destroy);
   }
@@ -144,7 +141,8 @@ export class HSBXCallbackUrlServer {
     this.log.debug('XCallbackUrlServer::requestListener Request validators passed');
 
     try {
-      await this.command.run(searchParams);
+      const command = new HSBXCallbackUrlServerCommand(this.log, this.config, this.utils);
+      await command.run(searchParams);
     } catch (e) {
       return this.endWithError(res, 500, 'Failed to run callback command', e);
     }
