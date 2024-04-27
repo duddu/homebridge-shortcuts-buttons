@@ -1,4 +1,4 @@
-import { describe, expect, test, beforeEach, afterEach } from '@jest/globals';
+import { describe, expect, test, beforeEach, afterEach, jest } from '@jest/globals';
 
 import { HSBShortcut } from '../src/shortcut';
 import { HSBUtilsMockedInstance } from './mocks/utils.mock';
@@ -40,6 +40,27 @@ describe(HSBShortcut.name, () => {
 
       test('should open the shortcut url without x-callback-url parameters', async () => {
         const commandMock = 'open -gj shortcuts://run-shortcut\\?name=shortcutMock';
+
+        await shortcut.run();
+        expect(HSBUtilsMockedInstance.execAsync).toHaveBeenNthCalledWith(1, commandMock);
+      });
+    });
+
+    describe('when the shortcut is instantiated with input', () => {
+      beforeEach(() => {
+        jest.spyOn(HSBUtilsMockedInstance, 'isNonEmptyString').mockReturnValueOnce(true);
+        shortcut = new HSBShortcut(
+          'shortcutMock',
+          null,
+          HSBUtilsMockedInstance,
+          'shortcutTextInputMock',
+        );
+      });
+
+      test('should open the shortcut with text input parameters', async () => {
+        const commandMock =
+          'open -gj shortcuts://run-shortcut\\?name=shortcutMock' +
+          '\\&input=text\\&text=shortcutTextInputMock';
 
         await shortcut.run();
         expect(HSBUtilsMockedInstance.execAsync).toHaveBeenNthCalledWith(1, commandMock);
