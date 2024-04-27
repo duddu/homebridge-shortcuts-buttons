@@ -1,31 +1,82 @@
+import { Logger } from 'homebridge';
+import { join } from 'path';
+
 import { HSBConfig } from '../config';
 import { HSBXCallbackUrlSearchParamsType } from './params';
-import { HSBShortcutStatus } from '../shortcut';
+import { HSBShortcut, HSBShortcutStatus } from '../shortcut';
 import { HSBUtils } from '../utils';
-import { join } from 'path';
 
 export class HSBXCallbackUrlServerCommand {
   constructor(
+    private readonly log: Logger,
     private readonly config: HSBConfig,
     private readonly utils: HSBUtils,
   ) {}
 
   public async run(searchParams: HSBXCallbackUrlSearchParamsType): Promise<void> {
-    let command = this.config.callbackCustomCommand;
+    let command: string | undefined;
+    const commandVariables = {
+      SHORTCUT_NAME: searchParams.shortcut,
+      SHORTCUT_STATUS: searchParams.status,
+      SHORTCUT_RESULT: searchParams.result,
+      SHORTCUT_ERROR: searchParams.errorMessage,
+    };
+
+    switch (this.config.callbackCommandType) {
+      case 'Default (display notification)':
+        command = this.getDefaultCommand(searchParams);
+        break;
+      case 'Custom unix command':
+        command = this.config.callbackCustomCommand;
+        if (!this.utils.isNonEmptyString(command)) {
+          this.log.error(
+            'HSBXCallbackUrlServerCommand::run',
+            `"${this.config.callbackCommandType}" was chosen but no command was configured`,
+          );
+          return;
+        }
+        break;
+      case 'Shortcut name':
+        if (!this.utils.isNonEmptyString(this.config.callbackCustomCommand)) {
+          this.log.error(
+            'HSBXCallbackUrlServerCommand::run',
+            `"${this.config.callbackCommandType}" was chosen but no shortcut name was configured`,
+          );
+          return;
+        }
+        return this.runShortcut(commandVariables);
+      default:
+        this.log.error(
+          'HSBXCallbackUrlServerCommand::run',
+          `Unexpected value provided for callbackCommandType:`,
+          this.config.callbackCommandType,
+        );
+        return;
+    }
 
     if (!this.utils.isNonEmptyString(command)) {
-      command = this.getDefaultCommand(searchParams);
+      this.log.error(
+        'HSBXCallbackUrlServerCommand::run',
+        'Callback command configuration field is empty',
+      );
+      return;
     }
 
     await this.utils.execAsync(command, {
-      env: {
-        SHORTCUT_NAME: searchParams.shortcut,
-        SHORTCUT_STATUS: searchParams.status,
-        SHORTCUT_RESULT: searchParams.result,
-        SHORTCUT_ERROR: searchParams.errorMessage,
-      },
+      env: commandVariables,
       timeout: this.config.callbackCommandTimeout,
     });
+  }
+
+  private runShortcut(commandVariables: { [K: string]: string | undefined }): Promise<void> {
+    const shortcutTextInput = Buffer.from(JSON.stringify(commandVariables)).toString('base64');
+    const shortcut = new HSBShortcut(
+      this.config.callbackCustomCommand!,
+      null,
+      this.utils,
+      shortcutTextInput,
+    );
+    return shortcut.run();
   }
 
   private getDefaultCommand(searchParams: HSBXCallbackUrlSearchParamsType): string {

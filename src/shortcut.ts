@@ -13,18 +13,32 @@ export class HSBShortcut {
     private readonly name: string,
     private readonly server: Nullable<HSBXCallbackUrlServer>,
     private readonly utils: HSBUtils,
+    private readonly input?: string | undefined,
   ) {}
 
   public async run(): Promise<void> {
     return this.utils.execAsync(`open -gj ${this.shortcutUrl}`);
   }
 
+  private get isWithXCallbackUrl(): boolean {
+    return this.server !== null && typeof this.input === 'undefined';
+  }
+
+  private get isWithTextInput(): boolean {
+    return this.utils.isNonEmptyString(this.input);
+  }
+
   private get shortcutUrl(): string {
     let url = 'shortcuts://';
-    this.server !== null && (url += 'x-callback-url/');
+    this.isWithXCallbackUrl && (url += 'x-callback-url/');
     url += `run-shortcut\\?name=${this.name}`;
-    this.server !== null && (url += `\\&${this.callbackXParams}`);
+    this.isWithXCallbackUrl && (url += `\\&${this.callbackXParams}`);
+    this.isWithTextInput && (url += `\\&${this.textInputParams}`);
     return url;
+  }
+
+  private get textInputParams(): string {
+    return `input=text\\&text=${this.input}`;
   }
 
   private get callbackXParams(): string {

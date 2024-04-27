@@ -63,7 +63,7 @@
       },
       "callbackCommandTimeout": {
         "type": "number",
-        "description": "The time in milliseconds that the x-callback-url server should wait for the callback command execution to complete before timing out. Note: if you chose a shortcut as callback command, remember that this timeout rules only on the instruction to launch the shortcut (which is usually istantaneous), not on the actual shortcut run duration itself.",
+        "description": "The time in milliseconds that the x-callback-url server should wait for the callback command execution to complete before timing out. Note: this matters only in case of custom callback command; if you chose a shortcut, the actual command executed is only the launch of it, the run itself is indipendent from the plugin.",
         "default": 5000
       },
       "callbackServerHostname": {

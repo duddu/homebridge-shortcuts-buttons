@@ -32,7 +32,7 @@ export class HSBXCallbackUrlServer {
 
     this.server = this.create();
 
-    this.command = new HSBXCallbackUrlServerCommand(this.config, this.utils);
+    this.command = new HSBXCallbackUrlServerCommand(this.log, this.config, this.utils);
 
     api.on('shutdown', this.destroy);
   }

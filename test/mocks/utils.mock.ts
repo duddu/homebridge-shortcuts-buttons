@@ -7,9 +7,7 @@ type HSBUtilsPublic = { [K in keyof HSBUtilsProto]: HSBUtilsProto[K] };
 
 class HSBUtilsMock implements HSBUtilsPublic {
   public execAsync = jest.fn(() => Promise.resolve());
-  public isNonEmptyString = jest.fn(
-    () => true,
-  ) as unknown as typeof HSBUtils.prototype.isNonEmptyString;
+  public isNonEmptyString = jest.fn() as unknown as HSBUtilsProto['isNonEmptyString'];
 }
 
 jest.mock('../../src/utils', () => ({
