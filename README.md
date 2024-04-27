@@ -90,7 +90,10 @@ When it comes to passing relevant variables to the callback shortcut, the situat
 
 <img src="https://github.com/duddu/homebridge-shortcuts-buttons/blob/latest/assets/demo-callback-shortcut-with-input.png?raw=true" width="100%" alt="Demo callback shortcut with input" title="Demo callback shortcut with input">
 
-After the decoding of the dictionary, the types of the variables are the following (same as for the custom callback command except for replacing undefined - unsupported by shortcuts dictionaries - with false):
+The key point is to add first the _Get text from input_ action, specifying _Shortcut Input_ as source. This will automatically add the _Receive_ block on top. Note that it is perfectly fine and expected to leave the instruction as _Receive No input from Nowhere_: the text input coming from url schema will still be passed in.  
+For your convenience, I included in the repo a copy of the same shortcut screenshotted above, you can find it here: [Demo callback shortcut with input.shortcut](https://github.com/duddu/homebridge-shortcuts-buttons/tree/latest/assets/Demo%20callback%20shortcut%20with%20input.shortcut).
+
+After the decoding of the dictionary, you'll have your plain variables to access from the shortcut; the types are the following (same as the environment variables provided to the custom callback command except for having to replace `undefined` - unsupported by shortcuts dictionaries - with `false`):
 
 | Variable        | Type                               | Notes                    | 
 | :---------------| :--------------------------------- | :----------------------- |
