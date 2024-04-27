@@ -1,4 +1,14 @@
-class HSBXCallbackUrlRequestValidator {
+interface HSBXCallbackUrlRequestValidatorsMapValue {
+  readonly condition: () => boolean;
+  readonly errorCode: number;
+  readonly errorMessage: string;
+}
+
+interface HSBXCallbackUrlRequestValidatorsMap {
+  [K: string]: HSBXCallbackUrlRequestValidatorsMapValue;
+}
+
+class HSBXCallbackUrlRequestValidator implements HSBXCallbackUrlRequestValidatorsMapValue {
   constructor(
     public readonly condition: () => boolean,
     public readonly errorCode: number,
@@ -13,10 +23,6 @@ class HSBXCallbackUrlRequestValidator {
     }
   }
 }
-
-type HSBXCallbackUrlRequestValidatorsMap = {
-  [K: string]: Omit<HSBXCallbackUrlRequestValidator, 'passed'>;
-};
 
 export const createRequestValidators = (
   validatorsMap: HSBXCallbackUrlRequestValidatorsMap,
