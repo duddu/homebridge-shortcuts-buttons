@@ -21,9 +21,7 @@ export class HSBUtils {
     this.isNonEmptyString(stderr.toString()) && this.log.error(stderr.toString());
   }
 
-  public isNonEmptyString = isNonEmptyString;
+  public isNonEmptyString = (str: unknown): str is string => {
+    return typeof str === 'string' && str.trim() !== '';
+  };
 }
-
-export const isNonEmptyString = (str: unknown): str is string => {
-  return typeof str === 'string' && str.trim() !== '';
-};
