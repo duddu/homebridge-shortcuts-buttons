@@ -48,12 +48,27 @@
       "callbackServerEnabled": {
         "type": "boolean",
         "title": "Enable Callback Command",
-        "description": "Whether the plugin should execute a command once a shortcut run completes. This determines whether to run an internal x-callback-url http server in the background.<br>\nAll fields below depend on this one: any value inserted in the following inputs will be ignored if this one field is set to false.",
+        "description": "Whether the plugin should execute a command once a shortcut run completes. This determines whether to run an internal x-callback-url http server in the background.<br>\nAll fields below depend on this one: any value inserted in the following fields will be ignored if this one value is set to false.",
         "default": true
+      },
+      "callbackCommandType": {
+        "type": "string",
+        "enum": ["Default (display notification)", "Custom unix command", "Shortcut name"],
+        "description": "With the default option, after the shortcut completion, a notification with the outcome of the shortcut run is displayed on the host running Homebrige.<br>\nIf you choose to customize the callback behaviour, you have two choices: use any unix command that your host is able to execute, or just use another shortcut to handle the callback if you like. Depending on which choice you make, you'll have to fill in the next field accordingly.<br>\nPlease consult the dedicated documentation for more detail: <a href=\"https://github.com/duddu/homebridge-shortcuts-buttons/blob/latest/README.md#callback-command\">Callback command</a>.",
+        "default": "Default (display notification)"
+      },
+      "callbackCustomCommand": {
+        "type": "string",
+        "description": "Either a unix command or the name of a shortcut to run, depending on the value selected in the previous field. In the former case, all the content of the field will be treated as a command and executed: in the latter, this field expects just the plain name of the shortcut as displayed in the Shortcuts app. If you left the previous field on the default value, any text inserted here will be ignored.<br>\nPlease consult the dedicated documentation for more details also regarding the runtime variables available during your command/shortcut execution: <a href=\"https://github.com/duddu/homebridge-shortcuts-buttons/blob/latest/README.md#callback-command\">Callback command</a>."
+      },
+      "callbackCommandTimeout": {
+        "type": "number",
+        "description": "The time in milliseconds that the x-callback-url server should wait for the callback command execution to complete before timing out. Note: if you chose a shortcut as callback command, remember that this timeout rules only on the instruction to launch the shortcut (which is usually istantaneous), not on the actual shortcut run duration itself.",
+        "default": 5000
       },
       "callbackServerHostname": {
         "type": "string",
-        "description": "IP address or hostname to expose the internal x-callback-url http server (must be accessible from a browser on the machine running Homebridge).",
+        "description": "IPv4 address or hostname to expose the internal x-callback-url http server (must be accessible from a browser on the machine running Homebridge).",
         "default": "127.0.0.1"
       },
       "callbackServerPort": {
@@ -66,15 +81,6 @@
         "enum": ["http", "https"],
         "description": "If you access other Homebridge services (e.g. UI) behind a reverse proxy with TLS certificate installed, you may want to access the x-callback-url server via https as well.",
         "default": "http"
-      },
-      "callbackCustomCommand": {
-        "type": "string",
-        "description": "By default, after the shortcut completion, a notification with a brief summary is displayed on the host running Homebrige (with sound 'Glass' for success and 'Sosumi' for failure).<br>\n<br>\nIf you input any value here it will be treated as a unix command and executed via node's `child_process.exec` (at your own risk).<br>\nIn your command you have at your disposal the following environment variables:<br>\n- SHORTCUT_NAME: `string`<br>\n- SHORTCUT_RESULT: `\"success\" | \"error\" | \"cancel\"`"
-      },
-      "callbackCommandTimeout": {
-        "type": "number",
-        "description": "The time in milliseconds that the x-callback-url server should wait for the callback command execution to complete before timing out.",
-        "default": 5000
       }
     },
     "required": [
@@ -83,10 +89,11 @@
       "serviceType",
       "services",
       "callbackServerEnabled",
+      "callbackCommandType",
+      "callbackCommandTimeout",
       "callbackServerHostname",
       "callbackServerPort",
-      "callbackServerProtocol",
-      "callbackCommandTimeout"
+      "callbackServerProtocol"
     ]
   }
 }

@@ -193,7 +193,9 @@ export class HSBXCallbackUrlServer {
     await this.utils.execAsync(command, {
       env: {
         SHORTCUT_NAME: searchParams.shortcut,
-        SHORTCUT_RESULT: searchParams.status,
+        SHORTCUT_STATUS: searchParams.status,
+        SHORTCUT_RESULT: searchParams.result,
+        SHORTCUT_ERROR: searchParams.errorMessage,
       },
       timeout: this.config.callbackCommandTimeout,
     });

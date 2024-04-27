@@ -44,13 +44,32 @@ export interface HSBConfig extends Pick<PlatformConfig, '_bridge' | 'platform'> 
   }[];
   /**
    * Whether the plugin should execute a command once a shortcut run completes. This determines whether to run an internal x-callback-url http server in the background.
-   * All fields below depend on this one: any value inserted in the following inputs will be ignored if this one field is set to false.
+   * All fields below depend on this one: any value inserted in the following fields will be ignored if this one value is set to false.
    *
    * @default true
    */
   callbackServerEnabled: boolean;
   /**
-   * IP address or hostname to expose the internal x-callback-url http server (must be accessible from a browser on the machine running Homebridge).
+   * With the default option, after the shortcut completion, a notification with the outcome of the shortcut run is displayed on the host running Homebrige.
+   * If you choose to customize the callback behaviour, you have two choices: use any unix command that your host is able to execute, or just use another shortcut to handle the callback if you like. Depending on which choice you make, you'll have to fill in the next field accordingly.
+   * Please consult the dedicated documentation for more detail: <a href="https://github.com/duddu/homebridge-shortcuts-buttons/blob/latest/README.md#callback-command">Callback command</a>.
+   *
+   * @default "Default (display notification)"
+   */
+  callbackCommandType: 'Default (display notification)' | 'Custom unix command' | 'Shortcut name';
+  /**
+   * Either a unix command or the name of a shortcut to run, depending on the value selected in the previous field. In the former case, all the content of the field will be treated as a command and executed: in the latter, this field expects just the plain name of the shortcut as displayed in the Shortcuts app. If you left the previous field on the default value, any text inserted here will be ignored.
+   * Please consult the dedicated documentation for more details also regarding the runtime variables available during your command/shortcut execution: <a href="https://github.com/duddu/homebridge-shortcuts-buttons/blob/latest/README.md#callback-command">Callback command</a>.
+   */
+  callbackCustomCommand?: string;
+  /**
+   * The time in milliseconds that the x-callback-url server should wait for the callback command execution to complete before timing out. Note: if you chose a shortcut as callback command, remember that this timeout rules only on the instruction to launch the shortcut (which is usually istantaneous), not on the actual shortcut run duration itself.
+   *
+   * @default 5000
+   */
+  callbackCommandTimeout: number;
+  /**
+   * IPv4 address or hostname to expose the internal x-callback-url http server (must be accessible from a browser on the machine running Homebridge).
    *
    * @default "127.0.0.1"
    */
@@ -67,19 +86,4 @@ export interface HSBConfig extends Pick<PlatformConfig, '_bridge' | 'platform'> 
    * @default "http"
    */
   callbackServerProtocol: 'http' | 'https';
-  /**
-   * By default, after the shortcut completion, a notification with a brief summary is displayed on the host running Homebrige (with sound 'Glass' for success and 'Sosumi' for failure).
-   *
-   * If you input any value here it will be treated as a unix command and executed via node's `child_process.exec` (at your own risk).
-   * In your command you have at your disposal the following environment variables:
-   * - SHORTCUT_NAME: `string`
-   * - SHORTCUT_RESULT: `"success" | "error" | "cancel"`
-   */
-  callbackCustomCommand?: string;
-  /**
-   * The time in milliseconds that the x-callback-url server should wait for the callback command execution to complete before timing out.
-   *
-   * @default 5000
-   */
-  callbackCommandTimeout: number;
 }
