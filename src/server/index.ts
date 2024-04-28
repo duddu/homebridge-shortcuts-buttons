@@ -1,6 +1,5 @@
 import { API, Logger } from 'homebridge';
 import { createServer, IncomingMessage, Server, ServerResponse } from 'http';
-import { Socket } from 'net';
 
 import { HSBXCallbackUrlServerCommand } from './command';
 import { HSBConfig } from '../config';
@@ -11,7 +10,6 @@ import { createRequestValidators } from './validators';
 
 export class HSBXCallbackUrlServer {
   private readonly pathname = '/x-callback-url';
-  private readonly sockets: Set<Socket> = new Set();
   private readonly tokens: Set<string> = new Set();
 
   private readonly proto: HSBConfig['callbackServerProtocol'];
@@ -53,7 +51,7 @@ export class HSBXCallbackUrlServer {
       throw new Error('Server::create Attemped to create server when waitForShortcutResult is off');
     }
 
-    const server = createServer(this.requestListener);
+    const server = createServer({ requestTimeout: 30000 }, this.requestListener);
 
     server.listen(this.port, this.hostname, () => {
       this.log.info(`XCallbackUrlServer listening at ${this.hostname}:${this.port}`);
@@ -63,34 +61,13 @@ export class HSBXCallbackUrlServer {
       this.log.error('XCallbackUrlServer::on(error)', error);
     });
 
-    server.on('connection', (socket) => {
-      this.sockets.add(socket);
-
-      server.once('close', () => {
-        this.sockets.delete(socket);
-      });
-    });
-
     return server;
   }
 
   private destroy = (): void => {
-    this.log.debug('XCallbackUrlServer::destroy', `Destroying ${this.sockets.size} sockets`);
+    this.log.debug('XCallbackUrlServer::destroy', 'Closing all server connection');
 
-    for (const socket of this.sockets) {
-      socket.destroy();
-      this.sockets.delete(socket);
-    }
-
-    this.log.debug('XCallbackUrlServer::destroy', 'Emitting server close event');
-
-    this.server.close((error) => {
-      if (error instanceof Error) {
-        throw error;
-      }
-    });
-
-    this.log.info('XCallbackUrlServer destroyed');
+    this.server.closeAllConnections();
   };
 
   private requestListener = async (
