@@ -1,7 +1,7 @@
 {
   "displayName": "Homebridge Shortcuts Buttons",
   "name": "homebridge-shortcuts-buttons",
-  "version": "3.0.1",
+  "version": "3.0.2",
   "description": "Run any Apple Shortcut with just the tap of a button, and execute a custom unix command (or another shortcut!) after its completion to handle success/failure",
   "license": "Apache-2.0",
   "author": "duddu",
