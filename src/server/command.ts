@@ -29,37 +29,31 @@ export class HSBXCallbackUrlServerCommand {
       case 'Custom unix command':
         command = this.config.callbackCustomCommand;
         if (!this.utils.isNonEmptyString(command)) {
-          this.log.error(
-            'HSBXCallbackUrlServerCommand::run',
-            `"${this.config.callbackCommandType}" was chosen but no command was configured`,
+          throw new Error(
+            'HSBXCallbackUrlServerCommand::run' +
+              `"${this.config.callbackCommandType}" was chosen but no command was configured`,
           );
-          return;
         }
         break;
       case 'Shortcut name':
         if (!this.utils.isNonEmptyString(this.config.callbackCustomCommand)) {
-          this.log.error(
-            'HSBXCallbackUrlServerCommand::run',
-            `"${this.config.callbackCommandType}" was chosen but no shortcut name was configured`,
+          throw new Error(
+            'HSBXCallbackUrlServerCommand::run' +
+              `"${this.config.callbackCommandType}" was chosen but no shortcut name was configured`,
           );
-          return;
         }
         return this.runShortcut(commandVariables);
       default:
-        this.log.error(
-          'HSBXCallbackUrlServerCommand::run',
-          `Unexpected value provided for callbackCommandType:`,
-          this.config.callbackCommandType,
+        throw new Error(
+          'HSBXCallbackUrlServerCommand::run Unexpected value provided for callbackCommandType: ' +
+            this.config.callbackCommandType,
         );
-        return;
     }
 
     if (!this.utils.isNonEmptyString(command)) {
-      this.log.error(
-        'HSBXCallbackUrlServerCommand::run',
-        'Callback command configuration field is empty',
+      throw new Error(
+        'HSBXCallbackUrlServerCommand::run Callback command configuration field is empty',
       );
-      return;
     }
 
     await this.utils.execAsync(command, {
