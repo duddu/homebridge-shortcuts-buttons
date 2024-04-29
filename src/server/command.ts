@@ -107,6 +107,6 @@ export class HSBXCallbackUrlServerCommand {
 
   private readonly defaultCommandAppPath = join(
     __dirname,
-    './bin/HomebridgeShortcutsButtons\\ -\\ Notify\\ Shortcut\\ Result.app',
+    '../bin/HomebridgeShortcutsButtons\\ -\\ Notify\\ Shortcut\\ Result.app',
   );
 }
