@@ -15,7 +15,7 @@ export class HSBXCallbackUrlServer {
   private readonly proto: HSBConfig['callbackServerProtocol'];
   private readonly hostname: string;
   private readonly port: number;
-  private readonly server: Server;
+  private readonly server: Server | null;
 
   constructor(
     private readonly config: HSBConfig,
@@ -29,7 +29,7 @@ export class HSBXCallbackUrlServer {
 
     this.server = this.create();
 
-    api.on('shutdown', this.destroy);
+    api.on('shutdown', () => this.destroy());
   }
 
   public get baseUrl(): string {
@@ -37,7 +37,9 @@ export class HSBXCallbackUrlServer {
   }
 
   public issueToken(): string {
-    const token = this.api.hap.uuid.generate(Date.now().toString());
+    const token = this.api.hap.uuid.generate(
+      `${HSBXCallbackUrlServer.name}_${Date.now().toString()}`,
+    );
     this.tokens.add(token);
     return token;
   }
@@ -46,16 +48,19 @@ export class HSBXCallbackUrlServer {
     return typeof token === 'string' && this.tokens.delete(token);
   }
 
-  private create(): Server {
+  private create(): Server | null {
     if (this.config.callbackServerEnabled !== true) {
-      throw new Error('Server::create Attemped to create server when waitForShortcutResult is off');
+      this.log.error('Server::create Attemped to create server when waitForShortcutResult is off');
+      return null;
     }
 
-    const server = createServer({ requestTimeout: 30000 }, this.requestListener);
+    const server = createServer({ requestTimeout: 30000 });
 
     server.listen(this.port, this.hostname, () => {
       this.log.info(`XCallbackUrlServer listening at ${this.hostname}:${this.port}`);
     });
+
+    server.on('request', this.requestListener.bind(this));
 
     server.on('error', (error) => {
       this.log.error('XCallbackUrlServer::on(error)', error);
@@ -64,16 +69,17 @@ export class HSBXCallbackUrlServer {
     return server;
   }
 
-  private destroy = (): void => {
+  private destroy(): void {
     this.log.debug('XCallbackUrlServer::destroy', 'Closing all server connection');
 
-    this.server.closeAllConnections();
-  };
+    this.server?.closeAllConnections();
+    this.server?.removeAllListeners();
+  }
 
-  private requestListener = async (
+  private async requestListener(
     { headers, method, url }: IncomingMessage,
     res: ServerResponse,
-  ): Promise<void> => {
+  ): Promise<void> {
     this.log.debug('XCallbackUrlServer::requestListener', 'Incoming request, starting validation');
 
     const { pathname, searchParams: URLSearchParams } = new URL(
@@ -88,7 +94,7 @@ export class HSBXCallbackUrlServer {
 
     const requestValidators = createRequestValidators({
       isSupported: {
-        condition: () => typeof url === 'string' || method === 'GET',
+        condition: () => typeof url === 'string' && method === 'GET',
         errorMessage: `Unsupported request: ${method}:${url}`,
         errorCode: 405,
       },
@@ -99,7 +105,7 @@ export class HSBXCallbackUrlServer {
       },
       hasValidSearchParams: {
         condition: () => areValidRequiredParamsValues(),
-        errorMessage: `Missing required search params: ${searchParams}`,
+        errorMessage: `Missing required search params: ${JSON.stringify(searchParams)}`,
         errorCode: 400,
       },
       hasValidAuthToken: {
@@ -130,7 +136,7 @@ export class HSBXCallbackUrlServer {
     );
 
     return this.endWithStatusAndHtml(res, 200);
-  };
+  }
 
   private endWithError(
     res: ServerResponse,
