@@ -1,5 +1,7 @@
-import { HSBUtils } from '../utils';
 import { URLSearchParams } from 'url';
+
+import { HSBShortcutStatus } from '../shortcut';
+import { HSBUtils } from '../utils';
 
 enum HSBXCallbackUrlRequiredSearchParamsKeys {
   SHORTCUT = 'shortcut',
@@ -12,18 +14,20 @@ enum HSBXCallbackUrlOptionalSearchParamsKeys {
   RESULT = 'result',
 }
 
-const requiredParamsKeysList = Object.values(HSBXCallbackUrlRequiredSearchParamsKeys);
-const optionalParamsKeysList = Object.values(HSBXCallbackUrlOptionalSearchParamsKeys);
+export const requiredParamsKeysList = Object.values(HSBXCallbackUrlRequiredSearchParamsKeys);
+export const optionalParamsKeysList = Object.values(HSBXCallbackUrlOptionalSearchParamsKeys);
 
 export type HSBXCallbackUrlSearchParamsType = {
   [K in HSBXCallbackUrlRequiredSearchParamsKeys]: string;
+} & {
+  [HSBXCallbackUrlRequiredSearchParamsKeys.STATUS]: HSBShortcutStatus;
 } & {
   [K in HSBXCallbackUrlOptionalSearchParamsKeys]: string | undefined;
 };
 
 export class HSBXCallbackUrlSearchParams implements HSBXCallbackUrlSearchParamsType {
   public readonly shortcut!: string;
-  public readonly status!: string;
+  public readonly status!: HSBShortcutStatus;
   public readonly token!: string;
   public readonly result: string | undefined;
   public readonly errorMessage: string | undefined;
@@ -33,7 +37,11 @@ export class HSBXCallbackUrlSearchParams implements HSBXCallbackUrlSearchParamsT
     private readonly utils: HSBUtils,
   ) {
     for (const key of requiredParamsKeysList) {
-      this[key] = searchParams.get(key) || '';
+      if (key === HSBXCallbackUrlRequiredSearchParamsKeys.STATUS) {
+        this[key] = searchParams.get(key) as HSBShortcutStatus;
+      } else {
+        this[key] = searchParams.get(key) as string;
+      }
     }
     for (const key of optionalParamsKeysList) {
       const value = searchParams.get(key);
