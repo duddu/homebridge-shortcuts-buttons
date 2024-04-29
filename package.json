@@ -2,7 +2,7 @@
   "displayName": "Homebridge Shortcuts Buttons",
   "name": "homebridge-shortcuts-buttons",
   "version": "3.0.1",
-  "description": "Homebridge plugin to run any Apple Shortcuts simply from buttons in your Home app, and execute a custom command after shortcut success/failure via x-callback-url.",
+  "description": "Run any Apple Shortcut with just the tap of a button, and execute a custom unix command (or another shortcut!) after its completion to handle success/failure",
   "license": "Apache-2.0",
   "author": "duddu",
   "repository": {
