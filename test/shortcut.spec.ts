@@ -1,15 +1,12 @@
-import { describe, expect, test, beforeEach, afterEach, jest } from '@jest/globals';
+import { describe, expect, test, beforeEach, jest } from '@jest/globals';
 
 import { HSBShortcut } from '../src/shortcut';
+
 import { HSBUtilsMockedInstance } from './mocks/utils.mock';
 import { HSBXCallbackUrlServerMockedInstance } from './mocks/server.mock';
 
 describe(HSBShortcut.name, () => {
   let shortcut: HSBShortcut;
-
-  afterEach(() => {
-    delete global.shortcut;
-  });
 
   describe(HSBShortcut.prototype.run.name, () => {
     describe('when the x-callback-url server is running', () => {
