@@ -70,9 +70,10 @@ export class HSBXCallbackUrlServer {
   }
 
   private destroy(): void {
-    this.log.debug('XCallbackUrlServer::destroy', 'Closing all server connection');
-
+    this.log.debug('XCallbackUrlServer::destroy', 'Closing server connections');
     this.server?.closeAllConnections();
+
+    this.log.debug('XCallbackUrlServer::destroy', 'Removing server listeners');
     this.server?.removeAllListeners();
   }
 
