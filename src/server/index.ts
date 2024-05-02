@@ -4,7 +4,7 @@ import { createServer, IncomingMessage, Server, ServerResponse } from 'http';
 import { HSBXCallbackUrlServerCommand } from './command';
 import { HSBConfig } from '../config';
 import { HSBXCallbackUrlSearchParams } from './params';
-import { PLATFORM_NAME } from '../settings';
+import { PLATFORM_NAME, VERSION } from '../settings';
 import { HSBUtils } from '../utils';
 import { createRequestValidators } from './validators';
 
@@ -29,7 +29,7 @@ export class HSBXCallbackUrlServer {
 
     this.server = this.create();
 
-    api.on('shutdown', () => this.destroy());
+    api.on('shutdown', this.destroy.bind(this));
   }
 
   public get baseUrl(): string {
@@ -163,8 +163,8 @@ export class HSBXCallbackUrlServer {
 const CALLBACK_HTML_CONTENT = `<!DOCTYPE html>
 <html class="default" lang="en">
   <head>
-    <meta charSet="utf-8">
-    <title>${PLATFORM_NAME} - X-Callback-Url Server</title>
+    <meta charset="utf-8">
+    <title>${PLATFORM_NAME}v${VERSION} - X-Callback-Url Server</title>
     <script>typeof window !== "undefined" && window.close()</script>
   </head>
 </html>`;
