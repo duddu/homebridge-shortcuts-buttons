@@ -125,7 +125,7 @@ export class HSBXCallbackUrlServer {
     this.log.debug('XCallbackUrlServer::requestListener Request validators passed');
 
     try {
-      const command = new HSBXCallbackUrlServerCommand(this.log, this.config, this.utils);
+      const command = new HSBXCallbackUrlServerCommand(this.config, this.utils);
       await command.run(searchParams);
     } catch (e) {
       return this.endWithError(res, 500, 'Failed to run callback command', e);
