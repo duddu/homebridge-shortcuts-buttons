@@ -1,6 +1,6 @@
 import { afterEach, beforeEach, describe, expect, jest, test } from '@jest/globals';
 import EventEmitter from 'events';
-import { API, Logger, Nullable } from 'homebridge';
+import { API, Nullable } from 'homebridge';
 import http, { IncomingMessage, METHODS, ServerResponse, createServer } from 'http';
 import { Socket } from 'net';
 
@@ -9,6 +9,8 @@ import { HSBXCallbackUrlSearchParamsType, requiredParamsKeysList } from '../src/
 import { HSBXCallbackUrlServer } from '../src/server';
 import { HSBShortcutStatus } from '../src/shortcut';
 import { HSBUtils } from '../src/utils';
+import { HBApiMockedInstance } from './mocks/api.mock';
+import { HBLoggerMockedInstance } from './mocks/logger.mock';
 
 class HttpServerMock extends EventEmitter {
   public readonly listen = jest.fn((_port, _hostname, cb: () => void) => cb());
@@ -20,23 +22,7 @@ jest.mock('http', () => ({
   createServer: jest.fn((): HttpServerMock => (httpServerMock = new HttpServerMock())),
 }));
 
-class HBApiMock extends EventEmitter {
-  public readonly hap = {
-    uuid: {
-      generate: (str: string) => 'uuid_' + str,
-    },
-  };
-}
-const apiMock = new HBApiMock();
-
-const loggerMock = {
-  debug: jest.fn(),
-  info: jest.fn(),
-  error: jest.fn(),
-  success: jest.fn(),
-} as unknown as Logger;
-
-const utilsMock = new HSBUtils(loggerMock);
+const utilsMock = new HSBUtils(HBLoggerMockedInstance);
 utilsMock.execAsync = jest.fn(() => Promise.resolve());
 
 describe(HSBXCallbackUrlServer.name, () => {
@@ -57,15 +43,15 @@ describe(HSBXCallbackUrlServer.name, () => {
         ...defaultConfig,
         ...configOverride,
       },
-      loggerMock,
+      HBLoggerMockedInstance,
       utilsMock,
-      apiMock as unknown as API,
+      HBApiMockedInstance as unknown as API,
     );
   };
 
   afterEach(() => {
     httpServerMock.removeAllListeners();
-    apiMock.removeAllListeners();
+    HBApiMockedInstance.removeAllListeners();
     utilsMock.execAsync = jest.fn(() => Promise.resolve());
   });
 
@@ -86,7 +72,9 @@ describe(HSBXCallbackUrlServer.name, () => {
         'hostname-mock',
         expect.any(Function),
       );
-      expect(loggerMock.info).toHaveBeenLastCalledWith(expect.stringMatching(/listening/i));
+      expect(HBLoggerMockedInstance.info).toHaveBeenLastCalledWith(
+        expect.stringMatching(/listening/i),
+      );
     });
 
     describe('should not create a server ', () => {
@@ -119,7 +107,7 @@ describe(HSBXCallbackUrlServer.name, () => {
       instantiateServer();
 
       const removeListenersSpy = jest.spyOn(httpServerMock, 'removeAllListeners');
-      apiMock.emit('shutdown');
+      HBApiMockedInstance.emit('shutdown');
 
       expect(httpServerMock.closeAllConnections).toHaveBeenCalledTimes(1);
       expect(removeListenersSpy).toHaveBeenCalledTimes(1);
@@ -133,7 +121,10 @@ describe(HSBXCallbackUrlServer.name, () => {
       const errorMock = new Error('onErrorMessage');
       httpServerMock.emit('error', errorMock);
 
-      expect(loggerMock.error).toHaveBeenLastCalledWith(expect.stringMatching(/error/i), errorMock);
+      expect(HBLoggerMockedInstance.error).toHaveBeenLastCalledWith(
+        expect.stringMatching(/error/i),
+        errorMock,
+      );
     });
   });
 
@@ -172,7 +163,7 @@ describe(HSBXCallbackUrlServer.name, () => {
     };
     const expectStatusCode = (statusCode: number) => {
       statusCode !== 200 &&
-        expect(loggerMock.error).toHaveBeenLastCalledWith(
+        expect(HBLoggerMockedInstance.error).toHaveBeenLastCalledWith(
           expect.stringContaining(statusCode.toString()),
           expect.any(String),
           expect.not.arrayContaining([null]),
@@ -323,7 +314,7 @@ describe(HSBXCallbackUrlServer.name, () => {
         await waitForCommand();
 
         expectStatusCode(200);
-        expect(loggerMock.success).toHaveBeenCalledTimes(1);
+        expect(HBLoggerMockedInstance.success).toHaveBeenCalledTimes(1);
       });
 
       describe('and should execute callback command', () => {
@@ -353,7 +344,7 @@ describe(HSBXCallbackUrlServer.name, () => {
               timeout: 7,
             },
           );
-          expect(loggerMock.success).toHaveBeenCalledTimes(1);
+          expect(HBLoggerMockedInstance.success).toHaveBeenCalledTimes(1);
           expectStatusCode(200);
         });
 
@@ -384,7 +375,7 @@ describe(HSBXCallbackUrlServer.name, () => {
               timeout: 7,
             },
           );
-          expect(loggerMock.success).toHaveBeenCalledTimes(1);
+          expect(HBLoggerMockedInstance.success).toHaveBeenCalledTimes(1);
           expectStatusCode(200);
         });
 
@@ -415,7 +406,7 @@ describe(HSBXCallbackUrlServer.name, () => {
               timeout: 7,
             },
           );
-          expect(loggerMock.success).toHaveBeenCalledTimes(1);
+          expect(HBLoggerMockedInstance.success).toHaveBeenCalledTimes(1);
           expectStatusCode(200);
         });
 
@@ -446,7 +437,7 @@ describe(HSBXCallbackUrlServer.name, () => {
               timeout: 7,
             },
           );
-          expect(loggerMock.success).toHaveBeenCalledTimes(1);
+          expect(HBLoggerMockedInstance.success).toHaveBeenCalledTimes(1);
           expectStatusCode(200);
         });
 
@@ -473,7 +464,7 @@ describe(HSBXCallbackUrlServer.name, () => {
             },
             timeout: 7,
           });
-          expect(loggerMock.success).toHaveBeenCalledTimes(1);
+          expect(HBLoggerMockedInstance.success).toHaveBeenCalledTimes(1);
           expectStatusCode(200);
         });
 
@@ -495,7 +486,7 @@ describe(HSBXCallbackUrlServer.name, () => {
             // eslint-disable-next-line max-len
             'open -gj shortcuts://run-shortcut\\?name=Callback Shortcut Mock\\&input=text\\&text=eyJTSE9SVENVVF9OQU1FIjoic2hvcnRjdXRNb2NrIiwiU0hPUlRDVVRfU1RBVFVTIjoic3VjY2VzcyIsIlNIT1JUQ1VUX1JFU1VMVCI6InJlc3VsdE1vY2siLCJTSE9SVENVVF9FUlJPUiI6ImVycm9yTW9jayJ9',
           );
-          expect(loggerMock.success).toHaveBeenCalledTimes(1);
+          expect(HBLoggerMockedInstance.success).toHaveBeenCalledTimes(1);
           expectStatusCode(200);
         });
       });
