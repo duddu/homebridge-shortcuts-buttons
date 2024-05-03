@@ -2,7 +2,7 @@
   "displayName": "Homebridge Shortcuts Buttons",
   "name": "homebridge-shortcuts-buttons",
   "version": "3.0.2",
-  "description": "Run any Apple Shortcut with just the tap of a button, and execute a custom unix command (or another shortcut!) after its completion to handle success/failure",
+  "description": "Run any Apple Shortcut with just the tap of a button, and execute a custom unix command (or another shortcut!) after completion to handle its success/failure, using x-callback-url.",
   "license": "Apache-2.0",
   "author": "duddu",
   "repository": {
@@ -55,9 +55,11 @@
     "typescript": "^5.4.5"
   },
   "keywords": [
-    "homebridge-plugin",
+    "apple-home",
     "apple-shortcuts",
-    "x-callback-url",
-    "homekit"
+    "homebridge",
+    "homebridge-plugin",
+    "homekit",
+    "x-callback-url"
   ]
 }
