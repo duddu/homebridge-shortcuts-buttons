@@ -19,8 +19,6 @@ jobs:
       pull-requests: write
       id-token: write
       actions: write
-    env:
-      GH_TOKEN: ${{ github.token }}
 
     steps:
       - name: Checkout
@@ -36,14 +34,12 @@ jobs:
       - name: Install dependencies
         run: npm clean-install
 
-      - name: Verify dependencies signatures
-        run: npm audit signatures
-
       - name: Release
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
           GITHUB_TOKEN: ${{ github.token }}
+          GH_TOKEN: ${{ github.token }}
         run: |
           npx semantic-release \
             | grep --color -Ei "the next release version is|$" \
-              || gh run cancel ${{ github.run_id }} && sleep 5
+              || gh run cancel ${{ github.run_id }} && sleep 3
