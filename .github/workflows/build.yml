@@ -70,6 +70,7 @@ jobs:
       - name: Create semantic-release repository dispatch event
         env:
           GH_TOKEN: ${{ github.token }}
+          COMMIT_MESSAGE: ${{ github.event.head_commit.message }}
         run: |
           gh api \
             --method POST \
@@ -77,4 +78,4 @@ jobs:
             -H "X-GitHub-Api-Version: 2022-11-28" \
             /repos/${{ github.repository }}/dispatches \
             -f "event_type=semantic-release" \
-            -F "client_payload[commit_message]=${{ github.event.head_commit.message }}"
+            -F "client_payload[commit_message]=$COMMIT_MESSAGE"
