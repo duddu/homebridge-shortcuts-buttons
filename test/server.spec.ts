@@ -9,8 +9,8 @@ import { HSBXCallbackUrlSearchParamsType, requiredParamsKeysList } from '../src/
 import { HSBXCallbackUrlServer } from '../src/server';
 import { HSBShortcutStatus } from '../src/shortcut';
 import { HSBUtils } from '../src/utils';
-import { HBApiMockedInstance } from './mocks/api.mock';
-import { HBLoggerMockedInstance } from './mocks/logger.mock';
+import { hbApiMockedInstance } from './mocks/api.mock';
+import { hbLoggerMockedInstance } from './mocks/logger.mock';
 
 class HttpServerMock extends EventEmitter {
   public readonly listen = jest.fn((_port, _hostname, cb: () => void) => cb());
@@ -22,7 +22,7 @@ jest.mock('http', () => ({
   createServer: jest.fn((): HttpServerMock => (httpServerMock = new HttpServerMock())),
 }));
 
-const utilsMock = new HSBUtils(HBLoggerMockedInstance);
+const utilsMock = new HSBUtils(hbLoggerMockedInstance);
 utilsMock.execAsync = jest.fn(() => Promise.resolve());
 
 describe(HSBXCallbackUrlServer.name, () => {
@@ -43,15 +43,15 @@ describe(HSBXCallbackUrlServer.name, () => {
         ...defaultConfig,
         ...configOverride,
       },
-      HBLoggerMockedInstance,
+      hbLoggerMockedInstance,
       utilsMock,
-      HBApiMockedInstance as unknown as API,
+      hbApiMockedInstance as unknown as API,
     );
   };
 
   afterEach(() => {
     httpServerMock.removeAllListeners();
-    HBApiMockedInstance.removeAllListeners();
+    hbApiMockedInstance.removeAllListeners();
     utilsMock.execAsync = jest.fn(() => Promise.resolve());
   });
 
@@ -72,7 +72,7 @@ describe(HSBXCallbackUrlServer.name, () => {
         'hostname-mock',
         expect.any(Function),
       );
-      expect(HBLoggerMockedInstance.info).toHaveBeenLastCalledWith(
+      expect(hbLoggerMockedInstance.info).toHaveBeenLastCalledWith(
         expect.stringMatching(/listening/i),
       );
     });
@@ -98,7 +98,7 @@ describe(HSBXCallbackUrlServer.name, () => {
     test('should issue a date based generated uuid', () => {
       instantiateServer();
 
-      expect(server.issueToken()).toMatch(RegExp(`uuid_${HSBXCallbackUrlServer.name}_\\d{13}`));
+      expect(server.issueToken()).toMatch(/^[\w\d]{8}-[\w\d]{4}-[\w\d]{4}-[\w\d]{4}-[\w\d]{12}$/);
     });
   });
 
@@ -107,7 +107,7 @@ describe(HSBXCallbackUrlServer.name, () => {
       instantiateServer();
 
       const removeListenersSpy = jest.spyOn(httpServerMock, 'removeAllListeners');
-      HBApiMockedInstance.emit('shutdown');
+      hbApiMockedInstance.emit('shutdown');
 
       expect(httpServerMock.closeAllConnections).toHaveBeenCalledTimes(1);
       expect(removeListenersSpy).toHaveBeenCalledTimes(1);
@@ -121,7 +121,7 @@ describe(HSBXCallbackUrlServer.name, () => {
       const errorMock = new Error('onErrorMessage');
       httpServerMock.emit('error', errorMock);
 
-      expect(HBLoggerMockedInstance.error).toHaveBeenLastCalledWith(
+      expect(hbLoggerMockedInstance.error).toHaveBeenLastCalledWith(
         expect.stringMatching(/error/i),
         errorMock,
       );
@@ -163,7 +163,7 @@ describe(HSBXCallbackUrlServer.name, () => {
     };
     const expectStatusCode = (statusCode: number) => {
       statusCode !== 200 &&
-        expect(HBLoggerMockedInstance.error).toHaveBeenLastCalledWith(
+        expect(hbLoggerMockedInstance.error).toHaveBeenLastCalledWith(
           expect.stringContaining(statusCode.toString()),
           expect.any(String),
           expect.not.arrayContaining([null]),
@@ -314,7 +314,7 @@ describe(HSBXCallbackUrlServer.name, () => {
         await waitForCommand();
 
         expectStatusCode(200);
-        expect(HBLoggerMockedInstance.success).toHaveBeenCalledTimes(1);
+        expect(hbLoggerMockedInstance.success).toHaveBeenCalledTimes(1);
       });
 
       describe('and should execute callback command', () => {
@@ -344,7 +344,7 @@ describe(HSBXCallbackUrlServer.name, () => {
               timeout: 7,
             },
           );
-          expect(HBLoggerMockedInstance.success).toHaveBeenCalledTimes(1);
+          expect(hbLoggerMockedInstance.success).toHaveBeenCalledTimes(1);
           expectStatusCode(200);
         });
 
@@ -375,7 +375,7 @@ describe(HSBXCallbackUrlServer.name, () => {
               timeout: 7,
             },
           );
-          expect(HBLoggerMockedInstance.success).toHaveBeenCalledTimes(1);
+          expect(hbLoggerMockedInstance.success).toHaveBeenCalledTimes(1);
           expectStatusCode(200);
         });
 
@@ -406,7 +406,7 @@ describe(HSBXCallbackUrlServer.name, () => {
               timeout: 7,
             },
           );
-          expect(HBLoggerMockedInstance.success).toHaveBeenCalledTimes(1);
+          expect(hbLoggerMockedInstance.success).toHaveBeenCalledTimes(1);
           expectStatusCode(200);
         });
 
@@ -437,7 +437,7 @@ describe(HSBXCallbackUrlServer.name, () => {
               timeout: 7,
             },
           );
-          expect(HBLoggerMockedInstance.success).toHaveBeenCalledTimes(1);
+          expect(hbLoggerMockedInstance.success).toHaveBeenCalledTimes(1);
           expectStatusCode(200);
         });
 
@@ -464,7 +464,7 @@ describe(HSBXCallbackUrlServer.name, () => {
             },
             timeout: 7,
           });
-          expect(HBLoggerMockedInstance.success).toHaveBeenCalledTimes(1);
+          expect(hbLoggerMockedInstance.success).toHaveBeenCalledTimes(1);
           expectStatusCode(200);
         });
 
@@ -486,7 +486,7 @@ describe(HSBXCallbackUrlServer.name, () => {
             // eslint-disable-next-line max-len
             'open -gj shortcuts://run-shortcut\\?name=Callback Shortcut Mock\\&input=text\\&text=eyJTSE9SVENVVF9OQU1FIjoic2hvcnRjdXRNb2NrIiwiU0hPUlRDVVRfU1RBVFVTIjoic3VjY2VzcyIsIlNIT1JUQ1VUX1JFU1VMVCI6InJlc3VsdE1vY2siLCJTSE9SVENVVF9FUlJPUiI6ImVycm9yTW9jayJ9',
           );
-          expect(HBLoggerMockedInstance.success).toHaveBeenCalledTimes(1);
+          expect(hbLoggerMockedInstance.success).toHaveBeenCalledTimes(1);
           expectStatusCode(200);
         });
       });

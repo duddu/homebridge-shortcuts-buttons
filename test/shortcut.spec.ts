@@ -2,8 +2,8 @@ import { describe, expect, test, beforeEach, jest } from '@jest/globals';
 
 import { HSBShortcut } from '../src/shortcut';
 
-import { HSBUtilsMockedInstance } from './mocks/utils.mock';
-import { HSBXCallbackUrlServerMockedInstance } from './mocks/server.mock';
+import { utilsMockedInstance } from './mocks/utils.mock';
+import { xCallbackUrlServerMockedInstance } from './mocks/server.mock';
 
 describe(HSBShortcut.name, () => {
   let shortcut: HSBShortcut;
@@ -13,8 +13,9 @@ describe(HSBShortcut.name, () => {
       beforeEach(() => {
         shortcut = new HSBShortcut(
           'shortcutMock',
-          HSBXCallbackUrlServerMockedInstance,
-          HSBUtilsMockedInstance,
+          xCallbackUrlServerMockedInstance,
+          utilsMockedInstance,
+          undefined,
         );
       });
 
@@ -26,30 +27,30 @@ describe(HSBShortcut.name, () => {
           'x-cancel="baseUrlMock?shortcut=shortcutMock%26status=cancel%26token=tokenMock"';
 
         await shortcut.run();
-        expect(HSBUtilsMockedInstance.execAsync).toHaveBeenNthCalledWith(1, commandMock);
+        expect(utilsMockedInstance.execAsync).toHaveBeenNthCalledWith(1, commandMock);
       });
     });
 
     describe('when the x-callback-url server is not running', () => {
       beforeEach(() => {
-        shortcut = new HSBShortcut('shortcutMock', null, HSBUtilsMockedInstance);
+        shortcut = new HSBShortcut('shortcutMock', null, utilsMockedInstance, undefined);
       });
 
       test('should open the shortcut url without x-callback-url parameters', async () => {
         const commandMock = 'open -gj shortcuts://run-shortcut\\?name=shortcutMock';
 
         await shortcut.run();
-        expect(HSBUtilsMockedInstance.execAsync).toHaveBeenNthCalledWith(1, commandMock);
+        expect(utilsMockedInstance.execAsync).toHaveBeenNthCalledWith(1, commandMock);
       });
     });
 
     describe('when the shortcut is instantiated with input', () => {
       beforeEach(() => {
-        jest.spyOn(HSBUtilsMockedInstance, 'isNonEmptyString').mockReturnValueOnce(true);
+        jest.spyOn(utilsMockedInstance, 'isNonEmptyString').mockReturnValueOnce(true);
         shortcut = new HSBShortcut(
           'shortcutMock',
           null,
-          HSBUtilsMockedInstance,
+          utilsMockedInstance,
           'shortcutTextInputMock',
         );
       });
@@ -60,7 +61,7 @@ describe(HSBShortcut.name, () => {
           '\\&input=text\\&text=shortcutTextInputMock';
 
         await shortcut.run();
-        expect(HSBUtilsMockedInstance.execAsync).toHaveBeenNthCalledWith(1, commandMock);
+        expect(utilsMockedInstance.execAsync).toHaveBeenNthCalledWith(1, commandMock);
       });
     });
   });

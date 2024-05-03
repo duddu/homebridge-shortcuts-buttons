@@ -16,5 +16,5 @@ jest.mock('../../src/server', () => ({
   HSBXCallbackUrlServer: HSBXCallbackUrlServerMock,
 }));
 
-export const HSBXCallbackUrlServerMockedInstance =
+export const xCallbackUrlServerMockedInstance =
   new HSBXCallbackUrlServerMock() as unknown as HSBXCallbackUrlServer;

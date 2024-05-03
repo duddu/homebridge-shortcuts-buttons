@@ -1,11 +1,13 @@
+import { jest } from '@jest/globals';
 import EventEmitter from 'events';
+import { generate } from 'hap-nodejs/dist/lib/util/uuid';
 
 class HBApiMock extends EventEmitter {
   public readonly hap = {
     uuid: {
-      generate: (str: string) => 'uuid_' + str,
+      generate: jest.fn(generate),
     },
   };
 }
 
-export const HBApiMockedInstance = new HBApiMock();
+export const hbApiMockedInstance = new HBApiMock();

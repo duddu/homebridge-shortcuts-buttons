@@ -14,4 +14,4 @@ jest.mock('../../src/utils', () => ({
   HSBUtils: HSBUtilsMock,
 }));
 
-export const HSBUtilsMockedInstance = new HSBUtilsMock() as unknown as HSBUtils;
+export const utilsMockedInstance = new HSBUtilsMock() as unknown as HSBUtils;
