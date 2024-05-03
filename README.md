@@ -2,8 +2,11 @@
 
 # Homebridge Shortcuts Buttons Plugin
 
-<!-- [![verified-by-homebridge](https://badgen.net/badge/homebridge/verified/purple)](https://github.com/homebridge/homebridge/wiki/Verified-Plugins)
-![verified-by-homebridge](https://img.shields.io/badge/homebridge-verified-8d50dd?logo=homebridge&logoColor=white)-->
+<!--
+![verified-by-homebridge](https://img.shields.io/badge/homebridge-verified-8d50dd?logo=homebridge&logoColor=white)
+![Codacy grade](https://img.shields.io/codacy/grade/d9ff9831b3504215a046851f5a8198b7?logo=codacy&logoColor=white) 
+![Codacy coverage](https://img.shields.io/codacy/coverage/d9ff9831b3504215a046851f5a8198b7?logo=codacy&logoColor=white)
+-->
 ![GitHub Actions Build Status](https://img.shields.io/github/actions/workflow/status/duddu/homebridge-shortcuts-buttons/build.yml?logo=github)
 ![GitHub Actions CodeQL Status](https://img.shields.io/github/actions/workflow/status/duddu/homebridge-shortcuts-buttons/codeql.yml?logo=github&label=CodeQL)
 ![NPM Version](https://img.shields.io/npm/v/homebridge-shortcuts-buttons?logo=npm&logoColor=white)
@@ -112,6 +115,16 @@ After the decoding of the dictionary, you'll have your clear variables to access
 | SHORTCUT_STATUS | `"success" \| "error" \| "cancel"` | Cancel: manually stopped |
 | SHORTCUT_RESULT | `string \| false`                  | Only on success status   |
 | SHORTCUT_ERROR  | `string \| false`                  | Only on error status     |
+
+## Requirements
+
+- MacOS 12+ (Monterey or later)
+- The shortcuts you want to run must be accessible from the machine where Homebridge is running, e.g. by having the host logged into the relevant iCloud account.
+
+#### NPM Engines
+
+- `node ^18.17.0 || ^20.9.0`
+- `homebridge ^1.6.0`
 
 ## Development
 
