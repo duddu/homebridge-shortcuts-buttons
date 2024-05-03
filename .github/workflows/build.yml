@@ -38,6 +38,12 @@ jobs:
       - name: Test
         run: npm run test
 
+      - name: Codacy coverage reporter
+        uses: codacy/codacy-coverage-reporter-action@v1
+        with:
+          project-token: ${{ secrets.CODACY_PROJECT_TOKEN }}
+          coverage-reports: ./coverage/lcov.info
+
       - name: Build
         run: npm run build
 

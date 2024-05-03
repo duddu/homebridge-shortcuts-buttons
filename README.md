@@ -2,7 +2,14 @@
 
 # Homebridge Shortcuts Buttons Plugin
 
-<!-- [![verified-by-homebridge](https://badgen.net/badge/homebridge/verified/purple)](https://github.com/homebridge/homebridge/wiki/Verified-Plugins) -->
+<!-- [![verified-by-homebridge](https://badgen.net/badge/homebridge/verified/purple)](https://github.com/homebridge/homebridge/wiki/Verified-Plugins)
+![verified-by-homebridge](https://img.shields.io/badge/homebridge-verified-8d50dd?logo=homebridge&logoColor=white)-->
+![GitHub Actions Build Status](https://img.shields.io/github/actions/workflow/status/duddu/homebridge-shortcuts-buttons/build.yml?logo=github)
+![GitHub Actions CodeQL Status](https://img.shields.io/github/actions/workflow/status/duddu/homebridge-shortcuts-buttons/codeql.yml?logo=github&label=CodeQL)
+![NPM Version](https://img.shields.io/npm/v/homebridge-shortcuts-buttons?logo=npm&logoColor=white)
+[![semantic-release: angular](https://img.shields.io/badge/semantic--release-angular-e10079?logo=semantic-release)](https://github.com/semantic-release/semantic-release)
+[![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-green.svg?logo=conventionalcommits&logoColor=white)](http://commitizen.github.io/cz-cli/)
+![Dependabot](https://img.shields.io/badge/dependabot-2b64cf?logo=dependabot&logoColor=white)
 
 ### Features highlights
 

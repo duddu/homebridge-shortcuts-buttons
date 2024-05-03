@@ -1,4 +1,3 @@
-import { Logger } from 'homebridge';
 import { join } from 'path';
 
 import { HSBConfig } from '../config';
@@ -8,7 +7,6 @@ import { HSBUtils } from '../utils';
 
 export class HSBXCallbackUrlServerCommand {
   constructor(
-    private readonly log: Logger,
     private readonly config: HSBConfig,
     private readonly utils: HSBUtils,
   ) {}
@@ -48,12 +46,6 @@ export class HSBXCallbackUrlServerCommand {
           'HSBXCallbackUrlServerCommand::run Unexpected value provided for callbackCommandType: ' +
             this.config.callbackCommandType,
         );
-    }
-
-    if (!this.utils.isNonEmptyString(command)) {
-      throw new Error(
-        'HSBXCallbackUrlServerCommand::run Callback command configuration field is empty',
-      );
     }
 
     await this.utils.execAsync(command, {
