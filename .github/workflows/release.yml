@@ -1,9 +1,10 @@
 name: Release
 
+run-name: ${{ github.event.client_payload.commit_message }}
+
 on:
-  workflow_call:
   repository_dispatch:
-    types: [semantic-release]
+    types: [ semantic-release ]
 
 permissions:
   contents: read
@@ -17,6 +18,9 @@ jobs:
       issues: write
       pull-requests: write
       id-token: write
+      actions: write
+    env:
+      GH_TOKEN: ${{ github.token }}
 
     steps:
       - name: Checkout
@@ -37,6 +41,9 @@ jobs:
 
       - name: Release
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-        run: npx semantic-release
+          GITHUB_TOKEN: ${{ github.token }}
+        run: |
+          npx semantic-release \
+            | grep --color -Ei "the next release version is|$" \
+              || gh run cancel ${{ github.run_id }} && sleep 5
