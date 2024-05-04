@@ -16,8 +16,12 @@ export class HSBAccessory {
     private readonly platform: HSBPlatform,
     private readonly platformAccessory: HSBPlatformAccessory,
   ) {
-    this.addAccessoryInformationService();
-    this.addShortcutsServices();
+    try {
+      this.addAccessoryInformationService();
+      this.addShortcutsServices();
+    } catch (e) {
+      platform.log.error('HSBAccessory::constructor', e);
+    }
   }
 
   private addAccessoryInformationService() {
