@@ -20,7 +20,7 @@
   "main": "dist/index.js",
   "scripts": {
     "lint": "eslint src/**/*.ts",
-    "test": "jest --verbose",
+    "test": "jest --verbose --forceExit --detectOpenHandles",
     "convertSchema": "./bin/convertSchema.sh",
     "bundle": "rimraf ./dist && tsc && cp -R ./src/bin ./dist",
     "build": "npm run convertSchema && npm run bundle",
