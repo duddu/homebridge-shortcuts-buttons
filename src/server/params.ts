@@ -1,3 +1,7 @@
+/**
+ * @module server
+ */
+
 import { URLSearchParams } from 'url';
 
 import { HSBShortcutStatus } from '../shortcut';

@@ -1,3 +1,7 @@
+/**
+ * @module server
+ */
+
 import { join } from 'path';
 
 import { HSBConfig } from '../config';
