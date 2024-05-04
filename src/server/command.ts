@@ -70,21 +70,21 @@ export class HSBXCallbackUrlServerCommand {
     let sound: string;
     switch (searchParams.status) {
       case HSBShortcutStatus.SUCCESS:
-        subtitle = 'executed successfully';
+        subtitle = `🚀 ${searchParams.shortcut} executed successfully`;
         searchParams.result && (subtitle += `\nResult: ${searchParams.result}`);
         sound = 'Glass';
         break;
       case HSBShortcutStatus.ERROR:
-        subtitle = 'execution failed';
+        subtitle = `❌ ${searchParams.shortcut} execution failed`;
         searchParams.errorMessage && (subtitle += `\nError: ${searchParams.errorMessage}`);
         sound = 'Sosumi';
         break;
       case HSBShortcutStatus.CANCEL:
-        subtitle = 'execution was cancelled';
+        subtitle = `❌ ${searchParams.shortcut} execution was cancelled`;
         sound = 'Sosumi';
         break;
       default:
-        subtitle = 'received an unknown result status';
+        subtitle = `❌ ${searchParams.shortcut} received an unknown result status`;
         sound = 'Sosumi';
         break;
     }
@@ -92,7 +92,7 @@ export class HSBXCallbackUrlServerCommand {
     return (
       `open ${this.defaultCommandAppPath} ` +
       `--env NOTIFICATION_TITLE="${this.config.name}" ` +
-      `--env NOTIFICATION_SUBTITLE="${searchParams.shortcut} ${subtitle}" ` +
+      `--env NOTIFICATION_SUBTITLE="${subtitle}" ` +
       `--env NOTIFICATION_SOUND="${sound}"`
     );
   }
