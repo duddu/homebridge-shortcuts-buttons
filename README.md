@@ -4,7 +4,7 @@
 
 <div align="center">
 
-<!-- [![verified-by-homebridge](https://img.shields.io/badge/homebridge-verified-7c41c9?logo=homebridge&logoColor=white)](https://github.com/homebridge/verified/wiki/Verified-Plugins) -->
+[![verified-by-homebridge](https://img.shields.io/badge/homebridge-verified-7c41c9?logo=homebridge&logoColor=white)](https://github.com/homebridge/verified/wiki/Verified-Plugins)
 [![NPM Version](https://img.shields.io/npm/v/homebridge-shortcuts-buttons?logo=npm&logoColor=white)](https://www.npmjs.com/package/homebridge-shortcuts-buttons/v/latest)
 [![GitHub Actions Build Status](https://img.shields.io/github/actions/workflow/status/duddu/homebridge-shortcuts-buttons/build.yml?logo=github&logoColor=white)](https://github.com/duddu/homebridge-shortcuts-buttons/actions/workflows/build.yml)
 [![GitHub Actions CodeQL Status](https://img.shields.io/github/actions/workflow/status/duddu/homebridge-shortcuts-buttons/codeql.yml?logo=github&logoColor=white&label=code-ql)](https://github.com/duddu/homebridge-shortcuts-buttons/actions/workflows/codeql.yml)
@@ -156,7 +156,3 @@ git cz # instead of git commit
 
 npx cz
 ```
-
-## Homebridge plugin verification
-
-I just made the repo public and submitted the request to mark the plugin as verified by Homebridge. So till the process completes it's expected to see the plugin as unverified on the Homebridge UI.
