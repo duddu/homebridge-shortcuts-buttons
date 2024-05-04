@@ -1,18 +1,20 @@
-<img src="https://github.com/duddu/homebridge-shortcuts-buttons/blob/latest/assets/banner.png?raw=true" width="100%" alt="Homebridge Shortcuts Buttons" title="Homebridge Shortcuts Buttons">
+<img src="https://github.com/duddu/homebridge-shortcuts-buttons/blob/latest/assets/banner.png?raw=true" width="100%" alt="Homebridge Shortcuts Buttons Plugin" title="Homebridge Shortcuts Buttons Plugin">
 
-# Homebridge Shortcuts Buttons Plugin
+<h1 align="center">Homebridge Shortcuts Buttons Plugin</h1>
 
-<!--
-![verified-by-homebridge](https://img.shields.io/badge/homebridge-verified-8d50dd?logo=homebridge&logoColor=white)
-![Codacy grade](https://img.shields.io/codacy/grade/d9ff9831b3504215a046851f5a8198b7?logo=codacy&logoColor=white) 
-![Codacy coverage](https://img.shields.io/codacy/coverage/d9ff9831b3504215a046851f5a8198b7?logo=codacy&logoColor=white)
--->
-![GitHub Actions Build Status](https://img.shields.io/github/actions/workflow/status/duddu/homebridge-shortcuts-buttons/build.yml?logo=github)
-![GitHub Actions CodeQL Status](https://img.shields.io/github/actions/workflow/status/duddu/homebridge-shortcuts-buttons/codeql.yml?logo=github&label=CodeQL)
-![NPM Version](https://img.shields.io/npm/v/homebridge-shortcuts-buttons?logo=npm&logoColor=white)
-[![semantic-release: angular](https://img.shields.io/badge/semantic--release-angular-e10079?logo=semantic-release)](https://github.com/semantic-release/semantic-release)
+<div align="center">
+
+<!-- [![verified-by-homebridge](https://img.shields.io/badge/homebridge-verified-7c41c9?logo=homebridge&logoColor=white)](https://github.com/homebridge/verified/wiki/Verified-Plugins) -->
+[![NPM Version](https://img.shields.io/npm/v/homebridge-shortcuts-buttons?logo=npm&logoColor=white)](https://www.npmjs.com/package/homebridge-shortcuts-buttons/v/latest)
+[![GitHub Actions Build Status](https://img.shields.io/github/actions/workflow/status/duddu/homebridge-shortcuts-buttons/build.yml?logo=github&logoColor=white)](https://github.com/duddu/homebridge-shortcuts-buttons/actions/workflows/build.yml)
+[![GitHub Actions CodeQL Status](https://img.shields.io/github/actions/workflow/status/duddu/homebridge-shortcuts-buttons/codeql.yml?logo=github&logoColor=white&label=code-ql)](https://github.com/duddu/homebridge-shortcuts-buttons/actions/workflows/codeql.yml)
+[![Codacy grade](https://img.shields.io/codacy/grade/d9ff9831b3504215a046851f5a8198b7?logo=codacy&logoColor=white)](https://app.codacy.com/gh/duddu/homebridge-shortcuts-buttons/dashboard?utm_source=gh&utm_medium=referral&utm_campaign=Badge_grade)
+[![Codacy coverage](https://img.shields.io/codacy/coverage/d9ff9831b3504215a046851f5a8198b7?logo=codacy&logoColor=white)](https://app.codacy.com/gh/duddu/homebridge-shortcuts-buttons/coverage/dashboard?utm_source=gh&utm_medium=referral&utm_campaign=Badge_coverage)
+[![semantic-release: angular](https://img.shields.io/badge/semantic--release-angular-e10079?logo=semantic-release&logoColor=white)](https://github.com/semantic-release/semantic-release)
 [![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-green.svg?logo=conventionalcommits&logoColor=white)](http://commitizen.github.io/cz-cli/)
-![Dependabot](https://img.shields.io/badge/dependabot-2b64cf?logo=dependabot&logoColor=white)
+[![Dependabot](https://img.shields.io/badge/dependabot-2b64cf?logo=dependabot&logoColor=white)](https://github.com/duddu/homebridge-shortcuts-buttons/pulls?q=author%3Aapp%2Fdependabot)
+
+</div>
 
 ### Features highlights
 
@@ -22,7 +24,7 @@
 - All via UI plugin configuration, no other setup required.
 - Super fast and light, zero runtime package dependencies.
 
-### Apple Home preview
+### Apple Home example
 
 <img src="https://github.com/duddu/homebridge-shortcuts-buttons/blob/latest/assets/demo-outlets-single-tile.jpeg?raw=true" width="30%" alt="Demo outlets single tile" title="(a) Outlets - single tile - accessory view">&ensp;
 <img src="https://github.com/duddu/homebridge-shortcuts-buttons/blob/latest/assets/demo-switches-single-tile.jpeg?raw=true" width="30%" alt="Demo switches single tile" title="(b) Switches - single tile - accessory view">&ensp;
