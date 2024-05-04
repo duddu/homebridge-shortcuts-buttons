@@ -40,6 +40,6 @@ jobs:
           GITHUB_TOKEN: ${{ github.token }}
           GH_TOKEN: ${{ github.token }}
         run: |
-          npx semantic-release \
+          npm run release \
             | grep --color -Ei "the next release version is|$" \
               || gh run cancel ${{ github.run_id }} && sleep 3

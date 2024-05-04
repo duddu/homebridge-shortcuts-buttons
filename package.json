@@ -28,6 +28,7 @@
     "watch": "npm run link && nodemon",
     "prettier": "prettier -w .",
     "typedoc": "typedoc",
+    "release": "semantic-release",
     "prepublishOnly": "npm audit signatures && npm run lint && npm run test && npm run build"
   },
   "devDependencies": {
