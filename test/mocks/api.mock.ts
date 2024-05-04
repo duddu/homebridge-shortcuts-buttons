@@ -1,5 +1,7 @@
 import { jest } from '@jest/globals';
 import EventEmitter from 'events';
+import { Characteristic } from 'hap-nodejs/dist/lib/Characteristic';
+import { Service } from 'hap-nodejs/dist/lib/Service';
 import { generate } from 'hap-nodejs/dist/lib/util/uuid';
 import { PlatformAccessory } from 'homebridge/lib/platformAccessory';
 
@@ -22,6 +24,8 @@ class HBApiMock extends EventEmitter {
     uuid: {
       generate: jest.fn(generate),
     },
+    Service,
+    Characteristic,
   };
 }
 
