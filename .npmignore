@@ -1,20 +1,22 @@
 # Ignore source code
-src
+/src/
 
 # dev-only local executables
 /bin/
-
-# dev-only modules configurations
-.*rc
-jest.config.ts
-typedoc.json
-.prettierignore
 
 # ignore assets
 /assets/
 
 # ignore tests
-test
+/test/
+
+# ignore docs
+/docs/
+
+# dev-only modules configurations
+.*
+jest.config.ts
+typedoc.json
 
 # MacOS
 .DS_Store

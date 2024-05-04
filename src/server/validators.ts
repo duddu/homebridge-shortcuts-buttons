@@ -1,3 +1,7 @@
+/**
+ * @module server
+ */
+
 interface HSBXCallbackUrlRequestValidatorsMapValue {
   readonly condition: () => boolean;
   readonly errorCode: number;
