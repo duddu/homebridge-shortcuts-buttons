@@ -42,6 +42,8 @@ export class HSBAccessory {
   }
 
   private addShortcutsServices() {
+    const activeServicesSubtypes: Set<string | undefined> = new Set();
+
     for (const serviceConfig of this.platform.config.services) {
       const subtype = this.platform.api.hap.uuid.generate(JSON.stringify(serviceConfig));
 
@@ -57,6 +59,8 @@ export class HSBAccessory {
         logServiceOrigin,
       );
 
+      activeServicesSubtypes.add(service.subtype);
+
       new HSBService(
         this.platform.log,
         service,
@@ -65,6 +69,17 @@ export class HSBAccessory {
         this.platform.utils,
         this.Characteristic,
       );
+    }
+
+    for (const service of this.accessory.services) {
+      if (typeof service.subtype === 'string' && !activeServicesSubtypes.has(service.subtype)) {
+        this.accessory.removeService(service);
+        this.platform.log.debug(
+          'Accessory::addShortcutsServices',
+          `Service(${service.displayName})`,
+          'Removed as outdated',
+        );
+      }
     }
   }
 
