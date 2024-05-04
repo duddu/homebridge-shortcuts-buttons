@@ -151,11 +151,6 @@ describe(HSBPlatform.name, () => {
           expect(platform.accessory?.context.device).toEqual(device);
         });
 
-        test('should instantiate new accessory object', () => {
-          expect(accessoryMockConstructorSpy).toHaveBeenCalledTimes(1);
-          expect(accessoryMockConstructorSpy).toHaveBeenCalledWith(platform, platform.accessory);
-        });
-
         test('should register new platform accessory', () => {
           expect(hbApiMockedInstance.registerPlatformAccessories).toHaveBeenCalledTimes(1);
           expect(hbApiMockedInstance.registerPlatformAccessories).toHaveBeenCalledWith(
@@ -172,6 +167,11 @@ describe(HSBPlatform.name, () => {
             platform.accessory?.displayName,
           );
         });
+
+        test('should instantiate new accessory object', () => {
+          expect(accessoryMockConstructorSpy).toHaveBeenCalledTimes(1);
+          expect(accessoryMockConstructorSpy).toHaveBeenCalledWith(platform, platform.accessory);
+        });
       });
 
       describe('if platform accessory is cached', () => {
@@ -186,17 +186,17 @@ describe(HSBPlatform.name, () => {
           platform.discoverDevices();
         });
 
-        test('should instantiate new accessory object', () => {
-          expect(accessoryMockConstructorSpy).toHaveBeenCalledTimes(1);
-          expect(accessoryMockConstructorSpy).toHaveBeenCalledWith(platform, platform.accessory);
-        });
-
         test('should log accessory restoration info', () => {
           expect(hbLoggerMockedInstance.info).toHaveBeenLastCalledWith(
             expect.any(String),
             expect.stringMatching(/restored/i),
             platform.accessory?.displayName,
           );
+        });
+
+        test('should instantiate new accessory object', () => {
+          expect(accessoryMockConstructorSpy).toHaveBeenCalledTimes(1);
+          expect(accessoryMockConstructorSpy).toHaveBeenCalledWith(platform, platform.accessory);
         });
 
         describe('if device displayName has been changed', () => {

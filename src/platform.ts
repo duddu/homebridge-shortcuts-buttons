@@ -62,8 +62,6 @@ export class HSBPlatform implements DynamicPlatformPlugin {
         this.api.updatePlatformAccessories([this.accessory]);
       }
 
-      new HSBAccessory(this, this.accessory);
-
       this.log.info(
         'Platform::discoverDevices',
         'Restored existing accessory from cache:',
@@ -77,11 +75,9 @@ export class HSBPlatform implements DynamicPlatformPlugin {
 
       accessory.context.device = this.device;
 
-      new HSBAccessory(this, accessory);
-
       this.accessory = accessory;
 
-      this.api.registerPlatformAccessories(PLUGIN_NAME, PLATFORM_NAME, [accessory]);
+      this.api.registerPlatformAccessories(PLUGIN_NAME, PLATFORM_NAME, [this.accessory]);
 
       this.log.info(
         'Platform::discoverDevices',
@@ -89,5 +85,7 @@ export class HSBPlatform implements DynamicPlatformPlugin {
         this.accessory.displayName,
       );
     }
+
+    new HSBAccessory(this, this.accessory);
   }
 }
