@@ -22,13 +22,13 @@ jobs:
       issues: write
       pull-requests: write
       id-token: write
-      actions: write
 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
+          persist-credentials: false
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -40,10 +40,6 @@ jobs:
 
       - name: Release
         env:
+          GITHUB_TOKEN: ${{ secrets.SEMANTIC_RELEASE_GIT_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-          GITHUB_TOKEN: ${{ github.token }}
-          GH_TOKEN: ${{ github.token }}
-        run: |
-          npm run release \
-            | grep --color -Ei "the next release version is|$" \
-              || gh run cancel ${{ github.run_id }} && sleep 3
+        run: npm run release
