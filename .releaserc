@@ -4,6 +4,9 @@
     "@semantic-release/commit-analyzer",
     "@semantic-release/release-notes-generator",
     "@semantic-release/npm",
+    ["@semantic-release/git", {
+      "message": "chore(npm): update version to ${nextRelease.version} [skip ci]"
+    }],
     "@semantic-release/github"
   ]
 }
