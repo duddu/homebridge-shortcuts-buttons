@@ -5,6 +5,7 @@
   "entryPointStrategy": "resolve",
   "exclude": ["./src/index.ts"],
   "excludeExternals": true,
+  "gitRevision": "latest",
   "name": "Homebridge Shortcuts Buttons",
   "out": "./docs",
   "plugin": ["typedoc-plugin-merge-modules", "typedoc-plugin-missing-exports"],
