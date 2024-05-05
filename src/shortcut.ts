@@ -14,7 +14,9 @@ export class HSBShortcut {
     private readonly server: Nullable<HSBXCallbackUrlServer>,
     private readonly utils: HSBUtils,
     private readonly input?: string | undefined,
-  ) {}
+  ) {
+    this.name = encodeURIComponent(name);
+  }
 
   public async run(): Promise<void> {
     return this.utils.execAsync(`open -gj ${this.shortcutUrl}`);

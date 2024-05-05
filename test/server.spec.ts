@@ -484,7 +484,7 @@ describe(HSBXCallbackUrlServer.name, () => {
           expect(utilsMock.execAsync).toHaveBeenCalledTimes(1);
           expect(utilsMock.execAsync).toHaveBeenCalledWith(
             // eslint-disable-next-line max-len
-            'open -gj shortcuts://run-shortcut\\?name=Callback Shortcut Mock\\&input=text\\&text=eyJTSE9SVENVVF9OQU1FIjoic2hvcnRjdXRNb2NrIiwiU0hPUlRDVVRfU1RBVFVTIjoic3VjY2VzcyIsIlNIT1JUQ1VUX1JFU1VMVCI6InJlc3VsdE1vY2siLCJTSE9SVENVVF9FUlJPUiI6ImVycm9yTW9jayJ9',
+            'open -gj shortcuts://run-shortcut\\?name=Callback%20Shortcut%20Mock\\&input=text\\&text=eyJTSE9SVENVVF9OQU1FIjoic2hvcnRjdXRNb2NrIiwiU0hPUlRDVVRfU1RBVFVTIjoic3VjY2VzcyIsIlNIT1JUQ1VUX1JFU1VMVCI6InJlc3VsdE1vY2siLCJTSE9SVENVVF9FUlJPUiI6ImVycm9yTW9jayJ9',
           );
           expect(hbLoggerMockedInstance.success).toHaveBeenCalledTimes(1);
           expectStatusCode(200);
