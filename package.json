@@ -30,7 +30,7 @@
     "typedoc": "typedoc --placeInternalsInOwningModule --mergeModulesMergeMode module",
     "prepare": "husky",
     "release": "semantic-release",
-    "prepublishOnly": "npm audit signatures && npm run lint && npm run test && npm run build"
+    "prepublishOnly": "npm audit signatures && npm run lint && npm run test -- --verbose false --no-coverage && npm run build"
   },
   "devDependencies": {
     "@jest/globals": "^29.7.0",
