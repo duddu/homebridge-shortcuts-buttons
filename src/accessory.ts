@@ -41,7 +41,9 @@ export class HSBAccessory {
     const activeServicesSubtypes: Set<string | undefined> = new Set();
 
     for (const serviceConfig of this.platform.config.services) {
-      const subtype = this.platform.api.hap.uuid.generate(JSON.stringify(serviceConfig));
+      const subtype = this.platform.api.hap.uuid.generate(
+        serviceType + JSON.stringify(serviceConfig),
+      );
 
       let service = this.platformAccessory.getServiceById(serviceType, subtype);
       let logServiceOrigin = 'Restored from cache';
@@ -57,7 +59,7 @@ export class HSBAccessory {
 
       this.platform.log.debug(
         'Accessory::addShortcutsServices',
-        `Service(${service.displayName})`,
+        `Service.${serviceType.name}(${service.displayName})`,
         logServiceOrigin,
       );
 
@@ -73,16 +75,28 @@ export class HSBAccessory {
       );
     }
 
-    for (const service of this.platformAccessory.services) {
-      if (typeof service.subtype === 'string' && !activeServicesSubtypes.has(service.subtype)) {
-        this.platformAccessory.removeService(service);
+    const servicesToRemove = this.platformAccessory.services.filter(
+      ({ subtype }) => typeof subtype === 'string' && !activeServicesSubtypes.has(subtype),
+    );
 
-        this.platform.log.debug(
-          'Accessory::addShortcutsServices',
-          `Service(${service.displayName})`,
-          'Removed as outdated',
-        );
-      }
+    for (const service of servicesToRemove) {
+      this.platformAccessory.removeService(service);
+
+      this.platform.log.debug(
+        'Accessory::addShortcutsServices',
+        `Service.${this.platform.api.hap.Service.serialize(service).constructorName}` +
+          `(${service.displayName})`,
+        'Removed as outdated',
+      );
+    }
+
+    if (servicesToRemove.length > 0) {
+      this.platform.api.updatePlatformAccessories([this.platformAccessory]);
+
+      this.platform.log.debug(
+        'Accessory::addShortcutsServices',
+        'Requested platform accessory update',
+      );
     }
   }
 }
