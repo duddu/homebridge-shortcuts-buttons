@@ -66,16 +66,19 @@ describe(HSBAccessory.name, () => {
     cachedService = platformAccessory.addService(
       platform.api.hap.Service[config.serviceType],
       config.services[0].serviceName,
-      platform.api.hap.uuid.generate(JSON.stringify(config.services[0])),
+      platform.api.hap.uuid.generate(
+        platform.api.hap.Service[config.serviceType] + JSON.stringify(config.services[0]),
+      ),
     );
     outdatedCachedService = platformAccessory.addService(
       platform.api.hap.Service[config.serviceType],
       'outdatedServiceMock',
       platform.api.hap.uuid.generate(
-        JSON.stringify({
-          serviceName: 'outdatedServiceMock',
-          shortcutName: 'shortcutNameMock3',
-        }),
+        platform.api.hap.Service[config.serviceType] +
+          JSON.stringify({
+            serviceName: 'outdatedServiceMock',
+            shortcutName: 'shortcutNameMock3',
+          }),
       ),
     );
     accessoryInformationService = platformAccessory.getService(
@@ -161,14 +164,16 @@ describe(HSBAccessory.name, () => {
     describe('if service is found in cached accessory', () => {
       test('should infer subtype based on service config', () => {
         expect(platform.api.hap.uuid.generate).toHaveBeenCalledWith(
-          JSON.stringify(config.services[0]),
+          platform.api.hap.Service[config.serviceType] + JSON.stringify(config.services[0]),
         );
       });
 
       test('should retrieve cached service', () => {
         expect(getServiceByIdSpy).toHaveBeenCalledWith(
           Service[config.serviceType],
-          platform.api.hap.uuid.generate(JSON.stringify(config.services[0])),
+          platform.api.hap.uuid.generate(
+            platform.api.hap.Service[config.serviceType] + JSON.stringify(config.services[0]),
+          ),
         );
       });
 
@@ -176,14 +181,16 @@ describe(HSBAccessory.name, () => {
         expect(addServiceSpy).not.toHaveBeenCalledWith(
           Service[config.serviceType],
           config.services[0].serviceName,
-          platform.api.hap.uuid.generate(JSON.stringify(config.services[0])),
+          platform.api.hap.uuid.generate(
+            platform.api.hap.Service[config.serviceType] + JSON.stringify(config.services[0]),
+          ),
         );
       });
 
       test('should log debug service restoration', () => {
         expect(hbLoggerMockedInstance.debug).toHaveBeenCalledWith(
           expect.any(String),
-          `Service(${config.services[0].serviceName})`,
+          `Service.Switch(${config.services[0].serviceName})`,
           expect.stringMatching(/restored/i),
         );
       });
@@ -204,7 +211,9 @@ describe(HSBAccessory.name, () => {
       test('should try to retrieve service', () => {
         expect(getServiceByIdSpy).toHaveBeenCalledWith(
           Service[config.serviceType],
-          platform.api.hap.uuid.generate(JSON.stringify(config.services[1])),
+          platform.api.hap.uuid.generate(
+            platform.api.hap.Service[config.serviceType] + JSON.stringify(config.services[1]),
+          ),
         );
       });
 
@@ -212,14 +221,16 @@ describe(HSBAccessory.name, () => {
         expect(addServiceSpy).toHaveBeenCalledWith(
           Service[config.serviceType],
           config.services[1].serviceName,
-          platform.api.hap.uuid.generate(JSON.stringify(config.services[1])),
+          platform.api.hap.uuid.generate(
+            platform.api.hap.Service[config.serviceType] + JSON.stringify(config.services[1]),
+          ),
         );
       });
 
       test('should log debug service creation', () => {
         expect(hbLoggerMockedInstance.debug).toHaveBeenCalledWith(
           expect.any(String),
-          `Service(${config.services[1].serviceName})`,
+          `Service.Switch(${config.services[1].serviceName})`,
           expect.stringMatching(/created/i),
         );
       });
@@ -229,7 +240,9 @@ describe(HSBAccessory.name, () => {
           platform.log,
           platformAccessory.getServiceById(
             Service[config.serviceType],
-            platform.api.hap.uuid.generate(JSON.stringify(config.services[1])),
+            platform.api.hap.uuid.generate(
+              platform.api.hap.Service[config.serviceType] + JSON.stringify(config.services[1]),
+            ),
           ),
           config.services[1],
           platform.server,
@@ -248,7 +261,7 @@ describe(HSBAccessory.name, () => {
       test('should log debug service removal', () => {
         expect(hbLoggerMockedInstance.debug).toHaveBeenCalledWith(
           expect.any(String),
-          `Service(${outdatedCachedService.displayName})`,
+          `Service.Switch(${outdatedCachedService.displayName})`,
           expect.stringMatching(/removed/i),
         );
       });
