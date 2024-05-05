@@ -1,8 +1,8 @@
-<img src="https://github.com/duddu/homebridge-shortcuts-buttons/blob/latest/assets/banner.png?raw=true" width="100%" alt="Homebridge Shortcuts Buttons Plugin" title="Homebridge Shortcuts Buttons Plugin">
-
-<h1 align="center">Homebridge Shortcuts Buttons Plugin</h1>
-
 <div align="center">
+
+<img src="https://github.com/duddu/homebridge-shortcuts-buttons/blob/latest/assets/icon.png?raw=true" width="180" alt="Plugin Logo" title="Homebridge Shortcuts Buttons Plugin">
+
+<h1>Homebridge Shortcuts Buttons Plugin</h1>
 
 [![verified-by-homebridge](https://img.shields.io/badge/homebridge-verified-7c41c9?logo=homebridge&logoColor=white)](https://github.com/homebridge/verified/wiki/Verified-Plugins)
 [![NPM Version](https://img.shields.io/npm/v/homebridge-shortcuts-buttons?logo=npm&logoColor=white)](https://www.npmjs.com/package/homebridge-shortcuts-buttons/v/latest)
@@ -24,15 +24,13 @@
 - All via UI plugin configuration, no other setup required.
 - Super fast and light, zero runtime package dependencies.
 
-### Apple Home example
+### Apple Home examples
 
-<img src="https://github.com/duddu/homebridge-shortcuts-buttons/blob/latest/assets/demo-outlets-single-tile.jpeg?raw=true" width="30%" alt="Demo outlets single tile" title="(a) Outlets - single tile - accessory view">&ensp;
-<img src="https://github.com/duddu/homebridge-shortcuts-buttons/blob/latest/assets/demo-switches-single-tile.jpeg?raw=true" width="30%" alt="Demo switches single tile" title="(b) Switches - single tile - accessory view">&ensp;
-<img src="https://github.com/duddu/homebridge-shortcuts-buttons/blob/latest/assets/demo-switches-separate-tiles.jpeg?raw=true" width="30%" alt="Demo switches separate tiles" title="(c) Switches - separate tiles - room view">
+The following screenshots give a preview of what this plugin may produce in the Home app - depending on whether you decide to display the shortcuts buttons as _Outlets_ or _Switches_ (see [configuration](#configuration)), and on the _Show as single tile / separate tiles_ option in the Accessory Settings.
 
-<small>a) Outlets, single tile, accessory view&ensp;-&ensp;b) Switches, single tile, accessory view&ensp;-&ensp;c) Switches, separate tiles, room view.</small>
+<img src="https://github.com/duddu/homebridge-shortcuts-buttons/blob/latest/assets/demo-outlets-single-tile-room-view.png?raw=true" alt="Apple Home demo outlets single tile room view" title="Outlets - Show as single tile - Room view" width="24%"><img src="https://github.com/duddu/homebridge-shortcuts-buttons/blob/latest/assets/transparent-square.png?raw=true" width="1.33%"><img src="https://github.com/duddu/homebridge-shortcuts-buttons/blob/latest/assets/demo-outlets-single-tile-accessory-view.png?raw=true" alt="Apple Home demo outlets single tile accessory view" title="Outlets - Show as single tile - Accessory view" width="24%"><img src="https://github.com/duddu/homebridge-shortcuts-buttons/blob/latest/assets/transparent-square.png?raw=true" width="1.33%"><img src="https://github.com/duddu/homebridge-shortcuts-buttons/blob/latest/assets/demo-switches-separate-tiles-room-view.png?raw=true" alt="Apple Home demo switches separate tiles room view" title="Switches - Show as separate tiles - Room view" width="24%"><img src="https://github.com/duddu/homebridge-shortcuts-buttons/blob/latest/assets/transparent-square.png?raw=true" width="1.33%"><img src="https://github.com/duddu/homebridge-shortcuts-buttons/blob/latest/assets/demo-switches-single-tile-accessory-view.png?raw=true" alt="Apple Home demo switches single tile accessory view" title="Switches - Show as single tile - Accessory view" width="24%">
 
-> <small>_Bear in mind that in order to obtain same screens as above, you may have to add a few shortcuts buttons in the config. E.g. by default, Apple Home won't display the "power on" button - as in (a) - for a single service, but rather display it as an outlet on the room view and as a switch on the accessory view._</small>
+> <small>_Bear in mind that in order to obtain a result similar to the screenshots above, you may have to add a few shortcuts buttons in the config first. E.g. by default Apple Home won't display the cute "power on" round button for a single outlet service, rather will display it instead as an actual outlet on the room view and as a switch on the accessory view._</small>
 
 ## How it works
 
