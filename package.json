@@ -21,6 +21,8 @@
   "scripts": {
     "lint": "eslint src/**/*.ts",
     "test": "jest --verbose --silent --forceExit --detectOpenHandles",
+    "test:watch": "npm run test -- --watch --no-coverage",
+    "test:quiet": "npm run test -- --verbose false --no-coverage",
     "convertSchema": "./bin/convertSchema.sh",
     "bundle": "rimraf ./dist && tsc && cp -R ./src/bin ./dist",
     "build": "npm run convertSchema && npm run bundle",
@@ -30,7 +32,7 @@
     "typedoc": "typedoc --placeInternalsInOwningModule --mergeModulesMergeMode module",
     "prepare": "husky",
     "release": "semantic-release",
-    "prepublishOnly": "npm audit signatures && npm run lint && npm run test -- --verbose false --no-coverage && npm run build"
+    "prepublishOnly": "npm audit signatures && npm run lint && npm run test:quiet && npm run build"
   },
   "devDependencies": {
     "@jest/globals": "^29.7.0",
