@@ -1,8 +1,9 @@
 name: Test and Build
 
 on:
-  pull_request:
   push:
+    branches: [ latest ]
+  pull_request:
     branches: [ latest ]
 
 permissions:
