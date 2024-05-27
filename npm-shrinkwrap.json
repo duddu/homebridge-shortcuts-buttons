@@ -12,7 +12,7 @@
         "@jest/globals": "^29.7.0",
         "@semantic-release/commit-analyzer": "^12.0.0",
         "@semantic-release/git": "^10.0.1",
-        "@semantic-release/github": "^10.0.4",
+        "@semantic-release/github": "^10.0.5",
         "@semantic-release/npm": "^12.0.1",
         "@semantic-release/release-notes-generator": "^13.0.0",
         "@types/node": "^20.12.12",
@@ -24,7 +24,7 @@
         "homebridge": "^1.8.2",
         "husky": "^9.0.11",
         "json-schema-to-typescript": "^14.0.4",
-        "nodemon": "^3.1.0",
+        "nodemon": "^3.1.1",
         "prettier": "^3.2.5",
         "prettier-eslint": "^16.3.0",
         "rimraf": "^5.0.7",
@@ -2031,9 +2031,9 @@
       }
     },
     "node_modules/@semantic-release/github": {
-      "version": "10.0.4",
-      "resolved": "https://registry.npmjs.org/@semantic-release/github/-/github-10.0.4.tgz",
-      "integrity": "sha512-eHCfW3jlzax5OKd5nTovlvoCdg+b9YBa31M2JGT1KmzmJR3TIalu2ahVU+V/xATVeOx+S8fbCiPnBBgMlzH5Vw==",
+      "version": "10.0.5",
+      "resolved": "https://registry.npmjs.org/@semantic-release/github/-/github-10.0.5.tgz",
+      "integrity": "sha512-hmuCDkfru/Uc9+ZBNOSremAupu6BCslvOVDiG0wYcL8TQodCycp6uvwDyeym1H0M4l3ob9c0s0xMBiZjjXQ2yA==",
       "dev": true,
       "dependencies": {
         "@octokit/core": "^6.0.0",
@@ -8595,9 +8595,9 @@
       "dev": true
     },
     "node_modules/nodemon": {
-      "version": "3.1.0",
-      "resolved": "https://registry.npmjs.org/nodemon/-/nodemon-3.1.0.tgz",
-      "integrity": "sha512-xqlktYlDMCepBJd43ZQhjWwMw2obW/JRvkrLxq5RCNcuDDX1DbcPT+qT1IlIIdf+DhnWs90JpTMe+Y5KxOchvA==",
+      "version": "3.1.1",
+      "resolved": "https://registry.npmjs.org/nodemon/-/nodemon-3.1.1.tgz",
+      "integrity": "sha512-k43xGaDtaDIcufn0Fc6fTtsdKSkV/hQzoQFigNH//GaKta28yoKVYXCnV+KXRqfT/YzsFaQU9VdeEG+HEyxr6A==",
       "dev": true,
       "dependencies": {
         "chokidar": "^3.5.2",
