@@ -12,10 +12,10 @@
         "@jest/globals": "^29.7.0",
         "@semantic-release/commit-analyzer": "^13.0.0",
         "@semantic-release/git": "^10.0.1",
-        "@semantic-release/github": "^10.0.5",
+        "@semantic-release/github": "^10.0.6",
         "@semantic-release/npm": "^12.0.1",
         "@semantic-release/release-notes-generator": "^14.0.0",
-        "@types/node": "^20.14.0",
+        "@types/node": "^20.14.2",
         "@typescript-eslint/eslint-plugin": "^7.12.0",
         "@typescript-eslint/parser": "^7.12.0",
         "commitizen": "^4.3.0",
@@ -25,7 +25,7 @@
         "husky": "^9.0.11",
         "json-schema-to-typescript": "^14.0.5",
         "nodemon": "^3.1.3",
-        "prettier": "^3.3.0",
+        "prettier": "^3.3.1",
         "prettier-eslint": "^16.3.0",
         "rimraf": "^5.0.7",
         "semantic-release": "^24.0.0",
@@ -2033,10 +2033,11 @@
       }
     },
     "node_modules/@semantic-release/github": {
-      "version": "10.0.5",
-      "resolved": "https://registry.npmjs.org/@semantic-release/github/-/github-10.0.5.tgz",
-      "integrity": "sha512-hmuCDkfru/Uc9+ZBNOSremAupu6BCslvOVDiG0wYcL8TQodCycp6uvwDyeym1H0M4l3ob9c0s0xMBiZjjXQ2yA==",
+      "version": "10.0.6",
+      "resolved": "https://registry.npmjs.org/@semantic-release/github/-/github-10.0.6.tgz",
+      "integrity": "sha512-sS4psqZacGTFEN49UQGqwFNG6Jyx2/RX1BhhDGn/2WoPbhAHislohOY05/5r+JoL4gJMWycfH7tEm1eGVutYeg==",
       "dev": true,
+      "license": "MIT",
       "dependencies": {
         "@octokit/core": "^6.0.0",
         "@octokit/plugin-paginate-rest": "^11.0.0",
@@ -2616,10 +2617,11 @@
       "dev": true
     },
     "node_modules/@types/node": {
-      "version": "20.14.0",
-      "resolved": "https://registry.npmjs.org/@types/node/-/node-20.14.0.tgz",
-      "integrity": "sha512-5cHBxFGJx6L4s56Bubp4fglrEpmyJypsqI6RgzMfBHWUJQGWAAi8cWcgetEbZXHYXo9C2Fa4EEds/uSyS4cxmA==",
+      "version": "20.14.2",
+      "resolved": "https://registry.npmjs.org/@types/node/-/node-20.14.2.tgz",
+      "integrity": "sha512-xyu6WAMVwv6AKFLB+e/7ySZVr/0zLCzOa7rSpq6jNwpqOrUbcACDWC+53d4n2QHOnDou0fbIsg8wZu/sxrnI4Q==",
       "dev": true,
+      "license": "MIT",
       "dependencies": {
         "undici-types": "~5.26.4"
       }
@@ -12108,10 +12110,11 @@
       }
     },
     "node_modules/prettier": {
-      "version": "3.3.0",
-      "resolved": "https://registry.npmjs.org/prettier/-/prettier-3.3.0.tgz",
-      "integrity": "sha512-J9odKxERhCQ10OC2yb93583f6UnYutOeiV5i0zEDS7UGTdUt0u+y8erxl3lBKvwo/JHyyoEdXjwp4dke9oyZ/g==",
+      "version": "3.3.1",
+      "resolved": "https://registry.npmjs.org/prettier/-/prettier-3.3.1.tgz",
+      "integrity": "sha512-7CAwy5dRsxs8PHXT3twixW9/OEll8MLE0VRPCJyl7CkS6VHGPSlsVaWTiASPTyGyYRyApxlaWTzwUxVNrhcwDg==",
       "dev": true,
+      "license": "MIT",
       "bin": {
         "prettier": "bin/prettier.cjs"
       },
