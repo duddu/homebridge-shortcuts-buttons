@@ -20,7 +20,7 @@
   "main": "dist/index.js",
   "scripts": {
     "lint": "eslint src/**/*.ts",
-    "test": "jest --verbose --silent --forceExit --detectOpenHandles",
+    "test": "jest --verbose --silent --forceExit --detectOpenHandles --no-cache",
     "test:watch": "npm run test -- --watch --no-coverage",
     "test:quiet": "npm run test -- --verbose false --no-coverage",
     "convertSchema": "./bin/convertSchema.sh",
