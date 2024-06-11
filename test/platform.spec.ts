@@ -4,10 +4,10 @@ import { API, Logger } from 'homebridge';
 import { HSBDevice } from '../src/accessory';
 import { HSBConfig } from '../src/config';
 import { HSBPlatform } from '../src/platform';
+import { PLATFORM_NAME, PLUGIN_NAME } from '../src/settings';
 
 import { hbApiMockedInstance, hbApiMockedPlatformAccessoryConstructorSpy } from './mocks/api.mock';
 import { hbLoggerMockedInstance } from './mocks/logger.mock';
-import { PLATFORM_NAME, PLUGIN_NAME } from '../src/settings';
 
 const accessoryMockConstructorSpy = jest.fn();
 jest.mock('../src/accessory', () => ({
