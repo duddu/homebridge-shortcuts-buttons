@@ -1,3 +1,4 @@
+import stringify from 'fast-json-stable-stringify';
 import { PlatformAccessory } from 'homebridge';
 
 import { HSBConfig } from './config';
@@ -41,9 +42,7 @@ export class HSBAccessory {
     const activeServicesSubtypes: Set<string | undefined> = new Set();
 
     for (const serviceConfig of this.platform.config.services) {
-      const subtype = this.platform.api.hap.uuid.generate(
-        serviceType + JSON.stringify(serviceConfig),
-      );
+      const subtype = this.platform.api.hap.uuid.generate(serviceType + stringify(serviceConfig));
 
       let service = this.platformAccessory.getServiceById(serviceType, subtype);
       let logServiceOrigin = 'Restored from cache';

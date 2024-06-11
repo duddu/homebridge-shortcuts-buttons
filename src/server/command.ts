@@ -2,6 +2,7 @@
  * @module server
  */
 
+import stringify from 'fast-json-stable-stringify';
 import { join } from 'path';
 
 import { HSBConfig } from '../config';
@@ -59,7 +60,7 @@ export class HSBXCallbackUrlServerCommand {
   }
 
   private runShortcut(commandVariables: { [K: string]: string | undefined }): Promise<void> {
-    const shortcutTextInput = Buffer.from(JSON.stringify(commandVariables)).toString('base64');
+    const shortcutTextInput = Buffer.from(stringify(commandVariables)).toString('base64');
     const shortcut = new HSBShortcut(
       this.config.callbackCustomCommand!,
       null,

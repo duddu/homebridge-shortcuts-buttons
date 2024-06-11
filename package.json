@@ -63,6 +63,9 @@
     "typedoc-plugin-missing-exports": "^2.2.0",
     "typescript": "^5.4.5"
   },
+  "peerDependencies": {
+    "fast-json-stable-stringify": "^2"
+  },
   "keywords": [
     "apple-home",
     "apple-shortcuts",
