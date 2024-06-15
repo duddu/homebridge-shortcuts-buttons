@@ -6,7 +6,7 @@ import stringify from 'fast-json-stable-stringify';
 import { join } from 'path';
 
 import { HSBConfig } from '../config';
-import { HSBXCallbackUrlSearchParamsType } from './params';
+import { HSBXCallbackUrlSearchParams } from './params';
 import { HSBShortcut, HSBShortcutStatus } from '../shortcut';
 import { HSBUtils } from '../utils';
 
@@ -16,13 +16,13 @@ export class HSBXCallbackUrlServerCommand {
     private readonly utils: HSBUtils,
   ) {}
 
-  public async run(searchParams: HSBXCallbackUrlSearchParamsType): Promise<void> {
+  public async run(searchParams: HSBXCallbackUrlSearchParams): Promise<void> {
     let command: string | undefined;
     const commandVariables = {
-      SHORTCUT_NAME: searchParams.shortcut,
-      SHORTCUT_STATUS: searchParams.status,
-      SHORTCUT_RESULT: searchParams.result,
-      SHORTCUT_ERROR: searchParams.errorMessage,
+      SHORTCUT_NAME: searchParams.shortcut || undefined,
+      SHORTCUT_STATUS: searchParams.status || undefined,
+      SHORTCUT_RESULT: searchParams.result || undefined,
+      SHORTCUT_ERROR: searchParams.errorMessage || undefined,
     };
 
     switch (this.config.callbackCommandType) {
@@ -70,7 +70,7 @@ export class HSBXCallbackUrlServerCommand {
     return shortcut.run();
   }
 
-  private getDefaultCommand(searchParams: HSBXCallbackUrlSearchParamsType): string {
+  private getDefaultCommand(searchParams: HSBXCallbackUrlSearchParams): string {
     let subtitle: string;
     let sound: string;
     switch (searchParams.status) {

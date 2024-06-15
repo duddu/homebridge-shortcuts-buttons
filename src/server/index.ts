@@ -4,7 +4,7 @@ import { createServer, IncomingMessage, Server, ServerResponse } from 'http';
 
 import { HSBXCallbackUrlServerCommand } from './command';
 import { HSBConfig } from '../config';
-import { HSBXCallbackUrlSearchParams } from './params';
+import { HSBXCallbackUrlRequiredSearchParamsKeys, HSBXCallbackUrlSearchParams } from './params';
 import { PLATFORM_NAME, VERSION } from '../settings';
 import { HSBUtils } from '../utils';
 import { createRequestValidators } from './validators';
@@ -45,8 +45,14 @@ export class HSBXCallbackUrlServer {
     return token;
   }
 
-  private isValidToken(token?: string): boolean {
+  private isValidToken(token: string | null): boolean {
     return typeof token === 'string' && this.tokens.delete(token);
+  }
+
+  private areValidQueryParams(params: HSBXCallbackUrlSearchParams): boolean {
+    return Object.values(HSBXCallbackUrlRequiredSearchParamsKeys).every(
+      (key) => params[key] !== null,
+    );
   }
 
   private create(): Server | null {
@@ -78,36 +84,27 @@ export class HSBXCallbackUrlServer {
     this.server?.removeAllListeners();
   }
 
-  private async requestListener(
-    { headers, method, url }: IncomingMessage,
-    res: ServerResponse,
-  ): Promise<void> {
+  private async requestListener(req: IncomingMessage, res: ServerResponse): Promise<void> {
     this.log.debug('XCallbackUrlServer::requestListener', 'Incoming request, starting validation');
 
-    const { pathname, searchParams: URLSearchParams } = new URL(
-      url || '',
-      `${this.proto}://${headers.host}`,
-    );
+    const url = new URL(req.url || '', `${this.proto}://${req.headers.host}`);
 
-    const { areValidRequiredParamsValues, ...searchParams } = new HSBXCallbackUrlSearchParams(
-      URLSearchParams,
-      this.utils,
-    );
+    const searchParams = new HSBXCallbackUrlSearchParams(url.searchParams, this.utils);
 
     const requestValidators = createRequestValidators({
       isSupported: {
-        condition: () => typeof url === 'string' && method === 'GET',
-        errorMessage: `Unsupported request: ${method}:${url}`,
+        condition: () => typeof req.url === 'string' && req.method === 'GET',
+        errorMessage: `Unsupported request: ${req.method} ${req.url}`,
         errorCode: 405,
       },
       hasValidPathname: {
-        condition: () => pathname === this.pathname,
-        errorMessage: `Invalid url pathname: ${pathname}`,
+        condition: () => url.pathname === this.pathname,
+        errorMessage: `Invalid url pathname: ${url.pathname}`,
         errorCode: 404,
       },
       hasValidSearchParams: {
-        condition: () => areValidRequiredParamsValues(),
-        errorMessage: `Missing required search params: ${stringify(searchParams)}`,
+        condition: () => this.areValidQueryParams(searchParams),
+        errorMessage: `Missing required search params (${stringify(searchParams)})`,
         errorCode: 400,
       },
       hasValidAuthToken: {

@@ -7,7 +7,7 @@ import { URLSearchParams } from 'url';
 import { HSBShortcutStatus } from '../shortcut';
 import { HSBUtils } from '../utils';
 
-enum HSBXCallbackUrlRequiredSearchParamsKeys {
+export enum HSBXCallbackUrlRequiredSearchParamsKeys {
   SHORTCUT = 'shortcut',
   STATUS = 'status',
   TOKEN = 'token',
@@ -18,42 +18,34 @@ enum HSBXCallbackUrlOptionalSearchParamsKeys {
   RESULT = 'result',
 }
 
-export const requiredParamsKeysList = Object.values(HSBXCallbackUrlRequiredSearchParamsKeys);
-export const optionalParamsKeysList = Object.values(HSBXCallbackUrlOptionalSearchParamsKeys);
-
-export type HSBXCallbackUrlSearchParamsType = {
-  [K in HSBXCallbackUrlRequiredSearchParamsKeys]: string;
-} & {
-  [HSBXCallbackUrlRequiredSearchParamsKeys.STATUS]: HSBShortcutStatus;
-} & {
-  [K in HSBXCallbackUrlOptionalSearchParamsKeys]: string | undefined;
+type HSBXCallbackUrlSearchParamsDict = {
+  [K in HSBXCallbackUrlRequiredSearchParamsKeys | HSBXCallbackUrlOptionalSearchParamsKeys]:
+    | (K extends HSBXCallbackUrlRequiredSearchParamsKeys.STATUS ? HSBShortcutStatus : string)
+    | null;
 };
 
-export class HSBXCallbackUrlSearchParams implements HSBXCallbackUrlSearchParamsType {
-  public readonly shortcut!: string;
-  public readonly status!: HSBShortcutStatus;
-  public readonly token!: string;
-  public readonly result: string | undefined;
-  public readonly errorMessage: string | undefined;
+export class HSBXCallbackUrlSearchParams implements HSBXCallbackUrlSearchParamsDict {
+  public readonly shortcut: string | null;
+  public readonly status: HSBShortcutStatus | null;
+  public readonly token: string | null;
+  public readonly result: string | null;
+  public readonly errorMessage: string | null;
 
   constructor(
-    searchParams: URLSearchParams,
+    private readonly searchParams: URLSearchParams,
     private readonly utils: HSBUtils,
   ) {
-    for (const key of requiredParamsKeysList) {
-      if (key === HSBXCallbackUrlRequiredSearchParamsKeys.STATUS) {
-        this[key] = searchParams.get(key) as HSBShortcutStatus;
-      } else {
-        this[key] = searchParams.get(key) as string;
-      }
-    }
-    for (const key of optionalParamsKeysList) {
-      const value = searchParams.get(key);
-      this[key] = utils.isNonEmptyString(value) ? value : undefined;
-    }
+    this.shortcut = this.getParam(HSBXCallbackUrlRequiredSearchParamsKeys.SHORTCUT);
+    this.status = this.getParam(HSBXCallbackUrlRequiredSearchParamsKeys.STATUS);
+    this.token = this.getParam(HSBXCallbackUrlRequiredSearchParamsKeys.TOKEN);
+    this.result = this.getParam(HSBXCallbackUrlOptionalSearchParamsKeys.RESULT);
+    this.errorMessage = this.getParam(HSBXCallbackUrlOptionalSearchParamsKeys.ERROR_MESSAGE);
   }
 
-  public areValidRequiredParamsValues = (): boolean => {
-    return requiredParamsKeysList.every((key) => this.utils.isNonEmptyString(this[key]));
-  };
+  private getParam<K extends keyof HSBXCallbackUrlSearchParamsDict, T>(key: K): T | null {
+    const value = this.searchParams.get(key) as T | null;
+    return this.utils.isNonEmptyString(value)
+      ? (value.trim().replaceAll(/[\u2018\u2019\u201C\u201D]/g, `'`) as T)
+      : null;
+  }
 }

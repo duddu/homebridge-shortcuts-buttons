@@ -5,7 +5,7 @@ import http, { IncomingMessage, METHODS, ServerResponse, createServer } from 'ht
 import { Socket } from 'net';
 
 import { HSBConfig } from '../src/config';
-import { HSBXCallbackUrlSearchParamsType, requiredParamsKeysList } from '../src/server/params';
+import { HSBXCallbackUrlRequiredSearchParamsKeys } from '../src/server/params';
 import { HSBXCallbackUrlServer } from '../src/server';
 import { HSBShortcutStatus } from '../src/shortcut';
 import { HSBUtils } from '../src/utils';
@@ -150,7 +150,7 @@ describe(HSBXCallbackUrlServer.name, () => {
       token: server.issueToken(),
     });
     const emitRequest = (
-      searchParams: Nullable<Partial<HSBXCallbackUrlSearchParamsType>> = getValidSearchParams(),
+      searchParams: Nullable<Record<string, string>> = getValidSearchParams(),
       url: Nullable<string> = requestMock.url!,
       method: Nullable<string> = requestMock.method!,
     ) => {
@@ -221,15 +221,18 @@ describe(HSBXCallbackUrlServer.name, () => {
         expectStatusCode(400);
       });
 
-      test.each(requiredParamsKeysList)('if %s search param is missing', (param: string) => {
-        instantiateServer();
-        emitRequest({
-          ...getValidSearchParams(),
-          [param]: '',
-        });
+      test.each(Object.values(HSBXCallbackUrlRequiredSearchParamsKeys))(
+        'if %s search param is missing',
+        (param) => {
+          instantiateServer();
+          emitRequest({
+            ...getValidSearchParams(),
+            [param]: '',
+          });
 
-        expectStatusCode(400);
-      });
+          expectStatusCode(400);
+        },
+      );
     });
 
     describe('should respond with status code 403', () => {
@@ -322,7 +325,7 @@ describe(HSBXCallbackUrlServer.name, () => {
           instantiateServer();
           emitRequest({
             ...getValidSearchParams(),
-            result: 'resultMock',
+            result: 'resultMock with special chars \u2018\u2019\u201C\u201D',
             errorMessage: 'errorMock',
           });
 
@@ -332,13 +335,13 @@ describe(HSBXCallbackUrlServer.name, () => {
           expect(utilsMock.execAsync).toHaveBeenCalledWith(
             expect.stringMatching(
               // eslint-disable-next-line max-len
-              /open .*src\/bin\/HomebridgeShortcutsButtons\\ -\\ Notify\\ Shortcut\\ Result.app --env NOTIFICATION_TITLE="platformMock" --env NOTIFICATION_SUBTITLE="shortcutMock executed successfully\nResult: resultMock" --env NOTIFICATION_SOUND="Glass"/,
+              /open .*src\/bin\/HomebridgeShortcutsButtons\\ -\\ Notify\\ Shortcut\\ Result.app --env NOTIFICATION_TITLE="platformMock" --env NOTIFICATION_SUBTITLE="shortcutMock executed successfully\nResult: resultMock with special chars ''''" --env NOTIFICATION_SOUND="Glass"/,
             ),
             {
               env: {
                 SHORTCUT_ERROR: 'errorMock',
                 SHORTCUT_NAME: 'shortcutMock',
-                SHORTCUT_RESULT: 'resultMock',
+                SHORTCUT_RESULT: `resultMock with special chars ''''`,
                 SHORTCUT_STATUS: 'success',
               },
               timeout: 7,
