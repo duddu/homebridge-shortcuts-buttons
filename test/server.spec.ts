@@ -11,6 +11,7 @@ import {
   HSBXCallbackUrlRequiredSearchParamsKeys,
   HSBXCallbackUrlSearchParams,
 } from '../src/server/params';
+import { createRequestValidators } from '../src/server/validators';
 import { HSBShortcutStatus } from '../src/shortcut';
 import { HSBUtils } from '../src/utils';
 
@@ -521,6 +522,28 @@ describe(HSBXCallbackUrlServerCommand.name, () => {
 
       expect(() => getServerCommand({ status: 'success' })).toThrowError(expectedError);
       expect(() => getServerCommand({ shortcut: 'shortcutMock' })).toThrowError(expectedError);
+    });
+  });
+});
+
+describe('Validators', () => {
+  describe(createRequestValidators.name, () => {
+    test('validator test should return false if condition function throws', () => {
+      const validatorMock = {
+        condition: () => {
+          throw new Error();
+        },
+        errorCode: 418,
+        errorMessage: 'errorMessageMock',
+      };
+      const validatorsMock = createRequestValidators({
+        hasValidMethod: validatorMock,
+        hasValidPathname: validatorMock,
+        hasValidSearchParams: validatorMock,
+        hasValidAuthToken: validatorMock,
+      });
+
+      expect(validatorsMock.map((validator) => validator.test())).toEqual(new Array(4).fill(false));
     });
   });
 });
