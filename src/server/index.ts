@@ -1,4 +1,3 @@
-import stringify from 'fast-json-stable-stringify';
 import { API, Logger } from 'homebridge';
 import { createServer, IncomingMessage, Server, ServerResponse } from 'http';
 
@@ -104,7 +103,7 @@ export class HSBXCallbackUrlServer {
       },
       hasValidSearchParams: {
         condition: () => this.areValidSearchParams(searchParams),
-        errorMessage: `Missing required search params (${stringify(searchParams)})`,
+        errorMessage: `Missing required search params (${JSON.stringify(searchParams)})`,
         errorCode: 400,
       },
       hasValidAuthToken: {

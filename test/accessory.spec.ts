@@ -1,5 +1,4 @@
 import { afterEach, beforeEach, describe, expect, jest, test } from '@jest/globals';
-import stringify from 'fast-json-stable-stringify';
 import { Service } from 'hap-nodejs/dist/lib/Service';
 import { API } from 'homebridge';
 
@@ -68,7 +67,7 @@ describe(HSBAccessory.name, () => {
       platform.api.hap.Service[config.serviceType],
       config.services[0].serviceName,
       platform.api.hap.uuid.generate(
-        platform.api.hap.Service[config.serviceType] + stringify(config.services[0]),
+        platform.api.hap.Service[config.serviceType] + JSON.stringify(config.services[0]),
       ),
     );
     outdatedCachedService = platformAccessory.addService(
@@ -76,7 +75,7 @@ describe(HSBAccessory.name, () => {
       'outdatedServiceMock',
       platform.api.hap.uuid.generate(
         platform.api.hap.Service[config.serviceType] +
-          stringify({
+          JSON.stringify({
             serviceName: 'outdatedServiceMock',
             shortcutName: 'shortcutNameMock3',
           }),
@@ -165,7 +164,7 @@ describe(HSBAccessory.name, () => {
     describe('if service is found in cached accessory', () => {
       test('should infer subtype based on service config', () => {
         expect(platform.api.hap.uuid.generate).toHaveBeenCalledWith(
-          platform.api.hap.Service[config.serviceType] + stringify(config.services[0]),
+          platform.api.hap.Service[config.serviceType] + JSON.stringify(config.services[0]),
         );
       });
 
@@ -173,7 +172,7 @@ describe(HSBAccessory.name, () => {
         expect(getServiceByIdSpy).toHaveBeenCalledWith(
           Service[config.serviceType],
           platform.api.hap.uuid.generate(
-            platform.api.hap.Service[config.serviceType] + stringify(config.services[0]),
+            platform.api.hap.Service[config.serviceType] + JSON.stringify(config.services[0]),
           ),
         );
       });
@@ -183,7 +182,7 @@ describe(HSBAccessory.name, () => {
           Service[config.serviceType],
           config.services[0].serviceName,
           platform.api.hap.uuid.generate(
-            platform.api.hap.Service[config.serviceType] + stringify(config.services[0]),
+            platform.api.hap.Service[config.serviceType] + JSON.stringify(config.services[0]),
           ),
         );
       });
@@ -213,7 +212,7 @@ describe(HSBAccessory.name, () => {
         expect(getServiceByIdSpy).toHaveBeenCalledWith(
           Service[config.serviceType],
           platform.api.hap.uuid.generate(
-            platform.api.hap.Service[config.serviceType] + stringify(config.services[1]),
+            platform.api.hap.Service[config.serviceType] + JSON.stringify(config.services[1]),
           ),
         );
       });
@@ -223,7 +222,7 @@ describe(HSBAccessory.name, () => {
           Service[config.serviceType],
           config.services[1].serviceName,
           platform.api.hap.uuid.generate(
-            platform.api.hap.Service[config.serviceType] + stringify(config.services[1]),
+            platform.api.hap.Service[config.serviceType] + JSON.stringify(config.services[1]),
           ),
         );
       });
@@ -242,7 +241,7 @@ describe(HSBAccessory.name, () => {
           platformAccessory.getServiceById(
             Service[config.serviceType],
             platform.api.hap.uuid.generate(
-              platform.api.hap.Service[config.serviceType] + stringify(config.services[1]),
+              platform.api.hap.Service[config.serviceType] + JSON.stringify(config.services[1]),
             ),
           ),
           config.services[1],
