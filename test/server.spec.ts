@@ -184,13 +184,6 @@ describe(HSBXCallbackUrlServer.name, () => {
     beforeEach(resetReqResMocks);
 
     describe('should respond with status code 405', () => {
-      test('if the request has no url', () => {
-        instantiateServer();
-        emitRequest({}, null);
-
-        expectStatusCode(405);
-      });
-
       test.each(METHODS.filter((m) => m !== 'GET'))(
         'if the request has method %s',
         async (method) => {
@@ -203,6 +196,13 @@ describe(HSBXCallbackUrlServer.name, () => {
     });
 
     describe('should respond with status code 404', () => {
+      test('if the request has no url', () => {
+        instantiateServer();
+        emitRequest({}, null);
+
+        expectStatusCode(404);
+      });
+
       test('if the request has root pathname', () => {
         instantiateServer();
         emitRequest({}, '/');

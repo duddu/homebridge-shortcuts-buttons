@@ -2,24 +2,32 @@
  * @module server
  */
 
-interface HSBXCallbackUrlRequestValidatorsMapValue {
+interface HSBXCallbackUrlRequestValidatorDescriptor {
   readonly condition: () => boolean;
   readonly errorCode: number;
   readonly errorMessage: string;
 }
 
-interface HSBXCallbackUrlRequestValidatorsMap {
-  [K: string]: HSBXCallbackUrlRequestValidatorsMapValue;
-}
+type HSBXCallbackUrlRequestValidatorsKeys =
+  | 'hasValidMethod'
+  | 'hasValidPathname'
+  | 'hasValidSearchParams'
+  | 'hasValidAuthToken';
 
-class HSBXCallbackUrlRequestValidator implements HSBXCallbackUrlRequestValidatorsMapValue {
+type HSBXCallbackUrlRequestValidatorsDescriptors = Readonly<
+  Record<HSBXCallbackUrlRequestValidatorsKeys, HSBXCallbackUrlRequestValidatorDescriptor>
+>;
+
+class HSBXCallbackUrlRequestValidator implements HSBXCallbackUrlRequestValidatorDescriptor {
   constructor(
     public readonly condition: () => boolean,
     public readonly errorCode: number,
     public readonly errorMessage: string,
-  ) {}
+  ) {
+    Object.freeze(this);
+  }
 
-  public get passed(): boolean {
+  public test(): boolean {
     try {
       return this.condition() === true;
     } catch (e) {
@@ -29,10 +37,11 @@ class HSBXCallbackUrlRequestValidator implements HSBXCallbackUrlRequestValidator
 }
 
 export const createRequestValidators = (
-  validatorsMap: HSBXCallbackUrlRequestValidatorsMap,
-): HSBXCallbackUrlRequestValidator[] => {
-  return Object.values(validatorsMap).map(
-    ({ condition, errorCode, errorMessage }) =>
-      new HSBXCallbackUrlRequestValidator(condition, errorCode, errorMessage),
+  validatorsDescriptors: HSBXCallbackUrlRequestValidatorsDescriptors,
+): ReadonlyArray<HSBXCallbackUrlRequestValidator> =>
+  Object.freeze(
+    Object.values(validatorsDescriptors).map(
+      ({ condition, errorCode, errorMessage }) =>
+        new HSBXCallbackUrlRequestValidator(condition, errorCode, errorMessage),
+    ),
   );
-};

@@ -49,7 +49,7 @@ export class HSBXCallbackUrlServer {
     return typeof token === 'string' && this.tokens.delete(token);
   }
 
-  private areValidQueryParams(params: HSBXCallbackUrlSearchParams): boolean {
+  private areValidSearchParams(params: HSBXCallbackUrlSearchParams): boolean {
     return Object.values(HSBXCallbackUrlRequiredSearchParamsKeys).every(
       (key) => params[key] !== null,
     );
@@ -92,8 +92,8 @@ export class HSBXCallbackUrlServer {
     const searchParams = new HSBXCallbackUrlSearchParams(url.searchParams, this.utils);
 
     const requestValidators = createRequestValidators({
-      isSupported: {
-        condition: () => typeof req.url === 'string' && req.method === 'GET',
+      hasValidMethod: {
+        condition: () => req.method === 'GET',
         errorMessage: `Unsupported request: ${req.method} ${req.url}`,
         errorCode: 405,
       },
@@ -103,7 +103,7 @@ export class HSBXCallbackUrlServer {
         errorCode: 404,
       },
       hasValidSearchParams: {
-        condition: () => this.areValidQueryParams(searchParams),
+        condition: () => this.areValidSearchParams(searchParams),
         errorMessage: `Missing required search params (${stringify(searchParams)})`,
         errorCode: 400,
       },
@@ -115,7 +115,7 @@ export class HSBXCallbackUrlServer {
     });
 
     for (const validator of requestValidators) {
-      if (!validator.passed) {
+      if (!validator.test()) {
         return this.endWithError(res, validator.errorCode, validator.errorMessage);
       }
     }
