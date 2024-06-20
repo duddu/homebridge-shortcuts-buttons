@@ -5,10 +5,15 @@ import http, { IncomingMessage, METHODS, ServerResponse, createServer } from 'ht
 import { Socket } from 'net';
 
 import { HSBConfig } from '../src/config';
-import { HSBXCallbackUrlRequiredSearchParamsKeys } from '../src/server/params';
 import { HSBXCallbackUrlServer } from '../src/server';
+import { HSBXCallbackUrlServerCommand } from '../src/server/command';
+import {
+  HSBXCallbackUrlRequiredSearchParamsKeys,
+  HSBXCallbackUrlSearchParams,
+} from '../src/server/params';
 import { HSBShortcutStatus } from '../src/shortcut';
 import { HSBUtils } from '../src/utils';
+
 import { hbApiMockedInstance } from './mocks/api.mock';
 import { hbLoggerMockedInstance } from './mocks/logger.mock';
 
@@ -493,6 +498,30 @@ describe(HSBXCallbackUrlServer.name, () => {
           expectStatusCode(200);
         });
       });
+    });
+  });
+});
+
+describe(HSBXCallbackUrlServerCommand.name, () => {
+  describe('constructor', () => {
+    test('should throw if search params invalid', () => {
+      const getServerCommand = (additionalSearchParams: Record<string, string>) =>
+        new HSBXCallbackUrlServerCommand(
+          new HSBXCallbackUrlSearchParams(
+            new URLSearchParams({
+              token: 'tokenMock',
+              ...additionalSearchParams,
+            }),
+            utilsMock,
+          ),
+          {} as HSBConfig,
+          utilsMock,
+        );
+      const expectedError =
+        'HSBXCallbackUrlServerCommandEnvironment Invalid callback url search params';
+
+      expect(() => getServerCommand({ status: 'success' })).toThrowError(expectedError);
+      expect(() => getServerCommand({ shortcut: 'shortcutMock' })).toThrowError(expectedError);
     });
   });
 });

@@ -123,15 +123,14 @@ export class HSBXCallbackUrlServer {
     this.log.debug('XCallbackUrlServer::requestListener Request validators passed');
 
     try {
-      const command = new HSBXCallbackUrlServerCommand(this.config, this.utils);
-      await command.run(searchParams);
+      await new HSBXCallbackUrlServerCommand(searchParams, this.config, this.utils).run();
     } catch (e) {
       return this.endWithError(res, 500, 'Failed to run callback command', e);
     }
 
     this.log.success(
       'XCallbackUrlServer::requestListener',
-      `Executed callback command for shortcut ${searchParams.shortcut}`,
+      `Executed callback command for shortcut "${searchParams.shortcut}"`,
     );
 
     return this.endWithStatusAndHtml(res, 200);

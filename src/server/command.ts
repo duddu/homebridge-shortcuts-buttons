@@ -10,100 +10,111 @@ import { HSBXCallbackUrlSearchParams } from './params';
 import { HSBShortcut, HSBShortcutStatus } from '../shortcut';
 import { HSBUtils } from '../utils';
 
+class HSBXCallbackUrlServerCommandEnvironment {
+  public readonly SHORTCUT_NAME: string;
+  public readonly SHORTCUT_STATUS: HSBShortcutStatus;
+  public readonly SHORTCUT_RESULT?: string;
+  public readonly SHORTCUT_ERROR?: string;
+
+  constructor({ shortcut, status, result, errorMessage }: HSBXCallbackUrlSearchParams) {
+    if (!shortcut || !status) {
+      throw new Error(`${this.constructor.name} Invalid callback url search params`);
+    }
+    this.SHORTCUT_NAME = shortcut;
+    this.SHORTCUT_STATUS = status;
+    result && (this.SHORTCUT_RESULT = result);
+    errorMessage && (this.SHORTCUT_ERROR = errorMessage);
+    Object.freeze(this);
+  }
+}
+
 export class HSBXCallbackUrlServerCommand {
+  private readonly environment: Readonly<HSBXCallbackUrlServerCommandEnvironment>;
+
   constructor(
+    searchParams: HSBXCallbackUrlSearchParams,
     private readonly config: HSBConfig,
     private readonly utils: HSBUtils,
-  ) {}
+  ) {
+    this.environment = new HSBXCallbackUrlServerCommandEnvironment(searchParams);
+  }
 
-  public async run(searchParams: HSBXCallbackUrlSearchParams): Promise<void> {
-    let command: string | undefined;
-    const commandVariables = {
-      SHORTCUT_NAME: searchParams.shortcut || undefined,
-      SHORTCUT_STATUS: searchParams.status || undefined,
-      SHORTCUT_RESULT: searchParams.result || undefined,
-      SHORTCUT_ERROR: searchParams.errorMessage || undefined,
-    };
-
+  public run(): Promise<void> {
     switch (this.config.callbackCommandType) {
       case 'Default (display notification)':
-        command = this.getDefaultCommand(searchParams);
-        break;
+        return this.executeCommand(this.callbackDefaultCommand);
       case 'Custom unix command':
-        command = this.config.callbackCustomCommand;
-        if (!this.utils.isNonEmptyString(command)) {
-          throw new Error(
-            'HSBXCallbackUrlServerCommand::run' +
-              `"${this.config.callbackCommandType}" was chosen but no command was configured`,
-          );
-        }
-        break;
+        this.ensureValidCustomCommand();
+        return this.executeCommand(this.config.callbackCustomCommand!);
       case 'Shortcut name':
-        if (!this.utils.isNonEmptyString(this.config.callbackCustomCommand)) {
-          throw new Error(
-            'HSBXCallbackUrlServerCommand::run' +
-              `"${this.config.callbackCommandType}" was chosen but no shortcut name was configured`,
-          );
-        }
-        return this.runShortcut(commandVariables);
+        this.ensureValidCustomCommand();
+        return this.runShortcut();
       default:
-        throw new Error(
-          'HSBXCallbackUrlServerCommand::run Unexpected value provided for callbackCommandType: ' +
-            this.config.callbackCommandType,
-        );
+        return this.throwRunError('Unexpected callback command type configuration value');
     }
+  }
 
-    await this.utils.execAsync(command, {
-      env: commandVariables,
+  private ensureValidCustomCommand(): void {
+    if (!this.utils.isNonEmptyString(this.config.callbackCustomCommand)) {
+      this.throwRunError('Missing custom command configuration value');
+    }
+  }
+
+  private throwRunError(message: string): Promise<void> {
+    throw new Error(
+      `${this.constructor.name}::${this.run.name} ` +
+        `${message} (callbackCommandType=${this.config.callbackCommandType})`,
+    );
+  }
+
+  private executeCommand(command: string): Promise<void> {
+    return this.utils.execAsync(command, {
+      env: this.environment,
       timeout: this.config.callbackCommandTimeout,
     });
   }
 
-  private runShortcut(commandVariables: { [K: string]: string | undefined }): Promise<void> {
-    const shortcutTextInput = Buffer.from(stringify(commandVariables)).toString('base64');
-    const shortcut = new HSBShortcut(
-      this.config.callbackCustomCommand!,
-      null,
-      this.utils,
-      shortcutTextInput,
-    );
+  private runShortcut(): Promise<void> {
+    const input = Buffer.from(stringify(this.environment)).toString('base64');
+    const shortcut = new HSBShortcut(this.config.callbackCustomCommand!, null, this.utils, input);
     return shortcut.run();
   }
 
-  private getDefaultCommand(searchParams: HSBXCallbackUrlSearchParams): string {
-    let subtitle: string;
+  private get callbackDefaultCommand(): string {
+    let subtitle = this.environment.SHORTCUT_NAME;
     let sound: string;
-    switch (searchParams.status) {
+    switch (this.environment.SHORTCUT_STATUS) {
       case HSBShortcutStatus.SUCCESS:
-        subtitle = 'executed successfully';
-        searchParams.result && (subtitle += `\nResult: ${searchParams.result}`);
+        subtitle += ' executed successfully';
+        this.environment.SHORTCUT_RESULT &&
+          (subtitle += `\nResult: ${this.environment.SHORTCUT_RESULT}`);
         sound = 'Glass';
         break;
       case HSBShortcutStatus.ERROR:
-        subtitle = 'execution failed';
-        searchParams.errorMessage && (subtitle += `\nError: ${searchParams.errorMessage}`);
+        subtitle += ' execution failed';
+        this.environment.SHORTCUT_ERROR &&
+          (subtitle += `\nError: ${this.environment.SHORTCUT_ERROR}`);
         sound = 'Sosumi';
         break;
       case HSBShortcutStatus.CANCEL:
-        subtitle = 'execution was cancelled';
+        subtitle += ' execution was cancelled';
         sound = 'Sosumi';
         break;
       default:
-        subtitle = 'received an unknown result status';
+        subtitle += ' received an unknown result status';
         sound = 'Sosumi';
-        break;
     }
 
     return (
-      `open ${this.defaultCommandAppPath} ` +
+      `open ${DEFAULT_COMMAND_EXECUTABLE_PATH} ` +
       `--env NOTIFICATION_TITLE="${this.config.name}" ` +
-      `--env NOTIFICATION_SUBTITLE="${searchParams.shortcut} ${subtitle}" ` +
+      `--env NOTIFICATION_SUBTITLE="${subtitle}" ` +
       `--env NOTIFICATION_SOUND="${sound}"`
     );
   }
-
-  private readonly defaultCommandAppPath = join(
-    __dirname,
-    '../bin/HomebridgeShortcutsButtons\\ -\\ Notify\\ Shortcut\\ Result.app',
-  );
 }
+
+const DEFAULT_COMMAND_EXECUTABLE_PATH = join(
+  __dirname,
+  '../bin/HomebridgeShortcutsButtons\\ -\\ Notify\\ Shortcut\\ Result.app',
+);
