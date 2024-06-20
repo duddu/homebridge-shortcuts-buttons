@@ -5,9 +5,9 @@ import { HSBUtils } from '../../src/utils';
 type HSBUtilsProto = typeof HSBUtils.prototype;
 type HSBUtilsPublic = { [K in keyof HSBUtilsProto]: HSBUtilsProto[K] };
 
-class HSBUtilsMock implements HSBUtilsPublic {
+export class HSBUtilsMock implements HSBUtilsPublic {
   public execAsync = jest.fn(() => Promise.resolve());
-  public isNonEmptyString = jest.fn() as unknown as HSBUtilsProto['isNonEmptyString'];
+  public static isNonEmptyString = jest.fn() as unknown as (typeof HSBUtils)['isNonEmptyString'];
 }
 
 jest.mock('../../src/utils', () => ({

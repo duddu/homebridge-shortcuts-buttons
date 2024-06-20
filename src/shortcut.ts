@@ -27,7 +27,7 @@ export class HSBShortcut {
   }
 
   private get isWithTextInput(): boolean {
-    return this.utils.isNonEmptyString(this.input);
+    return HSBUtils.isNonEmptyString(this.input);
   }
 
   private get shortcutUrl(): string {

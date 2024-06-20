@@ -31,10 +31,7 @@ export class HSBXCallbackUrlSearchParams implements HSBXCallbackUrlSearchParamsD
   public readonly result: string | null;
   public readonly errorMessage: string | null;
 
-  constructor(
-    private readonly searchParams: URLSearchParams,
-    private readonly utils: HSBUtils,
-  ) {
+  constructor(private readonly searchParams: URLSearchParams) {
     this.shortcut = this.getParam(HSBXCallbackUrlRequiredSearchParamsKeys.SHORTCUT);
     this.status = this.getParam(HSBXCallbackUrlRequiredSearchParamsKeys.STATUS);
     this.token = this.getParam(HSBXCallbackUrlRequiredSearchParamsKeys.TOKEN);
@@ -44,7 +41,7 @@ export class HSBXCallbackUrlSearchParams implements HSBXCallbackUrlSearchParamsD
 
   private getParam<K extends keyof HSBXCallbackUrlSearchParamsDict, T>(key: K): T | null {
     const value = this.searchParams.get(key) as T | null;
-    return this.utils.isNonEmptyString(value)
+    return HSBUtils.isNonEmptyString(value)
       ? (value.trim().replaceAll(/[\u2018\u2019\u201C\u201D]/g, `'`) as T)
       : null;
   }

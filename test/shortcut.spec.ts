@@ -2,7 +2,7 @@ import { describe, expect, test, beforeEach, jest } from '@jest/globals';
 
 import { HSBShortcut } from '../src/shortcut';
 
-import { utilsMockedInstance } from './mocks/utils.mock';
+import { HSBUtilsMock, utilsMockedInstance } from './mocks/utils.mock';
 import { xCallbackUrlServerMockedInstance } from './mocks/server.mock';
 
 describe(HSBShortcut.name, () => {
@@ -46,7 +46,7 @@ describe(HSBShortcut.name, () => {
 
     describe('when the shortcut is instantiated with input', () => {
       beforeEach(() => {
-        jest.spyOn(utilsMockedInstance, 'isNonEmptyString').mockReturnValueOnce(true);
+        jest.spyOn(HSBUtilsMock, 'isNonEmptyString').mockReturnValueOnce(true);
         shortcut = new HSBShortcut(
           'Shortcut Mock',
           null,

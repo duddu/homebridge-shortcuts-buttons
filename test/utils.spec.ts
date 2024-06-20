@@ -44,21 +44,21 @@ describe(HSBUtils.name, () => {
     });
   });
 
-  describe(utils.isNonEmptyString.name, () => {
+  describe(HSBUtils.isNonEmptyString.name, () => {
     test('should return false when provided with non-string ', () => {
-      expect(utils.isNonEmptyString(1)).toBe(false);
+      expect(HSBUtils.isNonEmptyString(1)).toBe(false);
     });
 
     test('should return false when provided with empty string', () => {
-      expect(utils.isNonEmptyString('')).toBe(false);
+      expect(HSBUtils.isNonEmptyString('')).toBe(false);
     });
 
     test('should return false when provided with empty string with padding', () => {
-      expect(utils.isNonEmptyString('  ')).toBe(false);
+      expect(HSBUtils.isNonEmptyString('  ')).toBe(false);
     });
 
     test('should return true when provided with non-empty string', () => {
-      expect(utils.isNonEmptyString('a')).toBe(true);
+      expect(HSBUtils.isNonEmptyString('a')).toBe(true);
     });
   });
 });

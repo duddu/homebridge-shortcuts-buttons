@@ -12,16 +12,15 @@ export class HSBUtils {
     command: string,
     options?: ObjectEncodingOptions & ExecOptions,
   ): Promise<void> {
-    this.log.debug('Utils::execAsync Executing:', command);
+    this.log.debug(`${this.constructor.name}::${this.execAsync.name} Executing`, command);
     const { stdout, stderr } = await promisify(exec).call(null, command, {
       timeout: EXEC_DEFAULT_TIMEOUT,
       ...options,
     });
-    this.isNonEmptyString(stdout.toString()) && this.log.debug(stdout.toString());
-    this.isNonEmptyString(stderr.toString()) && this.log.error(stderr.toString());
+    HSBUtils.isNonEmptyString(stdout.toString()) && this.log.debug(stdout.toString());
+    HSBUtils.isNonEmptyString(stderr.toString()) && this.log.error(stderr.toString());
   }
 
-  public isNonEmptyString = (str: unknown): str is string => {
-    return typeof str === 'string' && str.trim() !== '';
-  };
+  public static isNonEmptyString = (value: unknown): value is string =>
+    typeof value === 'string' && value.trim() !== '';
 }

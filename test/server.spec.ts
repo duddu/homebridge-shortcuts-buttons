@@ -512,7 +512,6 @@ describe(HSBXCallbackUrlServerCommand.name, () => {
               token: 'tokenMock',
               ...additionalSearchParams,
             }),
-            utilsMock,
           ),
           {} as HSBConfig,
           utilsMock,

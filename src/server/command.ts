@@ -55,7 +55,7 @@ export class HSBXCallbackUrlServerCommand {
   }
 
   private ensureValidCustomCommand(): void {
-    if (!this.utils.isNonEmptyString(this.config.callbackCustomCommand)) {
+    if (!HSBUtils.isNonEmptyString(this.config.callbackCustomCommand)) {
       this.throwRunError('Missing custom command configuration value');
     }
   }

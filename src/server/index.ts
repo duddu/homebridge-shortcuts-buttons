@@ -89,7 +89,7 @@ export class HSBXCallbackUrlServer {
 
     const url = new URL(req.url || '', `${this.proto}://${req.headers.host}`);
 
-    const searchParams = new HSBXCallbackUrlSearchParams(url.searchParams, this.utils);
+    const searchParams = new HSBXCallbackUrlSearchParams(url.searchParams);
 
     const requestValidators = createRequestValidators({
       hasValidMethod: {
