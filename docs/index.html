@@ -1,221 +1,228 @@
-<!DOCTYPE html><html class="default" lang="en"><head><meta charSet="utf-8"/><meta http-equiv="x-ua-compatible" content="IE=edge"/><title>Homebridge Shortcuts Buttons</title><meta name="description" content="Documentation for Homebridge Shortcuts Buttons"/><meta name="viewport" content="width=device-width, initial-scale=1"/><link rel="stylesheet" href="assets/style.css"/><link rel="stylesheet" href="assets/highlight.css"/><script defer src="assets/main.js"></script><script async src="assets/icons.js" id="tsd-icons-script"></script><script async src="assets/search.js" id="tsd-search-script"></script><script async src="assets/navigation.js" id="tsd-nav-script"></script></head><body><script>document.documentElement.dataset.theme = localStorage.getItem("tsd-theme") || "os";document.body.style.display="none";setTimeout(() => app?app.showPage():document.body.style.removeProperty("display"),500)</script><header class="tsd-page-toolbar"><div class="tsd-toolbar-contents container"><div class="table-cell" id="tsd-search" data-base="."><div class="field"><label for="tsd-search-field" class="tsd-widget tsd-toolbar-icon search no-caption"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><use href="assets/icons.svg#icon-search"></use></svg></label><input type="text" id="tsd-search-field" aria-label="Search"/></div><div class="field"><div id="tsd-toolbar-links"></div></div><ul class="results"><li class="state loading">Preparing search index...</li><li class="state failure">The search index is not available</li></ul><a href="index.html" class="title">Homebridge Shortcuts Buttons</a></div><div class="table-cell" id="tsd-widgets"><a href="#" class="tsd-widget tsd-toolbar-icon menu no-caption" data-toggle="menu" aria-label="Menu"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><use href="assets/icons.svg#icon-menu"></use></svg></a></div></div></header><div class="container container-main"><div class="col-content"><div class="tsd-page-title"><h2>Homebridge Shortcuts Buttons</h2></div><div class="tsd-panel tsd-typography"><div align="center">
-
+<!DOCTYPE html><html class="default" lang="en"><head><meta charset="utf-8"/><meta http-equiv="x-ua-compatible" content="IE=edge"/><title>Homebridge Shortcuts Buttons</title><meta name="description" content="Documentation for Homebridge Shortcuts Buttons"/><meta name="viewport" content="width=device-width, initial-scale=1"/><link rel="stylesheet" href="assets/style.css"/><link rel="stylesheet" href="assets/highlight.css"/><script defer src="assets/main.js"></script><script async src="assets/icons.js" id="tsd-icons-script"></script><script async src="assets/search.js" id="tsd-search-script"></script><script async src="assets/navigation.js" id="tsd-nav-script"></script></head><body><script>document.documentElement.dataset.theme = localStorage.getItem("tsd-theme") || "os";document.body.style.display="none";setTimeout(() => app?app.showPage():document.body.style.removeProperty("display"),500)</script><header class="tsd-page-toolbar"><div class="tsd-toolbar-contents container"><div class="table-cell" id="tsd-search" data-base="."><div class="field"><label for="tsd-search-field" class="tsd-widget tsd-toolbar-icon search no-caption"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><use href="assets/icons.svg#icon-search"></use></svg></label><input type="text" id="tsd-search-field" aria-label="Search"/></div><div class="field"><div id="tsd-toolbar-links"></div></div><ul class="results"><li class="state loading">Preparing search index...</li><li class="state failure">The search index is not available</li></ul><a href="index.html" class="title">Homebridge Shortcuts Buttons</a></div><div class="table-cell" id="tsd-widgets"><a href="#" class="tsd-widget tsd-toolbar-icon menu no-caption" data-toggle="menu" aria-label="Menu"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><use href="assets/icons.svg#icon-menu"></use></svg></a></div></div></header><div class="container container-main"><div class="col-content"><div class="tsd-page-title"><h2>Homebridge Shortcuts Buttons</h2></div><div class="tsd-panel tsd-typography"><div align="center">
 <img src="https://github.com/duddu/homebridge-shortcuts-buttons/blob/latest/assets/icon.png?raw=true" width="180" alt="Plugin Logo" title="Homebridge Shortcuts Buttons Plugin">
-
 <h1>Homebridge Shortcuts Buttons Plugin</h1>
-
-<p><a href="https://github.com/homebridge/verified/wiki/Verified-Plugins"><img src="https://img.shields.io/badge/homebridge-verified-7c41c9?logo=homebridge&logoColor=white" alt="verified-by-homebridge"></a>
-<a href="https://www.npmjs.com/package/homebridge-shortcuts-buttons/v/latest"><img src="https://img.shields.io/npm/v/homebridge-shortcuts-buttons?logo=npm&logoColor=white" alt="NPM Version"></a>
-<a href="https://github.com/duddu/homebridge-shortcuts-buttons/actions/workflows/build.yml"><img src="https://img.shields.io/github/actions/workflow/status/duddu/homebridge-shortcuts-buttons/build.yml?logo=github&logoColor=white" alt="GitHub Actions Build Status"></a>
-<a href="https://github.com/duddu/homebridge-shortcuts-buttons/actions/workflows/codeql.yml"><img src="https://img.shields.io/github/actions/workflow/status/duddu/homebridge-shortcuts-buttons/codeql.yml?logo=github&logoColor=white&label=code-ql" alt="GitHub Actions CodeQL Status"></a>
-<a href="https://app.codacy.com/gh/duddu/homebridge-shortcuts-buttons/dashboard?utm_source=gh&utm_medium=referral&utm_campaign=Badge_grade"><img src="https://img.shields.io/codacy/grade/677d061df63f4299bfd4d19fdd3bd1ff?logo=codacy&logoColor=white" alt="Codacy grade"></a>
-<a href="https://app.codacy.com/gh/duddu/homebridge-shortcuts-buttons/coverage/dashboard?utm_source=gh&utm_medium=referral&utm_campaign=Badge_coverage"><img src="https://img.shields.io/codacy/coverage/677d061df63f4299bfd4d19fdd3bd1ff?logo=codacy&logoColor=white" alt="Codacy coverage"></a>
-<a href="https://github.com/semantic-release/semantic-release"><img src="https://img.shields.io/badge/semantic--release-angular-e10079?logo=semantic-release&logoColor=white" alt="semantic-release: angular"></a>
-<a href="http://commitizen.github.io/cz-cli/"><img src="https://img.shields.io/badge/commitizen-friendly-green.svg?logo=conventionalcommits&logoColor=white" alt="Commitizen friendly"></a>
-<a href="https://github.com/duddu/homebridge-shortcuts-buttons/pulls?q=author%3Aapp%2Fdependabot"><img src="https://img.shields.io/badge/dependabot-2b64cf?logo=dependabot&logoColor=white" alt="Dependabot"></a></p>
+<p><a href="https://github.com/homebridge/verified/wiki/Verified-Plugins"><img src="https://img.shields.io/badge/homebridge-verified-7c41c9?logo=homebridge&amp;logoColor=white" alt="verified-by-homebridge"></a>
+<a href="https://www.npmjs.com/package/homebridge-shortcuts-buttons/v/latest"><img src="https://img.shields.io/npm/v/homebridge-shortcuts-buttons?logo=npm&amp;logoColor=white" alt="NPM Version"></a>
+<a href="https://github.com/duddu/homebridge-shortcuts-buttons/actions/workflows/build.yml"><img src="https://img.shields.io/github/actions/workflow/status/duddu/homebridge-shortcuts-buttons/build.yml?logo=github&amp;logoColor=white" alt="GitHub Actions Build Status"></a>
+<a href="https://github.com/duddu/homebridge-shortcuts-buttons/actions/workflows/codeql.yml"><img src="https://img.shields.io/github/actions/workflow/status/duddu/homebridge-shortcuts-buttons/codeql.yml?logo=github&amp;logoColor=white&amp;label=code-ql" alt="GitHub Actions CodeQL Status"></a>
+<a href="https://app.codacy.com/gh/duddu/homebridge-shortcuts-buttons/dashboard?utm_source=gh&amp;utm_medium=referral&amp;utm_campaign=Badge_grade"><img src="https://img.shields.io/codacy/grade/677d061df63f4299bfd4d19fdd3bd1ff?logo=codacy&amp;logoColor=white" alt="Codacy grade"></a>
+<a href="https://app.codacy.com/gh/duddu/homebridge-shortcuts-buttons/coverage/dashboard?utm_source=gh&amp;utm_medium=referral&amp;utm_campaign=Badge_coverage"><img src="https://img.shields.io/codacy/coverage/677d061df63f4299bfd4d19fdd3bd1ff?logo=codacy&amp;logoColor=white" alt="Codacy coverage"></a>
+<a href="https://github.com/semantic-release/semantic-release"><img src="https://img.shields.io/badge/semantic--release-angular-e10079?logo=semantic-release&amp;logoColor=white" alt="semantic-release: angular"></a>
+<a href="http://commitizen.github.io/cz-cli/"><img src="https://img.shields.io/badge/commitizen-friendly-green.svg?logo=conventionalcommits&amp;logoColor=white" alt="Commitizen friendly"></a>
+<a href="https://github.com/duddu/homebridge-shortcuts-buttons/pulls?q=author%3Aapp%2Fdependabot"><img src="https://img.shields.io/badge/dependabot-2b64cf?logo=dependabot&amp;logoColor=white" alt="Dependabot"></a></p>
 </div>
-
-<a id="md:features-highlights" class="tsd-anchor"></a><h3><a href="#md:features-highlights">Features highlights</a></h3><ul>
+<a id="md:features-highlights" class="tsd-anchor"></a><h3 class="tsd-anchor-link">Features highlights<a href="#md:features-highlights" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h3><ul>
 <li>Run your <strong>Apple Shortcuts</strong> directly from your <strong>Home app</strong> (or any HomeKit compatible integration).</li>
 <li>Optionally, choose a <strong>custom callback command</strong> (even another shortcut) to execute once your shortcut completes (success/failure/cancel), leveraging an integrated <strong>x-callback-url server</strong>.</li>
 <li>Choose to display your shortcuts buttons as <strong>Outlets</strong> or <strong>Switches</strong>.</li>
 <li>All via UI plugin configuration, no other setup required.</li>
 <li>Super fast and light, zero runtime package dependencies.</li>
 </ul>
-<a id="md:apple-home-examples" class="tsd-anchor"></a><h3><a href="#md:apple-home-examples">Apple Home examples</a></h3><p>The following screenshots give a preview of what this plugin may produce in the Home app - depending on whether you decide to display the shortcuts buttons as <em>Outlets</em> or <em>Switches</em> (see <a href="#md:configuration">configuration</a>), and on the <em>Show as single tile / separate tiles</em> option in the Accessory Settings.</p>
+<a id="md:apple-home-examples" class="tsd-anchor"></a><h3 class="tsd-anchor-link">Apple Home examples<a href="#md:apple-home-examples" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h3><p>The following screenshots give a preview of what this plugin may produce in the Home app - depending on whether you decide to display the shortcuts buttons as <em>Outlets</em> or <em>Switches</em> (see <a href="#md:configuration">configuration</a>), and on the <em>Show as single tile / separate tiles</em> option in the Accessory Settings.</p>
 <p><img src="https://github.com/duddu/homebridge-shortcuts-buttons/blob/latest/assets/demo-outlets-single-tile-room-view.png?raw=true" alt="Apple Home demo outlets single tile room view" title="Outlets - Show as single tile - Room view" width="24%"><img src="https://github.com/duddu/homebridge-shortcuts-buttons/blob/latest/assets/transparent-square.png?raw=true" alt="separator" width="1.33%"><img src="https://github.com/duddu/homebridge-shortcuts-buttons/blob/latest/assets/demo-outlets-single-tile-accessory-view.png?raw=true" alt="Apple Home demo outlets single tile accessory view" title="Outlets - Show as single tile - Accessory view" width="24%"><img src="https://github.com/duddu/homebridge-shortcuts-buttons/blob/latest/assets/transparent-square.png?raw=true" alt="separator" width="1.33%"><img src="https://github.com/duddu/homebridge-shortcuts-buttons/blob/latest/assets/demo-switches-separate-tiles-room-view.png?raw=true" alt="Apple Home demo switches separate tiles room view" title="Switches - Show as separate tiles - Room view" width="24%"><img src="https://github.com/duddu/homebridge-shortcuts-buttons/blob/latest/assets/transparent-square.png?raw=true" alt="separator" width="1.33%"><img src="https://github.com/duddu/homebridge-shortcuts-buttons/blob/latest/assets/demo-switches-single-tile-accessory-view.png?raw=true" alt="Apple Home demo switches single tile accessory view" title="Switches - Show as single tile - Accessory view" width="24%"></p>
 <blockquote>
-<p><small><em>Bear in mind that in order to obtain a result similar to the screenshots above, you may have to add a few shortcuts buttons in the config first. E.g. by default Apple Home won&#39;t display the cute &quot;power on&quot; round button for a single outlet service, rather will display it instead as an actual outlet on the room view and as a switch on the accessory view.</em></small></p>
+<p><small><em>Bear in mind that in order to obtain a result similar to the screenshots above, you may have to add a few shortcuts buttons in the config first. E.g. by default Apple Home won't display the cute &quot;power on&quot; round button for a single outlet service, rather will display it instead as an actual outlet on the room view and as a switch on the accessory view.</em></small></p>
 </blockquote>
-<a id="md:how-it-works" class="tsd-anchor"></a><h2><a href="#md:how-it-works">How it works</a></h2><ol>
-<li><p>When you tap the button/switch, the plugin executes a command on the machine where Homebridge is running which runs the relevant Apple Shortcut. The button/switch then automatically toggles back off after a moment.<br></p>
+<a id="md:how-it-works" class="tsd-anchor"></a><h2 class="tsd-anchor-link">How it works<a href="#md:how-it-works" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h2><ol>
+<li>
+<p>When you tap the button/switch, the plugin executes a command on the machine where Homebridge is running which runs the relevant Apple Shortcut. The button/switch then automatically toggles back off after a moment.<br></p>
 <blockquote>
 <p><em>There are no restrictions on the content of the shortcuts to run, including ones running scripts over SSH on other hosts. The plugin has no role in this, as it only instructs Shortcuts to run them via native url schema.</em></p>
 </blockquote>
 </li>
-<li><p>If you left enabled the option <code>Enable Callback Command</code> (see description <a href="#md:configuration">below</a>), the plugin will inform Shortcuts to give a signal back once the shortcut execution is completed.</p>
+<li>
+<p>If you left enabled the option <code>Enable Callback Command</code> (see description <a href="#md:configuration">below</a>), the plugin will inform Shortcuts to give a signal back once the shortcut execution is completed.</p>
 <blockquote>
 <p><em>This is done using the <a href="https://x-callback-url.com">x-callback-url</a> standard, which effectively appends to the shortcut execution request the instructions on what to do when it succeds, fails, or is canceled.</em></p>
 </blockquote>
 </li>
-<li><p>Once the shortcut has run, Shortcuts will invoke a callback in this plugin, indicating the status of the execution and the result if any. When the plugin receives the callback request it runs the relevant command (either the default callback command or a custom one if provided, see <a href="#md:callback-command">below</a>).</p>
+<li>
+<p>Once the shortcut has run, Shortcuts will invoke a callback in this plugin, indicating the status of the execution and the result if any. When the plugin receives the callback request it runs the relevant command (either the default callback command or a custom one if provided, see <a href="#md:callback-command">below</a>).</p>
 <blockquote>
-<p><em>This is possible because the plugin includes a very light http server running locally within Homebridge, which receives the callback from Shortcuts and determines the next command to run. The two actors in the data flow are independent and communicate only via url schemas; this removes the need for any active polling or scheduled tasks. Also, the plugin&#39;s server issues a dedicated single-use authorization token for each interaction with Shortcuts, making it more difficult for things to get messy.</em></p>
+<p><em>This is possible because the plugin includes a very light http server running locally within Homebridge, which receives the callback from Shortcuts and determines the next command to run. The two actors in the data flow are independent and communicate only via url schemas; this removes the need for any active polling or scheduled tasks. Also, the plugin's server issues a dedicated single-use authorization token for each interaction with Shortcuts, making it more difficult for things to get messy.</em></p>
 </blockquote>
 </li>
 </ol>
-<a id="md:configuration" class="tsd-anchor"></a><h2><a href="#md:configuration">Configuration</a></h2><!-- %COMPILED_CONFIG_START% (Auto-generated, do not edit manually) -->
-
+<a id="md:configuration" class="tsd-anchor"></a><h2 class="tsd-anchor-link">Configuration<a href="#md:configuration" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h2><!-- %COMPILED_CONFIG_START% (Auto-generated, do not edit manually) -->
 <table>
 <thead>
 <tr>
-<th align="left">Field</th>
-<th align="left">Type</th>
-<th align="left">Default</th>
-<th align="left">Description</th>
+<th style="text-align:left">Field</th>
+<th style="text-align:left">Type</th>
+<th style="text-align:left">Default</th>
+<th style="text-align:left">Description</th>
 </tr>
 </thead>
-<tbody><tr>
-<td align="left">Name</td>
-<td align="left"><code>string</code></td>
-<td align="left"><code>&quot;Homebridge Shortcuts Buttons&quot;</code></td>
-<td align="left">Name of the platform bridge.</td>
+<tbody>
+<tr>
+<td style="text-align:left">Name</td>
+<td style="text-align:left"><code>string</code></td>
+<td style="text-align:left"><code>&quot;Homebridge Shortcuts Buttons&quot;</code></td>
+<td style="text-align:left">Name of the platform bridge.</td>
 </tr>
 <tr>
-<td align="left">Accessory Name</td>
-<td align="left"><code>string</code></td>
-<td align="left"><code>&quot;Shortcuts&quot;</code></td>
-<td align="left">Display name of the accessory.</td>
+<td style="text-align:left">Accessory Name</td>
+<td style="text-align:left"><code>string</code></td>
+<td style="text-align:left"><code>&quot;Shortcuts&quot;</code></td>
+<td style="text-align:left">Display name of the accessory.</td>
 </tr>
 <tr>
-<td align="left">Display buttons as</td>
-<td align="left"><code>&quot;Outlet&quot; | &quot;Switch&quot;</code></td>
-<td align="left"><code>&quot;Outlet&quot;</code></td>
-<td align="left">Display the buttons services as outlets or as switches.</td>
+<td style="text-align:left">Display buttons as</td>
+<td style="text-align:left"><code>&quot;Outlet&quot; | &quot;Switch&quot;</code></td>
+<td style="text-align:left"><code>&quot;Outlet&quot;</code></td>
+<td style="text-align:left">Display the buttons services as outlets or as switches.</td>
 </tr>
 <tr>
-<td align="left">Buttons</td>
-<td align="left"><code>array</code></td>
-<td align="left">-</td>
-<td align="left">List of buttons configuration objects.</td>
+<td style="text-align:left">Buttons</td>
+<td style="text-align:left"><code>array</code></td>
+<td style="text-align:left">-</td>
+<td style="text-align:left">List of buttons configuration objects.</td>
 </tr>
 <tr>
-<td align="left">&ensp;↳ Button name</td>
-<td align="left"><code>string</code></td>
-<td align="left">-</td>
-<td align="left">A name to display for this button.</td>
+<td style="text-align:left"> ↳ Button name</td>
+<td style="text-align:left"><code>string</code></td>
+<td style="text-align:left">-</td>
+<td style="text-align:left">A name to display for this button.</td>
 </tr>
 <tr>
-<td align="left">&ensp;↳ Shortcut name</td>
-<td align="left"><code>string</code></td>
-<td align="left">-</td>
-<td align="left">Name of the Apple Shortcut to trigger, as displayed in the Shortcuts app. The machine running Homebridge must have access to it (i.e. be logged to the correct iCloud account).</td>
+<td style="text-align:left"> ↳ Shortcut name</td>
+<td style="text-align:left"><code>string</code></td>
+<td style="text-align:left">-</td>
+<td style="text-align:left">Name of the Apple Shortcut to trigger, as displayed in the Shortcuts app. The machine running Homebridge must have access to it (i.e. be logged to the correct iCloud account).</td>
 </tr>
 <tr>
-<td align="left">Enable Callback Command</td>
-<td align="left"><code>boolean</code></td>
-<td align="left"><code>true</code></td>
-<td align="left">Whether the plugin should execute a command once a shortcut run completes. This determines whether to run an internal x-callback-url http server in the background.<br>All fields below depend on this one: any value inserted in the following fields will be ignored if this one value is set to false.</td>
+<td style="text-align:left">Enable Callback Command</td>
+<td style="text-align:left"><code>boolean</code></td>
+<td style="text-align:left"><code>true</code></td>
+<td style="text-align:left">Whether the plugin should execute a command once a shortcut run completes. This determines whether to run an internal x-callback-url http server in the background.<br>All fields below depend on this one: any value inserted in the following fields will be ignored if this one value is set to false.</td>
 </tr>
 <tr>
-<td align="left">Callback Command Type</td>
-<td align="left"><code>&quot;Default (display notification)&quot; | &quot;Custom unix command&quot; | &quot;Shortcut name&quot;</code></td>
-<td align="left"><code>&quot;Default (display notification)&quot;</code></td>
-<td align="left">With the default option, after the shortcut completion, a notification with the outcome of the shortcut run is displayed on the host running Homebrige.<br>If you choose to customize the callback behaviour, you have two choices: use any unix command that your host is able to execute, or just use another shortcut to handle the callback if you like. Depending on which choice you make, you&#39;ll have to fill in the next field accordingly.<br>Please consult the dedicated documentation for more detail: <a href="https://github.com/duddu/homebridge-shortcuts-buttons/blob/latest/README.md#callback-command">Callback command</a>.</td>
+<td style="text-align:left">Callback Command Type</td>
+<td style="text-align:left"><code>&quot;Default (display notification)&quot; | &quot;Custom unix command&quot; | &quot;Shortcut name&quot;</code></td>
+<td style="text-align:left"><code>&quot;Default (display notification)&quot;</code></td>
+<td style="text-align:left">With the default option, after the shortcut completion, a notification with the outcome of the shortcut run is displayed on the host running Homebrige.<br>If you choose to customize the callback behaviour, you have two choices: use any unix command that your host is able to execute, or just use another shortcut to handle the callback if you like. Depending on which choice you make, you'll have to fill in the next field accordingly.<br>Please consult the dedicated documentation for more detail: <a href="https://github.com/duddu/homebridge-shortcuts-buttons/blob/latest/README.md#callback-command">Callback command</a>.</td>
 </tr>
 <tr>
-<td align="left">Callback Custom Command</td>
-<td align="left"><code>string</code></td>
-<td align="left">-</td>
-<td align="left">Either a unix command or the name of a shortcut to run, depending on the value selected in the previous field. In the former case, all the content of the field will be treated as a command and executed: in the latter, this field expects just the plain name of the shortcut as displayed in the Shortcuts app. If you left the previous field on the default value, any text inserted here will be ignored.<br>Please consult the dedicated documentation for more details also regarding the runtime variables available during your command/shortcut execution: <a href="https://github.com/duddu/homebridge-shortcuts-buttons/blob/latest/README.md#callback-command">Callback command</a>.</td>
+<td style="text-align:left">Callback Custom Command</td>
+<td style="text-align:left"><code>string</code></td>
+<td style="text-align:left">-</td>
+<td style="text-align:left">Either a unix command or the name of a shortcut to run, depending on the value selected in the previous field. In the former case, all the content of the field will be treated as a command and executed: in the latter, this field expects just the plain name of the shortcut as displayed in the Shortcuts app. If you left the previous field on the default value, any text inserted here will be ignored.<br>Please consult the dedicated documentation for more details also regarding the runtime variables available during your command/shortcut execution: <a href="https://github.com/duddu/homebridge-shortcuts-buttons/blob/latest/README.md#callback-command">Callback command</a>.</td>
 </tr>
 <tr>
-<td align="left">Callback Command Timeout</td>
-<td align="left"><code>number</code></td>
-<td align="left"><code>5000</code></td>
-<td align="left">The time in milliseconds that the x-callback-url server should wait for the callback command execution to complete before timing out. Note: this matters only in case of custom callback command; if you chose a shortcut, the actual command executed is only the launch of it, the run itself is indipendent from the plugin.</td>
+<td style="text-align:left">Callback Command Timeout</td>
+<td style="text-align:left"><code>number</code></td>
+<td style="text-align:left"><code>5000</code></td>
+<td style="text-align:left">The time in milliseconds that the x-callback-url server should wait for the callback command execution to complete before timing out. Note: this matters only in case of custom callback command; if you chose a shortcut, the actual command executed is only the launch of it, the run itself is indipendent from the plugin.</td>
 </tr>
 <tr>
-<td align="left">Callback Server Hostname</td>
-<td align="left"><code>string</code></td>
-<td align="left"><code>&quot;127.0.0.1&quot;</code></td>
-<td align="left">IPv4 address or hostname to expose the internal x-callback-url http server (must be accessible from a browser on the machine running Homebridge).</td>
+<td style="text-align:left">Callback Server Hostname</td>
+<td style="text-align:left"><code>string</code></td>
+<td style="text-align:left"><code>&quot;127.0.0.1&quot;</code></td>
+<td style="text-align:left">IPv4 address or hostname to expose the internal x-callback-url http server (must be accessible from a browser on the machine running Homebridge).</td>
 </tr>
 <tr>
-<td align="left">Callback Server Port</td>
-<td align="left"><code>number</code></td>
-<td align="left"><code>63963</code></td>
-<td align="left">A free port number to be used by the internal x-callback-url http server.</td>
+<td style="text-align:left">Callback Server Port</td>
+<td style="text-align:left"><code>number</code></td>
+<td style="text-align:left"><code>63963</code></td>
+<td style="text-align:left">A free port number to be used by the internal x-callback-url http server.</td>
 </tr>
 <tr>
-<td align="left">Callback Server Protocol</td>
-<td align="left"><code>&quot;http&quot; | &quot;https&quot;</code></td>
-<td align="left"><code>&quot;http&quot;</code></td>
-<td align="left">If you access other Homebridge services (e.g. UI) behind a reverse proxy with TLS certificate installed, you may want to access the x-callback-url server via https as well.</td>
+<td style="text-align:left">Callback Server Protocol</td>
+<td style="text-align:left"><code>&quot;http&quot; | &quot;https&quot;</code></td>
+<td style="text-align:left"><code>&quot;http&quot;</code></td>
+<td style="text-align:left">If you access other Homebridge services (e.g. UI) behind a reverse proxy with TLS certificate installed, you may want to access the x-callback-url server via https as well.</td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
 <!-- %COMPILED_CONFIG_END% -->
-
-<a id="md:callback-command" class="tsd-anchor"></a><h2><a href="#md:callback-command">Callback command</a></h2><p>As mentioned in the configuration documentation above, there are three options available to handle the callback following a shortcut execution:</p>
-<a id="md:default-display-notification" class="tsd-anchor"></a><h3><a href="#md:default-display-notification">Default (display notification)</a></h3><p>By default, a native notification with a brief summary on the shortcut result is displayed on the host machine running Homebrige (with sound effect <em>Glass</em> for success and <em>Sosumi</em> for failure). The handler for this behaviour is delivered as <a href="https://github.com/duddu/homebridge-shortcuts-buttons/tree/latest/src/bin/HomebridgeShortcutsButtons%20-%20Notify%20Shortcut%20Result.app">HomebridgeShortcutsButtons - Notify Shortcut Result.app</a> (which is copied into the <code>/bin</code> directory of the distributed npm package).<br>For it to run you will have to approve a couple of permissions requests the first time it runs (one to display notifications, one to access shortcuts results in order to print the summary in the notification body).</p>
-<a id="md:custom-unix-command" class="tsd-anchor"></a><h3><a href="#md:custom-unix-command">Custom unix command</a></h3><p>If you choose to manually write a custom callback script, everything you input in the command field will be passed over to node <code>child_process.exec</code>, which will try to execute it in a subshell. Your input can be directly some inline code, or it can be code that runs a file on your machine containing a more elaborate script.<br>The <code>stdout</code>/<code>stderr</code> generated by your command will be propagated onto the top shell (respectively with <code>Logger.debug</code>/<code>error</code>) which is buffered on your Homebridge UI.  </p>
-<a id="md:environment-variables" class="tsd-anchor"></a><h4><a href="#md:environment-variables">Environment variables</a></h4><p>In your command you have at your disposal the following <strong>environment variables</strong> which give you contextual information about the shortcut which triggered the callback:</p>
+<a id="md:callback-command" class="tsd-anchor"></a><h2 class="tsd-anchor-link">Callback command<a href="#md:callback-command" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h2><p>As mentioned in the configuration documentation above, there are three options available to handle the callback following a shortcut execution:</p>
+<a id="md:default-display-notification" class="tsd-anchor"></a><h3 class="tsd-anchor-link">Default (display notification)<a href="#md:default-display-notification" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h3><p>By default, a native notification with a brief summary on the shortcut result is displayed on the host machine running Homebrige (with sound effect <em>Glass</em> for success and <em>Sosumi</em> for failure). The handler for this behaviour is delivered as <a href="https://github.com/duddu/homebridge-shortcuts-buttons/tree/latest/src/bin/HomebridgeShortcutsButtons%20-%20Notify%20Shortcut%20Result.app">HomebridgeShortcutsButtons - Notify Shortcut Result.app</a> (which is copied into the <code>/bin</code> directory of the distributed npm package).<br>
+For it to run you will have to approve a couple of permissions requests the first time it runs (one to display notifications, one to access shortcuts results in order to print the summary in the notification body).</p>
+<a id="md:custom-unix-command" class="tsd-anchor"></a><h3 class="tsd-anchor-link">Custom unix command<a href="#md:custom-unix-command" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h3><p>If you choose to manually write a custom callback script, everything you input in the command field will be passed over to node <code>child_process.exec</code>, which will try to execute it in a subshell. Your input can be directly some inline code, or it can be code that runs a file on your machine containing a more elaborate script.<br>
+The <code>stdout</code>/<code>stderr</code> generated by your command will be propagated onto the top shell (respectively with <code>Logger.debug</code>/<code>error</code>) which is buffered on your Homebridge UI.</p>
+<a id="md:environment-variables" class="tsd-anchor"></a><h4 class="tsd-anchor-link">Environment variables<a href="#md:environment-variables" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h4><p>In your command you have at your disposal the following <strong>environment variables</strong> which give you contextual information about the shortcut which triggered the callback:</p>
 <table>
 <thead>
 <tr>
-<th align="left">Variable</th>
-<th align="left">Type</th>
-<th align="left">Notes</th>
+<th style="text-align:left">Variable</th>
+<th style="text-align:left">Type</th>
+<th style="text-align:left">Notes</th>
 </tr>
 </thead>
-<tbody><tr>
-<td align="left">SHORTCUT_NAME</td>
-<td align="left"><code>string</code></td>
-<td align="left">Name of the run shortcut</td>
+<tbody>
+<tr>
+<td style="text-align:left">SHORTCUT_NAME</td>
+<td style="text-align:left"><code>string</code></td>
+<td style="text-align:left">Name of the run shortcut</td>
 </tr>
 <tr>
-<td align="left">SHORTCUT_STATUS</td>
-<td align="left"><code>&quot;success&quot; | &quot;error&quot; | &quot;cancel&quot;</code></td>
-<td align="left">Cancel: manually stopped</td>
+<td style="text-align:left">SHORTCUT_STATUS</td>
+<td style="text-align:left"><code>&quot;success&quot; | &quot;error&quot; | &quot;cancel&quot;</code></td>
+<td style="text-align:left">Cancel: manually stopped</td>
 </tr>
 <tr>
-<td align="left">SHORTCUT_RESULT</td>
-<td align="left"><code>string | undefined</code></td>
-<td align="left">Only on success status</td>
+<td style="text-align:left">SHORTCUT_RESULT</td>
+<td style="text-align:left"><code>string | undefined</code></td>
+<td style="text-align:left">Only on success status</td>
 </tr>
 <tr>
-<td align="left">SHORTCUT_ERROR</td>
-<td align="left"><code>string | undefined</code></td>
-<td align="left">Only on error status</td>
+<td style="text-align:left">SHORTCUT_ERROR</td>
+<td style="text-align:left"><code>string | undefined</code></td>
+<td style="text-align:left">Only on error status</td>
 </tr>
-</tbody></table>
-<a id="md:shortcut" class="tsd-anchor"></a><h3><a href="#md:shortcut">Shortcut</a></h3><p>For some it might be easier to just use another shortcut to handle the actions to perform on completion of the initial shortcuts configured to run on buttons press. You could even have the same shortcut handling its own error status, for example in case of operation that can be retried (and with the input variables provided - see below - it would be easy to distinguish a standard run from a retry one, for instance). Just be wary of infinite loops.<br>Remember to only insert in the custom command field the shortcut name as it appears in the Shortcuts app, same as for the shortcuts names configured for the homekit buttons above.</p>
-<p>When it comes to passing relevant variables to the callback shortcut, the situation it&#39;s not as easy as the previous case. Shortcuts only accept one single text input when called via url schema. Luckily, we can <strong>encode a dictionary</strong> (base_64) of the variables on the server so it can be passed as a single input parameter to the shortcut. Then from there we can decode it and transform it back into a dictionary ready for consumption within the callback shortcut. Here is an example of shortcut with the mentioned steps:</p>
+</tbody>
+</table>
+<a id="md:shortcut" class="tsd-anchor"></a><h3 class="tsd-anchor-link">Shortcut<a href="#md:shortcut" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h3><p>For some it might be easier to just use another shortcut to handle the actions to perform on completion of the initial shortcuts configured to run on buttons press. You could even have the same shortcut handling its own error status, for example in case of operation that can be retried (and with the input variables provided - see below - it would be easy to distinguish a standard run from a retry one, for instance). Just be wary of infinite loops.<br>
+Remember to only insert in the custom command field the shortcut name as it appears in the Shortcuts app, same as for the shortcuts names configured for the homekit buttons above.</p>
+<p>When it comes to passing relevant variables to the callback shortcut, the situation it's not as easy as the previous case. Shortcuts only accept one single text input when called via url schema. Luckily, we can <strong>encode a dictionary</strong> (base_64) of the variables on the server so it can be passed as a single input parameter to the shortcut. Then from there we can decode it and transform it back into a dictionary ready for consumption within the callback shortcut. Here is an example of shortcut with the mentioned steps:</p>
 <img src="https://github.com/duddu/homebridge-shortcuts-buttons/blob/latest/assets/demo-callback-shortcut-with-input.png?raw=true" width="100%" alt="Demo callback shortcut with input" title="Demo callback shortcut with input">
-
-<p>The key point is to add first the <em>Get text from input</em> action, specifying <em>Shortcut Input</em> as source. This will automatically add the <em>Receive</em> block on top. Note that it is perfectly fine and expected to leave the instruction as <em>Receive No input from Nowhere</em>: the text input coming from url schema will still be passed in.<br>I included in the repository a <strong>copy of the same shortcut screenshotted above</strong> for your convenience, you can download it here: <a href="https://github.com/duddu/homebridge-shortcuts-buttons/raw/latest/assets/Demo%20callback%20shortcut%20with%20input.shortcut">Demo callback shortcut with input.shortcut</a>, and inspect it or import it into your Shortcuts to have a starting point.</p>
-<a id="md:shortcut-input-variables" class="tsd-anchor"></a><h4><a href="#md:shortcut-input-variables">Shortcut input variables</a></h4><p>After the decoding of the dictionary, you&#39;ll have your clear variables to access within your shortcut actions; the typing is the following (similar to the environment variables provided to the custom callback command, except for having to replace <code>undefined</code> - unsupported by shortcuts dictionaries - with <code>false</code>):</p>
+<p>The key point is to add first the <em>Get text from input</em> action, specifying <em>Shortcut Input</em> as source. This will automatically add the <em>Receive</em> block on top. Note that it is perfectly fine and expected to leave the instruction as <em>Receive No input from Nowhere</em>: the text input coming from url schema will still be passed in.<br>
+I included in the repository a <strong>copy of the same shortcut screenshotted above</strong> for your convenience, you can download it here: <a href="https://github.com/duddu/homebridge-shortcuts-buttons/raw/latest/assets/Demo%20callback%20shortcut%20with%20input.shortcut">Demo callback shortcut with input.shortcut</a>, and inspect it or import it into your Shortcuts to have a starting point.</p>
+<a id="md:shortcut-input-variables" class="tsd-anchor"></a><h4 class="tsd-anchor-link">Shortcut input variables<a href="#md:shortcut-input-variables" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h4><p>After the decoding of the dictionary, you'll have your clear variables to access within your shortcut actions; the typing is the following (similar to the environment variables provided to the custom callback command, except for having to replace <code>undefined</code> - unsupported by shortcuts dictionaries - with <code>false</code>):</p>
 <table>
 <thead>
 <tr>
-<th align="left">Variable</th>
-<th align="left">Type</th>
-<th align="left">Notes</th>
+<th style="text-align:left">Variable</th>
+<th style="text-align:left">Type</th>
+<th style="text-align:left">Notes</th>
 </tr>
 </thead>
-<tbody><tr>
-<td align="left">SHORTCUT_NAME</td>
-<td align="left"><code>string</code></td>
-<td align="left">Name of the run shortcut</td>
+<tbody>
+<tr>
+<td style="text-align:left">SHORTCUT_NAME</td>
+<td style="text-align:left"><code>string</code></td>
+<td style="text-align:left">Name of the run shortcut</td>
 </tr>
 <tr>
-<td align="left">SHORTCUT_STATUS</td>
-<td align="left"><code>&quot;success&quot; | &quot;error&quot; | &quot;cancel&quot;</code></td>
-<td align="left">Cancel: manually stopped</td>
+<td style="text-align:left">SHORTCUT_STATUS</td>
+<td style="text-align:left"><code>&quot;success&quot; | &quot;error&quot; | &quot;cancel&quot;</code></td>
+<td style="text-align:left">Cancel: manually stopped</td>
 </tr>
 <tr>
-<td align="left">SHORTCUT_RESULT</td>
-<td align="left"><code>string | false</code></td>
-<td align="left">Only on success status</td>
+<td style="text-align:left">SHORTCUT_RESULT</td>
+<td style="text-align:left"><code>string | false</code></td>
+<td style="text-align:left">Only on success status</td>
 </tr>
 <tr>
-<td align="left">SHORTCUT_ERROR</td>
-<td align="left"><code>string | false</code></td>
-<td align="left">Only on error status</td>
+<td style="text-align:left">SHORTCUT_ERROR</td>
+<td style="text-align:left"><code>string | false</code></td>
+<td style="text-align:left">Only on error status</td>
 </tr>
-</tbody></table>
-<a id="md:requirements" class="tsd-anchor"></a><h2><a href="#md:requirements">Requirements</a></h2><ul>
+</tbody>
+</table>
+<a id="md:requirements" class="tsd-anchor"></a><h2 class="tsd-anchor-link">Requirements<a href="#md:requirements" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h2><ul>
 <li>MacOS 12+ (Monterey or later)</li>
 <li>The shortcuts you want to run must be accessible from the machine where Homebridge is running, e.g. by having the host logged into the relevant iCloud account.</li>
 </ul>
-<a id="md:npm-engines" class="tsd-anchor"></a><h4><a href="#md:npm-engines">NPM Engines</a></h4><ul>
+<a id="md:npm-engines" class="tsd-anchor"></a><h4 class="tsd-anchor-link">NPM Engines<a href="#md:npm-engines" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h4><ul>
 <li><code>node ^18.17.0 || ^20.9.0</code></li>
 <li><code>homebridge ^1.6.0</code></li>
 </ul>
-<a id="md:development" class="tsd-anchor"></a><h2><a href="#md:development">Development</a></h2><p>Please feel free to open PRs from forked repo against the <code>latest</code> branch, I&#39;ll do my best to have a look asap. The plugin is pretty extensible and there are plenty of potential easy enhancements to make in case people find it useful.</p>
+<a id="md:development" class="tsd-anchor"></a><h2 class="tsd-anchor-link">Development<a href="#md:development" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h2><p>Please feel free to open PRs from forked repo against the <code>latest</code> branch, I'll do my best to have a look asap. The plugin is pretty extensible and there are plenty of potential easy enhancements to make in case people find it useful.</p>
 <p>Main npm scripts for local development:</p>
-<pre><code class="language-shell"><span class="hl-0">npm</span><span class="hl-1"> </span><span class="hl-2">install</span><span class="hl-1"> </span><span class="hl-3"># Install dev dependencies</span><br/><span class="hl-0">npm</span><span class="hl-1"> </span><span class="hl-2">run</span><span class="hl-1"> </span><span class="hl-2">test</span><span class="hl-1"> </span><span class="hl-3"># Run unit tests with Jest</span><br/><span class="hl-0">npm</span><span class="hl-1"> </span><span class="hl-2">run</span><span class="hl-1"> </span><span class="hl-2">build</span><span class="hl-1"> </span><span class="hl-3"># Build the plugin</span><br/><span class="hl-0">npm</span><span class="hl-1"> </span><span class="hl-2">run</span><span class="hl-1"> </span><span class="hl-2">watch</span><span class="hl-1"> </span><span class="hl-3"># Run homebridge in background and build on changes</span><br/><span class="hl-0">npm</span><span class="hl-1"> </span><span class="hl-2">run</span><span class="hl-1"> </span><span class="hl-2">convertSchema</span><span class="hl-1"> </span><span class="hl-3"># Generate new config ts+md from schema json</span><br/>
-</code><button>Copy</button></pre>
-<a id="md:semantic-release-and-conventional-changelog" class="tsd-anchor"></a><h3><a href="#md:semantic-release-and-conventional-changelog">Semantic release and conventional changelog</a></h3><p>This repo uses <a href="https://github.com/semantic-release/semantic-release">semantic-release</a> to publish github releases and npm packages. Among the other things, it perform commits analysis in order to determine when a new release is needed, so it&#39;s important that all commits messages follow the conventional-changelog syntax.
+<pre><code class="shell"><span class="hl-0">npm</span><span class="hl-1"> </span><span class="hl-2">install</span><span class="hl-1"> </span><span class="hl-3"># Install dev dependencies</span><br/><span class="hl-0">npm</span><span class="hl-1"> </span><span class="hl-2">run</span><span class="hl-1"> </span><span class="hl-2">test</span><span class="hl-1"> </span><span class="hl-3"># Run unit tests with Jest</span><br/><span class="hl-0">npm</span><span class="hl-1"> </span><span class="hl-2">run</span><span class="hl-1"> </span><span class="hl-2">build</span><span class="hl-1"> </span><span class="hl-3"># Build the plugin</span><br/><span class="hl-0">npm</span><span class="hl-1"> </span><span class="hl-2">run</span><span class="hl-1"> </span><span class="hl-2">watch</span><span class="hl-1"> </span><span class="hl-3"># Run homebridge in background and build on changes</span><br/><span class="hl-0">npm</span><span class="hl-1"> </span><span class="hl-2">run</span><span class="hl-1"> </span><span class="hl-2">convertSchema</span><span class="hl-1"> </span><span class="hl-3"># Generate new config ts+md from schema json</span><br/>
+</code><button type="button">Copy</button></pre>
+
+<a id="md:semantic-release-and-conventional-changelog" class="tsd-anchor"></a><h3 class="tsd-anchor-link">Semantic release and conventional changelog<a href="#md:semantic-release-and-conventional-changelog" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h3><p>This repo uses <a href="https://github.com/semantic-release/semantic-release">semantic-release</a> to publish github releases and npm packages. Among the other things, it perform commits analysis in order to determine when a new release is needed, so it's important that all commits messages follow the conventional-changelog syntax.
 To facilitate this, the repo enforces the use of <a href="https://github.com/commitizen/cz-cli">commitizen</a> locally, via <a href="https://typicode.github.io/husky">husky</a> <code>prepare-commit-msg</code> hook.</p>
-</div></div><div class="col-sidebar"><div class="page-menu"><div class="tsd-navigation settings"><details class="tsd-index-accordion"><summary class="tsd-accordion-summary"><h3><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><use href="assets/icons.svg#icon-chevronDown"></use></svg>Settings</h3></summary><div class="tsd-accordion-details"><div class="tsd-filter-visibility"><h4 class="uppercase">Member Visibility</h4><form><ul id="tsd-filter-options"><li class="tsd-filter-item"><label class="tsd-filter-input"><input type="checkbox" id="tsd-filter-inherited" name="inherited" checked/><svg width="32" height="32" viewBox="0 0 32 32" aria-hidden="true"><rect class="tsd-checkbox-background" width="30" height="30" x="1" y="1" rx="6" fill="none"></rect><path class="tsd-checkbox-checkmark" d="M8.35422 16.8214L13.2143 21.75L24.6458 10.25" stroke="none" stroke-width="3.5" stroke-linejoin="round" fill="none"></path></svg><span>Inherited</span></label></li><li class="tsd-filter-item"><label class="tsd-filter-input"><input type="checkbox" id="tsd-filter-private" name="private" checked/><svg width="32" height="32" viewBox="0 0 32 32" aria-hidden="true"><rect class="tsd-checkbox-background" width="30" height="30" x="1" y="1" rx="6" fill="none"></rect><path class="tsd-checkbox-checkmark" d="M8.35422 16.8214L13.2143 21.75L24.6458 10.25" stroke="none" stroke-width="3.5" stroke-linejoin="round" fill="none"></path></svg><span>Private</span></label></li><li class="tsd-filter-item"><label class="tsd-filter-input"><input type="checkbox" id="tsd-filter-protected" name="protected" checked/><svg width="32" height="32" viewBox="0 0 32 32" aria-hidden="true"><rect class="tsd-checkbox-background" width="30" height="30" x="1" y="1" rx="6" fill="none"></rect><path class="tsd-checkbox-checkmark" d="M8.35422 16.8214L13.2143 21.75L24.6458 10.25" stroke="none" stroke-width="3.5" stroke-linejoin="round" fill="none"></path></svg><span>Protected</span></label></li></ul></form></div><div class="tsd-theme-toggle"><h4 class="uppercase">Theme</h4><select id="tsd-theme"><option value="os">OS</option><option value="light">Light</option><option value="dark">Dark</option></select></div></div></details></div><details open class="tsd-index-accordion tsd-page-navigation"><summary class="tsd-accordion-summary"><h3><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><use href="assets/icons.svg#icon-chevronDown"></use></svg>On This Page</h3></summary><div class="tsd-accordion-details"><ul><li><a href="#md:features-highlights"><span>Features highlights</span></a></li><li><a href="#md:apple-home-examples"><span>Apple <wbr/>Home examples</span></a></li></ul><a href="#md:how-it-works"><span>How it works</span></a><a href="#md:configuration"><span>Configuration</span></a><a href="#md:callback-command"><span>Callback command</span></a><ul><li><a href="#md:default-display-notification"><span>Default (display notification)</span></a></li><li><a href="#md:custom-unix-command"><span>Custom unix command</span></a></li><li><ul><li><a href="#md:environment-variables"><span>Environment variables</span></a></li></ul></li><li><a href="#md:shortcut"><span>Shortcut</span></a></li><li><ul><li><a href="#md:shortcut-input-variables"><span>Shortcut input variables</span></a></li></ul></li></ul><a href="#md:requirements"><span>Requirements</span></a><ul><li><ul><li><a href="#md:npm-engines"><span>NPM <wbr/>Engines</span></a></li></ul></li></ul><a href="#md:development"><span>Development</span></a><ul><li><a href="#md:semantic-release-and-conventional-changelog"><span>Semantic release and conventional changelog</span></a></li></ul></div></details></div><div class="site-menu"><nav class="tsd-navigation"><a href="index.html" class="current"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="assets/icons.svg#icon-1"></use></svg><span>Homebridge Shortcuts Buttons</span></a><ul class="tsd-small-nested-navigation" id="tsd-nav-container" data-base="."><li>Loading...</li></ul></nav></div></div></div><footer><p class="tsd-generator">Generated using <a href="https://typedoc.org/" target="_blank">TypeDoc</a></p></footer><div class="overlay"></div></body></html>
+</div></div><div class="col-sidebar"><div class="page-menu"><div class="tsd-navigation settings"><details class="tsd-accordion"><summary class="tsd-accordion-summary"><h3><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><use href="assets/icons.svg#icon-chevronDown"></use></svg>Settings</h3></summary><div class="tsd-accordion-details"><div class="tsd-filter-visibility"><span class="settings-label">Member Visibility</span><ul id="tsd-filter-options"><li class="tsd-filter-item"><label class="tsd-filter-input"><input type="checkbox" id="tsd-filter-inherited" name="inherited" checked/><svg width="32" height="32" viewBox="0 0 32 32" aria-hidden="true"><rect class="tsd-checkbox-background" width="30" height="30" x="1" y="1" rx="6" fill="none"></rect><path class="tsd-checkbox-checkmark" d="M8.35422 16.8214L13.2143 21.75L24.6458 10.25" stroke="none" stroke-width="3.5" stroke-linejoin="round" fill="none"></path></svg><span>Inherited</span></label></li><li class="tsd-filter-item"><label class="tsd-filter-input"><input type="checkbox" id="tsd-filter-protected" name="protected" checked/><svg width="32" height="32" viewBox="0 0 32 32" aria-hidden="true"><rect class="tsd-checkbox-background" width="30" height="30" x="1" y="1" rx="6" fill="none"></rect><path class="tsd-checkbox-checkmark" d="M8.35422 16.8214L13.2143 21.75L24.6458 10.25" stroke="none" stroke-width="3.5" stroke-linejoin="round" fill="none"></path></svg><span>Protected</span></label></li></ul></div><div class="tsd-theme-toggle"><label class="settings-label" for="tsd-theme">Theme</label><select id="tsd-theme"><option value="os">OS</option><option value="light">Light</option><option value="dark">Dark</option></select></div></div></details></div><details open class="tsd-accordion tsd-page-navigation"><summary class="tsd-accordion-summary"><h3><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><use href="assets/icons.svg#icon-chevronDown"></use></svg>On This Page</h3></summary><div class="tsd-accordion-details"><ul><li><a href="#md:features-highlights"><span>Features highlights</span></a></li><li><a href="#md:apple-home-examples"><span>Apple <wbr/>Home examples</span></a></li></ul><a href="#md:how-it-works"><span>How it works</span></a><a href="#md:configuration"><span>Configuration</span></a><a href="#md:callback-command"><span>Callback command</span></a><ul><li><a href="#md:default-display-notification"><span>Default (display notification)</span></a></li><li><a href="#md:custom-unix-command"><span>Custom unix command</span></a></li><li><ul><li><a href="#md:environment-variables"><span>Environment variables</span></a></li></ul></li><li><a href="#md:shortcut"><span>Shortcut</span></a></li><li><ul><li><a href="#md:shortcut-input-variables"><span>Shortcut input variables</span></a></li></ul></li></ul><a href="#md:requirements"><span>Requirements</span></a><ul><li><ul><li><a href="#md:npm-engines"><span>NPM <wbr/>Engines</span></a></li></ul></li></ul><a href="#md:development"><span>Development</span></a><ul><li><a href="#md:semantic-release-and-conventional-changelog"><span>Semantic release and conventional changelog</span></a></li></ul></div></details></div><div class="site-menu"><nav class="tsd-navigation"><a href="index.html" class="current"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="assets/icons.svg#icon-1"></use></svg><span>Homebridge Shortcuts Buttons</span></a><ul class="tsd-small-nested-navigation" id="tsd-nav-container" data-base="."><li>Loading...</li></ul></nav></div></div></div><footer><p class="tsd-generator">Generated using <a href="https://typedoc.org/" target="_blank">TypeDoc</a></p></footer><div class="overlay"></div></body></html>
