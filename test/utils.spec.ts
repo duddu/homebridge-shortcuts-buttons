@@ -1,7 +1,7 @@
 import { describe, expect, test, jest } from '@jest/globals';
-import { Logger } from 'homebridge/lib/logger';
 
 import { HSBUtils } from '../src/utils';
+import { hbLoggerMockedInstance } from './mocks/logger.mock';
 
 jest.mock('homebridge/lib/logger');
 
@@ -14,8 +14,7 @@ jest.mock('util', () => ({
 }));
 
 describe(HSBUtils.name, () => {
-  const logger = new Logger();
-  const utils = new HSBUtils(logger);
+  const utils = new HSBUtils(hbLoggerMockedInstance);
 
   describe(utils.execAsync.name, () => {
     test('should call child_process.exec with default timeout', async () => {
@@ -35,12 +34,12 @@ describe(HSBUtils.name, () => {
 
     test('should log stdout returned from executed command', async () => {
       await utils.execAsync('cmd');
-      expect(logger.debug).toHaveBeenNthCalledWith(2, 'stdout');
+      expect(hbLoggerMockedInstance.debug).toHaveBeenNthCalledWith(2, 'stdout');
     });
 
     test('should log stderr returned from executed command', async () => {
       await utils.execAsync('cmd');
-      expect(logger.error).toHaveBeenNthCalledWith(1, 'stderr');
+      expect(hbLoggerMockedInstance.error).toHaveBeenNthCalledWith(1, 'stderr');
     });
   });
 

@@ -1,7 +1,7 @@
 import {
   Characteristic as TCharacteristic,
   CharacteristicValue,
-  Logger,
+  Logging,
   Nullable,
   Service,
 } from 'homebridge';
@@ -40,7 +40,7 @@ export class HSBService {
   private readonly shortcut: HSBShortcut;
 
   constructor(
-    private readonly log: Logger,
+    private readonly log: Logging,
     private readonly service: Service,
     private readonly serviceConfig: HSBServiceConfig,
     server: Nullable<HSBXCallbackUrlServer>,

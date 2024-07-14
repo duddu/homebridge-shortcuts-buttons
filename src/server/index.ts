@@ -1,4 +1,4 @@
-import { API, Logger } from 'homebridge';
+import { API, Logging } from 'homebridge';
 import { createServer, IncomingMessage, Server, ServerResponse } from 'http';
 
 import { HSBXCallbackUrlServerCommand } from './command';
@@ -19,7 +19,7 @@ export class HSBXCallbackUrlServer {
 
   constructor(
     private readonly config: HSBConfig,
-    private readonly log: Logger,
+    private readonly log: Logging,
     private readonly utils: HSBUtils,
     private readonly api: API,
   ) {

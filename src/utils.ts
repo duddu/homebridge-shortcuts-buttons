@@ -1,12 +1,12 @@
 import { ExecOptions, exec } from 'child_process';
 import { ObjectEncodingOptions } from 'fs';
-import { Logger } from 'homebridge';
+import { Logging } from 'homebridge';
 import { promisify } from 'util';
 
 const EXEC_DEFAULT_TIMEOUT = 5000;
 
 export class HSBUtils {
-  constructor(private readonly log: Logger) {}
+  constructor(private readonly log: Logging) {}
 
   public async execAsync(
     command: string,

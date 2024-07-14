@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, describe, expect, jest, test } from '@jest/globals';
-import { API, Logger } from 'homebridge';
+import { API, Logging } from 'homebridge';
 
 import { HSBDevice } from '../src/accessory';
 import { HSBConfig } from '../src/config';
@@ -56,9 +56,10 @@ describe(HSBPlatform.name, () => {
   });
 
   describe('constructor', () => {
-    test('should polyfill logger success method', () => {
-      const legacyLogger = { info: jest.fn() } as unknown as Logger;
-      instantiatePlatform(undefined, legacyLogger);
+    test('should polydsfill logger success method', () => {
+      const legacyLogger = { ...hbLoggerMockedInstance };
+      delete (legacyLogger as Partial<Logging>).success;
+      instantiatePlatform(undefined, legacyLogger as Logging);
 
       expect(platform.log.success).toBe(legacyLogger.info);
     });

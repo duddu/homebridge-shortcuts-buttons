@@ -1,4 +1,4 @@
-import { API, DynamicPlatformPlugin, Logger, PlatformConfig, Nullable } from 'homebridge';
+import { API, DynamicPlatformPlugin, Logging, PlatformConfig, Nullable } from 'homebridge';
 
 import { HSBConfig } from './config';
 import { PLATFORM_NAME, PLUGIN_NAME } from './settings';
@@ -15,7 +15,7 @@ export class HSBPlatform implements DynamicPlatformPlugin {
   public server: Nullable<HSBXCallbackUrlServer> = null;
 
   constructor(
-    public readonly log: Logger,
+    public readonly log: Logging,
     _config: PlatformConfig,
     public readonly api: API,
   ) {
