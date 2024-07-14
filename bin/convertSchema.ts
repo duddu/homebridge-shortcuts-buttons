@@ -1,12 +1,14 @@
-import { join } from 'path';
-import { exit, stdout } from 'process';
+/* eslint-disable max-len */
+
 import { writeFile, readFile } from 'fs/promises';
 import { compile, Options } from 'json-schema-to-typescript';
+import { dirname, join } from 'path';
+import { exit, stdout } from 'process';
+import { fileURLToPath } from 'url';
 
-import { schema } from '../config.schema.json';
+import schemaJson from '../config.schema.json' with { type: 'json' };
 
-/* eslint-disable max-len, @typescript-eslint/no-var-requires */
-
+const __dirname = dirname(fileURLToPath(import.meta.url));
 const moduleName = 'SchemaConverter';
 const configInterfaceName = 'HSBConfig';
 const interfaceOutputRootPath = '/src/config.ts';
@@ -14,11 +16,16 @@ const interfaceOutputRelativePath = join(__dirname, '../', interfaceOutputRootPa
 const readmeOutputRootPath = '/README.md';
 const readmeOutputRelativePath = join(__dirname, '../', readmeOutputRootPath);
 const prettierrcPath = join(__dirname, '../.prettierrc');
+const configSchema = schemaJson.schema;
 
 async function main(): Promise<void> {
-  recursiveParse(schema.properties);
+  await recursiveParse(configSchema.properties);
 
-  const config = await compile(schema as never, configInterfaceName, await getCompileOptions());
+  const config = await compile(
+    configSchema as never,
+    configInterfaceName,
+    await getCompileOptions(),
+  );
 
   await writeConfig(config);
 
@@ -27,11 +34,11 @@ async function main(): Promise<void> {
 
 let md = '| Field | Type | Default | Description |\n| :- | :- | :- | :- |\n';
 
-function recursiveParse(root: object, subLevel = false) {
+async function recursiveParse(root: object, subLevel = false) {
   for (const key of Object.keys(root)) {
     const fieldConfig = root[key as never];
-    const toCase = require('to-case');
-    let fieldName = toCase.title(toCase.lower(key));
+    const { cases } = await import('to-case' as never);
+    let fieldName = cases.title(cases.lower(key));
     if (fieldConfig['title']) {
       fieldName = fieldConfig['title'];
       delete fieldConfig['title'];
@@ -42,10 +49,10 @@ function recursiveParse(root: object, subLevel = false) {
       `| ${!fieldConfig['default'] ? '-' : typeof fieldConfig['default'] === 'string' ? `\`"${fieldConfig['default']}"\`` : `\`${fieldConfig['default']}\``} ` +
       `| ${(fieldConfig['description'] as string).replaceAll('\n', '').replaceAll('|', '\\|')} |\n`;
     if (fieldConfig['properties']) {
-      recursiveParse(fieldConfig['properties'], true);
+      await recursiveParse(fieldConfig['properties'], true);
     }
     if (fieldConfig['items'] && fieldConfig['items']['properties']) {
-      recursiveParse(fieldConfig['items']['properties'], true);
+      await recursiveParse(fieldConfig['items']['properties'], true);
     }
   }
 }
@@ -93,7 +100,7 @@ async function writeConfig(config: string): Promise<void> {
     .replaceAll('* \n', '*\n')
     .replaceAll(/export\s(\w+)\s(?!HSBConfig)/g, '$1 ')
     .replaceAll(/(([^\n]+)\*\/)(\n\s*(\w+\s)?(\w+)(:|\s=))/gm, (a, _b, c, _d, _e, f) => {
-      const fieldConfig = schema.properties[f as never];
+      const fieldConfig = configSchema.properties[f as never];
       if (fieldConfig) {
         const defaultValue = fieldConfig['default'] as unknown;
         if (defaultValue) {
@@ -131,4 +138,4 @@ class SchemaConverterError extends Error {
   }
 }
 
-(async (): Promise<void> => main()).call(null);
+(async (): Promise<void> => main())();

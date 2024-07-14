@@ -1,18 +1,19 @@
 {
   "compilerOptions": {
-    "target": "ES2022",
+    "esModuleInterop": true,
+    "inlineSourceMap": true,
     "lib": ["ES2022"],
     "module": "NodeNext",
     "moduleResolution": "NodeNext",
-    "inlineSourceMap": true,
     "noEmitOnError": true,
     "noImplicitAny": true,
     "noImplicitReturns": true,
     "noImplicitThis": true,
     "resolveJsonModule": true,
     "skipLibCheck": true,
-    "strict": true
+    "strict": true,
+    "target": "ES2022"
   },
-  "include": ["**/*.ts"],
-  "exclude": ["**/*.spec.ts"]
+  "exclude": ["../src/", "../test/"],
+  "include": ["./**/*.ts"]
 }

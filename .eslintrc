@@ -9,7 +9,7 @@
     "ecmaVersion": 2022,
     "sourceType": "module"
   },
-  "ignorePatterns": ["dist"],
+  "ignorePatterns": ["/dist/"],
   "rules": {
     "quotes": ["off"],
     "indent": ["warn", 2, { "SwitchCase": 1 }],

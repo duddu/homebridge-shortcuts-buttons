@@ -124,7 +124,7 @@ After the decoding of the dictionary, you'll have your clear variables to access
 #### NPM Engines
 
 - `node ^18.17.0 || ^20.9.0`
-- `homebridge ^1.6.0`
+- `homebridge ^1.8.0`
 
 ## Development
 

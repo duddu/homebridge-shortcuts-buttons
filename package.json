@@ -15,11 +15,12 @@
   },
   "engines": {
     "node": "^18.17.0 || ^20.9.0",
-    "homebridge": "^1.6.0"
+    "homebridge": "^1.8.0"
   },
+  "type": "module",
   "main": "dist/index.js",
   "scripts": {
-    "lint": "eslint src/**/*.ts",
+    "lint": "eslint ./**/*.ts --quiet",
     "test": "jest --verbose --silent --forceExit --detectOpenHandles --no-cache",
     "test:watch": "npm run test -- --watch --no-coverage",
     "test:quiet": "npm run test -- --verbose false --no-coverage",

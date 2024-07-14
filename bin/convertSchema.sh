@@ -3,8 +3,9 @@
 set -e
 
 CWD=$(dirname $(readlink -f "$0"))
+OUT="$CWD/convertSchema.js"
 
-rm -f "$CWD"/*.js
+rimraf "$OUT"
 tsc -p "$CWD"
-chmod 744 "$CWD/convertSchema.js"
-node "$CWD/convertSchema.js"
+chmod 744 "$OUT"
+node --disable-warning=ExperimentalWarning "$OUT" || node "$OUT"
