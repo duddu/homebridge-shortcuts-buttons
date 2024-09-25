@@ -1,14 +1,15 @@
 {
   "editor.defaultFormatter": "rvest.vs-code-prettier-eslint",
-  "editor.formatOnType": false,
   "editor.formatOnPaste": true,
   "editor.formatOnSave": true,
   "editor.formatOnSaveMode": "file",
+  "editor.formatOnType": false,
   "editor.rulers": [100],
+  "editor.tabSize": 2,
   "files.autoSave": "off",
   "files.eol": "\n",
-  "vs-code-prettier-eslint.prettierLast": false,
+  "typescript.format.enable": true,
+  "typescript.format.semicolons": "insert",
   "typescript.tsdk": "node_modules/typescript/lib",
-  "sarif-viewer.connectToGithubCodeScanning": "off",
-  "editor.tabSize": 2
+  "vs-code-prettier-eslint.prettierLast": true
 }

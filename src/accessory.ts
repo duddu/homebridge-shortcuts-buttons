@@ -1,12 +1,12 @@
-import { PlatformAccessory } from 'homebridge';
+import { PlatformAccessory, UnknownContext } from 'homebridge';
 
 import { HSBConfig } from './config';
 import { HSBPlatform } from './platform';
 import { HSBService, HSBServiceType } from './service';
 import { PLATFORM_NAME } from './settings';
 
-export interface HSBAccessoryContext {
-  device: HSBDevice;
+export interface HSBAccessoryContext extends UnknownContext {
+  device?: HSBDevice;
 }
 
 export type HSBPlatformAccessory = PlatformAccessory<HSBAccessoryContext>;
@@ -31,7 +31,7 @@ export class HSBAccessory {
       .setCharacteristic(this.platform.api.hap.Characteristic.Model, PLATFORM_NAME)
       .setCharacteristic(
         this.platform.api.hap.Characteristic.SerialNumber,
-        this.platformAccessory.context.device.serialNumber,
+        this.platformAccessory.context.device!.serialNumber,
       );
   }
 

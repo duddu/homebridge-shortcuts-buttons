@@ -21,8 +21,12 @@ class HSBXCallbackUrlServerCommandEnvironment {
     }
     this.SHORTCUT_NAME = shortcut;
     this.SHORTCUT_STATUS = status;
-    result && (this.SHORTCUT_RESULT = result);
-    errorMessage && (this.SHORTCUT_ERROR = errorMessage);
+    if (result !== null) {
+      this.SHORTCUT_RESULT = result;
+    }
+    if (errorMessage !== null) {
+      this.SHORTCUT_ERROR = errorMessage;
+    }
     Object.freeze(this);
   }
 }
@@ -85,14 +89,16 @@ export class HSBXCallbackUrlServerCommand {
     switch (this.environment.SHORTCUT_STATUS) {
       case HSBShortcutStatus.SUCCESS:
         subtitle += ' executed successfully';
-        this.environment.SHORTCUT_RESULT &&
-          (subtitle += `\nResult: ${this.environment.SHORTCUT_RESULT}`);
+        if (HSBUtils.isNonEmptyString(this.environment.SHORTCUT_RESULT)) {
+          subtitle += `\nResult: ${this.environment.SHORTCUT_RESULT}`;
+        }
         sound = 'Glass';
         break;
       case HSBShortcutStatus.ERROR:
         subtitle += ' execution failed';
-        this.environment.SHORTCUT_ERROR &&
-          (subtitle += `\nError: ${this.environment.SHORTCUT_ERROR}`);
+        if (HSBUtils.isNonEmptyString(this.environment.SHORTCUT_ERROR)) {
+          subtitle += `\nError: ${this.environment.SHORTCUT_ERROR}`;
+        }
         sound = 'Sosumi';
         break;
       case HSBShortcutStatus.CANCEL:

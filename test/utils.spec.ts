@@ -1,9 +1,7 @@
 import { describe, expect, test, jest } from '@jest/globals';
-import { Logger } from 'homebridge/lib/logger';
 
 import { HSBUtils } from '../src/utils';
-
-jest.mock('homebridge/lib/logger');
+import { hbLoggerMockedInstance } from './mocks/logger.mock';
 
 const execMock = jest.fn(() => ({
   stdout: 'stdout',
@@ -14,7 +12,7 @@ jest.mock('util', () => ({
 }));
 
 describe(HSBUtils.name, () => {
-  const logger = new Logger();
+  const logger = hbLoggerMockedInstance;
   const utils = new HSBUtils(logger);
 
   describe(utils.execAsync.name, () => {

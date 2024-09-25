@@ -2,18 +2,20 @@ import { join } from 'path';
 import { exit, stdout } from 'process';
 import { writeFile, readFile } from 'fs/promises';
 import { compile, Options } from 'json-schema-to-typescript';
+import lowerCase from 'lodash/lowerCase.js';
+import startCase from 'lodash/startCase.js';
 
 import { schema } from '../config.schema.json';
 
-/* eslint-disable max-len, @typescript-eslint/no-var-requires */
+/* eslint-disable max-len */
 
 const moduleName = 'SchemaConverter';
 const configInterfaceName = 'HSBConfig';
 const interfaceOutputRootPath = '/src/config.ts';
-const interfaceOutputRelativePath = join(__dirname, '../', interfaceOutputRootPath);
+const interfaceOutputRelativePath = join(process.env.npm_config_local_prefix, interfaceOutputRootPath);
 const readmeOutputRootPath = '/README.md';
-const readmeOutputRelativePath = join(__dirname, '../', readmeOutputRootPath);
-const prettierrcPath = join(__dirname, '../.prettierrc');
+const readmeOutputRelativePath = join(process.env.npm_config_local_prefix, readmeOutputRootPath);
+const prettierrcPath = join(process.env.npm_config_local_prefix, '/.prettierrc');
 
 async function main(): Promise<void> {
   recursiveParse(schema.properties);
@@ -30,8 +32,7 @@ let md = '| Field | Type | Default | Description |\n| :- | :- | :- | :- |\n';
 function recursiveParse(root: object, subLevel = false) {
   for (const key of Object.keys(root)) {
     const fieldConfig = root[key as never];
-    const toCase = require('to-case');
-    let fieldName = toCase.title(toCase.lower(key));
+    let fieldName = startCase(lowerCase(key));
     if (fieldConfig['title']) {
       fieldName = fieldConfig['title'];
       delete fieldConfig['title'];

@@ -7,8 +7,8 @@ import { HSBPlatform } from '../src/platform';
 const HomebridgeAPIMock = {
   registerPlatform: jest.fn(),
 };
-jest.mock('homebridge/lib/api', () => ({
-  HomebridgeAPI: HomebridgeAPIMock,
+jest.mock('homebridge', () => ({
+  API: HomebridgeAPIMock,
 }));
 
 describe('API.registerPlatform', () => {
