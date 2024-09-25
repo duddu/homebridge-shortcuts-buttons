@@ -30,6 +30,7 @@ class HSBXCallbackUrlRequestValidator implements HSBXCallbackUrlRequestValidator
   public test(): boolean {
     try {
       return this.condition() === true;
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (e) {
       return false;
     }

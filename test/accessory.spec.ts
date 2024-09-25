@@ -151,7 +151,7 @@ describe(HSBAccessory.name, () => {
       expect(setAccessoryInformationCharacteristicSpy).toHaveBeenNthCalledWith(
         3,
         platform.api.hap.Characteristic.SerialNumber,
-        platformAccessory.context.device.serialNumber,
+        platformAccessory.context.device!.serialNumber,
       );
     });
   });
