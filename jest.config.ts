@@ -89,8 +89,12 @@ const config: JestConfigWithTsJest = {
   //   "node"
   // ],
 
+  extensionsToTreatAsEsm: ['.ts'],
+
   // A map from regular expressions to module names or to arrays of module names that allow to stub out resources with a single module
-  // moduleNameMapper: {},
+  moduleNameMapper: {
+    '^(\\.{1,2}/.*)\\.js$': '$1',
+  },
 
   // An array of regexp pattern strings, matched against all module paths before considered 'visible' to the module loader
   // modulePathIgnorePatterns: [],
@@ -102,7 +106,7 @@ const config: JestConfigWithTsJest = {
   // notifyMode: "failure-change",
 
   // A preset that is used as a base for Jest's configuration
-  preset: 'ts-jest',
+  // preset: 'ts-jest',
 
   // Run tests from one or more projects
   // projects: undefined,
@@ -178,10 +182,13 @@ const config: JestConfigWithTsJest = {
   transform: {
     // '^.+\\.[tj]sx?$' to process js/ts with `ts-jest`
     // '^.+\\.m?[tj]sx?$' to process js/ts/mjs/mts with `ts-jest`
-    '^.+\\.spec\\.ts$': [
+    // '^.+\\.spec\\.ts$': [
+    '^.+\\.tsx?$': [
       'ts-jest',
       {
-        tsconfig: './test/tsconfig.test.json',
+        // isolatedModules: true,
+        // tsconfig: './test/tsconfig.test.json',
+        useESM: true,
       },
     ],
   },

@@ -6,10 +6,10 @@ import {
   Service,
 } from 'homebridge';
 
-import { HSBConfig } from './config';
-import { HSBXCallbackUrlServer } from './server';
-import { HSBShortcut } from './shortcut';
-import { HSBUtils } from './utils';
+import { HSBConfig } from './config.js';
+import { HSBXCallbackUrlServer } from './server/index.js';
+import { HSBShortcut } from './shortcut.js';
+import { HSBUtils } from './utils.js';
 
 export type HSBServiceType = typeof Service.Outlet | typeof Service.Switch;
 

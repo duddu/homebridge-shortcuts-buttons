@@ -1,12 +1,12 @@
 import { API, Logger } from 'homebridge';
 import { createServer, IncomingMessage, Server, ServerResponse } from 'http';
 
-import { HSBXCallbackUrlServerCommand } from './command';
-import { HSBConfig } from '../config';
-import { HSBXCallbackUrlRequiredSearchParamsKeys, HSBXCallbackUrlSearchParams } from './params';
-import { PLATFORM_NAME, VERSION } from '../settings';
-import { HSBUtils } from '../utils';
-import { createRequestValidators } from './validators';
+import { HSBXCallbackUrlServerCommand } from './command.js';
+import { HSBConfig } from '../config.js';
+import { HSBXCallbackUrlRequiredSearchParamsKeys, HSBXCallbackUrlSearchParams } from './params.js';
+import { PLATFORM_NAME } from '../settings.js';
+import { HSBUtils } from '../utils.js';
+import { createRequestValidators } from './validators.js';
 
 export class HSBXCallbackUrlServer {
   private readonly pathname = '/x-callback-url';
@@ -160,7 +160,7 @@ const CALLBACK_HTML_CONTENT = `<!DOCTYPE html>
 <html class="default" lang="en">
   <head>
     <meta charset="utf-8">
-    <title>${PLATFORM_NAME}v${VERSION} - X-Callback-Url Server</title>
+    <title>${PLATFORM_NAME} - X-Callback-Url Server</title>
     <script>typeof window !== "undefined" && window.close()</script>
   </head>
 </html>`;

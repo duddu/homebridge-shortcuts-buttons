@@ -1,9 +1,9 @@
 import { PlatformAccessory, UnknownContext } from 'homebridge';
 
-import { HSBConfig } from './config';
-import { HSBPlatform } from './platform';
-import { HSBService, HSBServiceType } from './service';
-import { PLATFORM_NAME } from './settings';
+import { HSBConfig } from './config.js';
+import { HSBPlatform } from './platform.js';
+import { HSBService, HSBServiceType } from './service.js';
+import { PLATFORM_NAME } from './settings.js';
 
 export interface HSBAccessoryContext extends UnknownContext {
   device?: HSBDevice;

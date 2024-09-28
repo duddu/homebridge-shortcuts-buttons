@@ -1,6 +1,7 @@
 import { Nullable } from 'homebridge';
-import { HSBUtils } from './utils';
-import { HSBXCallbackUrlServer } from './server';
+
+import { HSBXCallbackUrlServer } from './server/index.js';
+import { HSBUtils } from './utils.js';
 
 export enum HSBShortcutStatus {
   SUCCESS = 'success',
@@ -32,10 +33,16 @@ export class HSBShortcut {
 
   private get shortcutUrl(): string {
     let url = 'shortcuts://';
-    this.isWithXCallbackUrl && (url += 'x-callback-url/');
+    if (this.isWithXCallbackUrl === true) {
+      url += 'x-callback-url/';
+    }
     url += `run-shortcut\\?name=${this.name}`;
-    this.isWithXCallbackUrl && (url += `\\&${this.callbackXParams}`);
-    this.isWithTextInput && (url += `\\&${this.textInputParams}`);
+    if (this.isWithXCallbackUrl === true) {
+      url += `\\&${this.callbackXParams}`;
+    }
+    if (this.isWithTextInput === true) {
+      url += `\\&${this.textInputParams}`;
+    }
     return url;
   }
 

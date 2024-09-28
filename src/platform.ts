@@ -1,10 +1,10 @@
 import { API, DynamicPlatformPlugin, Logger, PlatformConfig, Nullable } from 'homebridge';
 
-import { HSBConfig } from './config';
-import { PLATFORM_NAME, PLUGIN_NAME } from './settings';
-import { HSBAccessory, HSBPlatformAccessory, HSBAccessoryContext, HSBDevice } from './accessory';
-import { HSBXCallbackUrlServer } from './server';
-import { HSBUtils } from './utils';
+import { HSBConfig } from './config.js';
+import { PLATFORM_NAME, PLUGIN_NAME } from './settings.js';
+import { HSBAccessory, HSBPlatformAccessory, HSBAccessoryContext, HSBDevice } from './accessory.js';
+import { HSBXCallbackUrlServer } from './server/index.js';
+import { HSBUtils } from './utils.js';
 
 export class HSBPlatform implements DynamicPlatformPlugin {
   public readonly config: HSBConfig;

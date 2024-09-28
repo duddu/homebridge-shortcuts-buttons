@@ -13,12 +13,18 @@ export class HSBUtils {
     options?: ObjectEncodingOptions & ExecOptions,
   ): Promise<void> {
     this.log.debug(`${this.constructor.name}::${this.execAsync.name} Executing`, command);
+
     const { stdout, stderr } = await promisify(exec).call(null, command, {
       timeout: EXEC_DEFAULT_TIMEOUT,
       ...options,
     });
-    HSBUtils.isNonEmptyString(stdout.toString()) && this.log.debug(stdout.toString());
-    HSBUtils.isNonEmptyString(stderr.toString()) && this.log.error(stderr.toString());
+
+    if (HSBUtils.isNonEmptyString(stdout.toString())) {
+      this.log.debug(stdout.toString());
+    }
+    if (HSBUtils.isNonEmptyString(stderr.toString())) {
+      this.log.error(stderr.toString());
+    }
   }
 
   public static isNonEmptyString = (value: unknown): value is string =>

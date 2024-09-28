@@ -2,12 +2,11 @@
  * @module server
  */
 
-import { join } from 'path';
-
-import { HSBConfig } from '../config';
-import { HSBXCallbackUrlSearchParams } from './params';
-import { HSBShortcut, HSBShortcutStatus } from '../shortcut';
-import { HSBUtils } from '../utils';
+import { HSBConfig } from '../config.js';
+import { HSBXCallbackUrlSearchParams } from './params.js';
+import { PLUGIN_NAME } from '../settings.js';
+import { HSBShortcut, HSBShortcutStatus } from '../shortcut.js';
+import { HSBUtils } from '../utils.js';
 
 class HSBXCallbackUrlServerCommandEnvironment {
   public readonly SHORTCUT_NAME: string;
@@ -111,7 +110,7 @@ export class HSBXCallbackUrlServerCommand {
     }
 
     return (
-      `open ${DEFAULT_COMMAND_EXECUTABLE_PATH} ` +
+      `open "\\$(npm -gp ls ${PLUGIN_NAME})${DEFAULT_COMMAND_EXECUTABLE_RELATIVE_PATH}" ` +
       `--env NOTIFICATION_TITLE="${this.config.name}" ` +
       `--env NOTIFICATION_SUBTITLE="${subtitle}" ` +
       `--env NOTIFICATION_SOUND="${sound}"`
@@ -119,7 +118,5 @@ export class HSBXCallbackUrlServerCommand {
   }
 }
 
-const DEFAULT_COMMAND_EXECUTABLE_PATH = join(
-  __dirname,
-  '../bin/HomebridgeShortcutsButtons\\ -\\ Notify\\ Shortcut\\ Result.app',
-);
+const DEFAULT_COMMAND_EXECUTABLE_RELATIVE_PATH =
+  '/dist/bin/HomebridgeShortcutsButtons\\ -\\ Notify\\ Shortcut\\ Result.app';

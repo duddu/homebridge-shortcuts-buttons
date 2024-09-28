@@ -4,8 +4,8 @@
 
 import { URLSearchParams } from 'url';
 
-import { HSBShortcutStatus } from '../shortcut';
-import { HSBUtils } from '../utils';
+import { HSBShortcutStatus } from '../shortcut.js';
+import { HSBUtils } from '../utils.js';
 
 export enum HSBXCallbackUrlRequiredSearchParamsKeys {
   SHORTCUT = 'shortcut',
