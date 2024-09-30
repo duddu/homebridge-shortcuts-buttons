@@ -1,16 +1,12 @@
-npm-shrinkwrap.json
 .github
+**/.git
+**/*.js
+**/*.md
+**/node_modules
 assets
 coverage
 dist
 docs
+npm-shrinkwrap.json
 src/bin
 src/config.ts
-**/*.md
-**/*.js
-
-# Defaults
-**/.git
-**/.svn
-**/.hg
-**/node_modules

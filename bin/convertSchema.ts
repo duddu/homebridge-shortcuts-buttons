@@ -12,7 +12,10 @@ import { schema } from '../config.schema.json';
 const moduleName = 'SchemaConverter';
 const configInterfaceName = 'HSBConfig';
 const interfaceOutputRootPath = '/src/config.ts';
-const interfaceOutputRelativePath = join(process.env.npm_config_local_prefix, interfaceOutputRootPath);
+const interfaceOutputRelativePath = join(
+  process.env.npm_config_local_prefix,
+  interfaceOutputRootPath,
+);
 const readmeOutputRootPath = '/README.md';
 const readmeOutputRelativePath = join(process.env.npm_config_local_prefix, readmeOutputRootPath);
 const prettierrcPath = join(process.env.npm_config_local_prefix, '/.prettierrc');
