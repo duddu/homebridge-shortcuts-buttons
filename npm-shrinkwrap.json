@@ -19,13 +19,13 @@
         "@semantic-release/release-notes-generator": "^14.0.1",
         "@types/eslint__eslintrc": "^2.1.2",
         "@types/eslint__js": "^8.42.3",
-        "@types/node": "^22.7.8",
+        "@types/node": "^22.8.1",
         "@typescript-eslint/eslint-plugin": "^8.11.0",
         "@typescript-eslint/parser": "^8.11.0",
         "commitizen": "^4.3.1",
         "cz-conventional-changelog": "^3.3.0",
         "eslint": "^9.13.0",
-        "homebridge": "^2.0.0-beta.22",
+        "homebridge": "^2.0.0-beta.23",
         "husky": "^9.1.6",
         "json-schema-to-typescript": "^15.0.2",
         "lodash": "^4.17.21",
@@ -33,12 +33,12 @@
         "prettier": "^3.3.3",
         "prettier-eslint": "^16.3.0",
         "rimraf": "^6.0.1",
-        "semantic-release": "^24.1.3",
+        "semantic-release": "^24.2.0",
         "ts-jest": "^29.2.5",
         "ts-node": "^10.9.2",
-        "tsx": "^4.19.1",
+        "tsx": "^4.19.2",
         "typedoc": "^0.26.10",
-        "typedoc-plugin-merge-modules": "^6.0.2",
+        "typedoc-plugin-merge-modules": "^6.0.3",
         "typedoc-plugin-missing-exports": "^3.0.0",
         "typescript": "^5.6.3"
       },
@@ -3190,13 +3190,13 @@
       }
     },
     "node_modules/@types/node": {
-      "version": "22.7.8",
-      "resolved": "https://registry.npmjs.org/@types/node/-/node-22.7.8.tgz",
-      "integrity": "sha512-a922jJy31vqR5sk+kAdIENJjHblqcZ4RmERviFsER4WJcEONqxKcjNOlk0q7OUfrF5sddT+vng070cdfMlrPLg==",
+      "version": "22.8.1",
+      "resolved": "https://registry.npmjs.org/@types/node/-/node-22.8.1.tgz",
+      "integrity": "sha512-k6Gi8Yyo8EtrNtkHXutUu2corfDf9su95VYVP10aGYMMROM6SAItZi0w1XszA6RtWTHSVp5OeFof37w0IEqCQg==",
       "dev": true,
       "license": "MIT",
       "dependencies": {
-        "undici-types": "~6.19.2"
+        "undici-types": "~6.19.8"
       }
     },
     "node_modules/@types/normalize-package-data": {
@@ -6725,9 +6725,9 @@
       }
     },
     "node_modules/homebridge": {
-      "version": "2.0.0-beta.22",
-      "resolved": "https://registry.npmjs.org/homebridge/-/homebridge-2.0.0-beta.22.tgz",
-      "integrity": "sha512-gQuFj+MM2EKZQB06fkVsTseMFJuRCXFaU+x6v/u922NG82PHXbKSdKi74kBEnDacnDBRkbt2FK5f5eAWImyIig==",
+      "version": "2.0.0-beta.23",
+      "resolved": "https://registry.npmjs.org/homebridge/-/homebridge-2.0.0-beta.23.tgz",
+      "integrity": "sha512-v0TcB4aLbnNvt2wlcZ6iJxwOxudDIxnQo0JhH/cRi7k9Wz47E6kYy5ehAZstLPs1HcXKK2HtWSJzRR5rb9ZIGQ==",
       "dev": true,
       "license": "Apache-2.0",
       "dependencies": {
@@ -6743,7 +6743,7 @@
         "homebridge": "bin/homebridge.js"
       },
       "engines": {
-        "node": "^18.15.0 || ^20.7.0 || ^22.0.0"
+        "node": "^18.15.0 || ^20.7.0 || ^22"
       }
     },
     "node_modules/homebridge/node_modules/chalk": {
@@ -14075,10 +14075,11 @@
       "license": "ISC"
     },
     "node_modules/semantic-release": {
-      "version": "24.1.3",
-      "resolved": "https://registry.npmjs.org/semantic-release/-/semantic-release-24.1.3.tgz",
-      "integrity": "sha512-Cb0Pm3Ye15u8k/B+7EnusMUSIIucAIEBD3QDRmmclv53KVyqmg1Lb3XPx0AMNxfJZEI+ZT+M+IXDyTrudK6Rew==",
+      "version": "24.2.0",
+      "resolved": "https://registry.npmjs.org/semantic-release/-/semantic-release-24.2.0.tgz",
+      "integrity": "sha512-fQfn6e/aYToRtVJYKqneFM1Rg3KP2gh3wSWtpYsLlz6uaPKlISrTzvYAFn+mYWo07F0X1Cz5ucU89AVE8X1mbg==",
       "dev": true,
+      "license": "MIT",
       "dependencies": {
         "@semantic-release/commit-analyzer": "^13.0.0-beta.1",
         "@semantic-release/error": "^4.0.0",
@@ -15227,9 +15228,9 @@
       "license": "0BSD"
     },
     "node_modules/tsx": {
-      "version": "4.19.1",
-      "resolved": "https://registry.npmjs.org/tsx/-/tsx-4.19.1.tgz",
-      "integrity": "sha512-0flMz1lh74BR4wOvBjuh9olbnwqCPc35OOlfyzHba0Dc+QNUeWX/Gq2YTbnwcWPO3BMd8fkzRVrHcsR+a7z7rA==",
+      "version": "4.19.2",
+      "resolved": "https://registry.npmjs.org/tsx/-/tsx-4.19.2.tgz",
+      "integrity": "sha512-pOUl6Vo2LUq/bSa8S5q7b91cgNSjctn9ugq/+Mvow99qW6x/UZYwzxy/3NmqoT66eHYfCVvFvACC58UBPFf28g==",
       "dev": true,
       "license": "MIT",
       "dependencies": {
@@ -15403,10 +15404,11 @@
       }
     },
     "node_modules/typedoc-plugin-merge-modules": {
-      "version": "6.0.2",
-      "resolved": "https://registry.npmjs.org/typedoc-plugin-merge-modules/-/typedoc-plugin-merge-modules-6.0.2.tgz",
-      "integrity": "sha512-WdADOhOCZBi4wDjP82ua36YSmDaiRGb+o9qXGD9W01nE0hZqbGnogSmalj/zii/T9IaSIRVBPvdQD5urBh8NIw==",
+      "version": "6.0.3",
+      "resolved": "https://registry.npmjs.org/typedoc-plugin-merge-modules/-/typedoc-plugin-merge-modules-6.0.3.tgz",
+      "integrity": "sha512-66mKhcU3RqjLnFzrC4jObqKpnKg+yCyBmTYfzGHjuVlBb1ZhPyD64kLBR6ZsSx5oy99W/Kizu5xc5NBN2nY3kQ==",
       "dev": true,
+      "license": "ISC",
       "peerDependencies": {
         "typedoc": "0.26.x"
       }
