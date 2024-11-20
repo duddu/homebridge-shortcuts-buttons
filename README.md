@@ -16,17 +16,17 @@
 
 </div>
 
-### Features highlights
+## Features highlights
 
-- Run your **Apple Shortcuts** directly from your **Home app** (or any HomeKit compatible integration).
+- Run your Apple **Shortcuts** directly from your native **Home** app (or any **HomeKit** compatible integration).
 - Optionally, choose a **custom callback command** (even another shortcut) to execute once your shortcut completes (success/failure/cancel), leveraging an integrated **x-callback-url server**.
 - Choose to display your shortcuts buttons as **Outlets** or **Switches**.
 - All via UI plugin configuration, no other setup required.
 - Super fast and light, zero runtime package dependencies.
 
-### Apple Home examples
+## How does it look like
 
-The following screenshots give a preview of what this plugin may produce in the Home app - depending on whether you decide to display the shortcuts buttons as _Outlets_ or _Switches_ (see [configuration](#configuration)), and on the _Show as single tile / separate tiles_ option in the Accessory Settings.
+The screenshots below give you an idea of how the end result may look like on an iOS Home app. The different variations of UI depend on the values you choose for the _Display buttons as_ option in the plugin [configuration](#configuration) form, and for the _Show as single tile / Show as separate tiles_ option in the Accessory Settings on the Home app.
 
 <img src="https://github.com/duddu/homebridge-shortcuts-buttons/blob/latest/assets/demo-outlets-single-tile-room-view.png?raw=true" alt="Apple Home demo outlets single tile room view" title="Outlets - Show as single tile - Room view" width="24%"><img src="https://github.com/duddu/homebridge-shortcuts-buttons/blob/latest/assets/transparent-square.png?raw=true" alt="separator" width="1.33%"><img src="https://github.com/duddu/homebridge-shortcuts-buttons/blob/latest/assets/demo-outlets-single-tile-accessory-view.png?raw=true" alt="Apple Home demo outlets single tile accessory view" title="Outlets - Show as single tile - Accessory view" width="24%"><img src="https://github.com/duddu/homebridge-shortcuts-buttons/blob/latest/assets/transparent-square.png?raw=true" alt="separator" width="1.33%"><img src="https://github.com/duddu/homebridge-shortcuts-buttons/blob/latest/assets/demo-switches-separate-tiles-room-view.png?raw=true" alt="Apple Home demo switches separate tiles room view" title="Switches - Show as separate tiles - Room view" width="24%"><img src="https://github.com/duddu/homebridge-shortcuts-buttons/blob/latest/assets/transparent-square.png?raw=true" alt="separator" width="1.33%"><img src="https://github.com/duddu/homebridge-shortcuts-buttons/blob/latest/assets/demo-switches-single-tile-accessory-view.png?raw=true" alt="Apple Home demo switches single tile accessory view" title="Switches - Show as single tile - Accessory view" width="24%">
 
@@ -118,28 +118,12 @@ After the decoding of the dictionary, you'll have your clear variables to access
 
 ## Requirements
 
-- MacOS 12+ (Monterey or later)
-- The shortcuts you want to run must be accessible from the machine where Homebridge is running, e.g. by having the host logged into the relevant iCloud account.
-
-#### NPM Engines
-
-- `node ^18.17.0 || ^20.9.0`
-- `homebridge ^1.6.0`
+- Supports macOS 12+ (Monterey or more recent)
+- The Apple Shortcuts you wish to control with this plugin must be executable from the machine where Homebridge is installed. I.e. the user running Homebridge must be logged into an iCloud account which has access to those Shortcuts.
 
 ## Development
 
 Please feel free to open PRs from forked repo against the `latest` branch, I'll do my best to have a look asap. The plugin is pretty extensible and there are plenty of potential easy enhancements to make in case people find it useful.
-
-Main npm scripts for local development:
-
-```shell
-npm install # Install dev dependencies
-npm run test # Run unit tests with Jest
-npm run build # Build the plugin
-npm run watch # Run homebridge in background and build on changes
-npm run convertSchema # Generate new config ts+md from schema json
-
-```
 
 ### Semantic release and conventional changelog
 
