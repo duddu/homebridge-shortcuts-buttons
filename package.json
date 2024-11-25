@@ -46,9 +46,9 @@
     "@semantic-release/release-notes-generator": "^14.0.1",
     "@types/eslint__eslintrc": "^2.1.2",
     "@types/eslint__js": "^8.42.3",
-    "@types/node": "^22.9.1",
-    "@typescript-eslint/eslint-plugin": "^8.15.0",
-    "@typescript-eslint/parser": "^8.15.0",
+    "@types/node": "^22.9.3",
+    "@typescript-eslint/eslint-plugin": "^8.16.0",
+    "@typescript-eslint/parser": "^8.16.0",
     "commitizen": "^4.3.1",
     "cz-conventional-changelog": "^3.3.0",
     "eslint": "^9.15.0",
@@ -66,8 +66,8 @@
     "tsx": "^4.19.2",
     "typedoc": "^0.26.11",
     "typedoc-plugin-merge-modules": "^6.0.3",
-    "typedoc-plugin-missing-exports": "^3.0.2",
-    "typescript": "^5.6.3"
+    "typedoc-plugin-missing-exports": "^3.1.0",
+    "typescript": "^5.7.2"
   },
   "keywords": [
     "apple-home",
