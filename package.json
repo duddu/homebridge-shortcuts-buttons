@@ -69,6 +69,9 @@
     "typedoc-plugin-missing-exports": "^3.1.0",
     "typescript": "^5.7.2"
   },
+  "overrides": {
+    "npm": ">=10.6"
+  },
   "keywords": [
     "apple-home",
     "apple-shortcuts",
