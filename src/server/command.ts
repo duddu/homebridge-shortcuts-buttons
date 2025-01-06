@@ -110,13 +110,14 @@ export class HSBXCallbackUrlServerCommand {
     }
 
     return (
-      `open "\\$(npm -gp ls ${PLUGIN_NAME})${DEFAULT_COMMAND_EXECUTABLE_RELATIVE_PATH}" ` +
+      `open "${this.defaultCommandExecutableAbsolutePath}" ` +
       `--env NOTIFICATION_TITLE="${this.config.name}" ` +
       `--env NOTIFICATION_SUBTITLE="${subtitle}" ` +
       `--env NOTIFICATION_SOUND="${sound}"`
     );
   }
-}
 
-const DEFAULT_COMMAND_EXECUTABLE_RELATIVE_PATH =
-  '/dist/bin/HomebridgeShortcutsButtons\\ -\\ Notify\\ Shortcut\\ Result.app';
+  private readonly defaultCommandExecutableAbsolutePath =
+    `/usr/local/lib/node_modules/${PLUGIN_NAME}` +
+    `/dist/bin/HomebridgeShortcutsButtons - Notify Shortcut Result.app`;
+}
