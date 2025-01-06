@@ -342,7 +342,7 @@ describe(HSBXCallbackUrlServer.name, () => {
           expect(utilsMock.execAsync).toHaveBeenCalledWith(
             expect.stringMatching(
               // eslint-disable-next-line max-len
-              /open .*dist\/bin\/HomebridgeShortcutsButtons\\ -\\ Notify\\ Shortcut\\ Result.app" --env NOTIFICATION_TITLE="platformMock" --env NOTIFICATION_SUBTITLE="shortcutMock executed successfully\nResult: resultMock with special chars ''''" --env NOTIFICATION_SOUND="Glass"/,
+              /open .*dist\/bin\/HomebridgeShortcutsButtons - Notify Shortcut Result.app" --env NOTIFICATION_TITLE="platformMock" --env NOTIFICATION_SUBTITLE="shortcutMock executed successfully\nResult: resultMock with special chars ''''" --env NOTIFICATION_SOUND="Glass"/,
             ),
             {
               env: {
@@ -373,7 +373,7 @@ describe(HSBXCallbackUrlServer.name, () => {
           expect(utilsMock.execAsync).toHaveBeenCalledWith(
             expect.stringMatching(
               // eslint-disable-next-line max-len
-              /open .*dist\/bin\/HomebridgeShortcutsButtons\\ -\\ Notify\\ Shortcut\\ Result.app" --env NOTIFICATION_TITLE="platformMock" --env NOTIFICATION_SUBTITLE="shortcutMock execution failed\nError: errorMock" --env NOTIFICATION_SOUND="Sosumi"/,
+              /open .*dist\/bin\/HomebridgeShortcutsButtons - Notify Shortcut Result.app" --env NOTIFICATION_TITLE="platformMock" --env NOTIFICATION_SUBTITLE="shortcutMock execution failed\nError: errorMock" --env NOTIFICATION_SOUND="Sosumi"/,
             ),
             {
               env: {
@@ -404,7 +404,7 @@ describe(HSBXCallbackUrlServer.name, () => {
           expect(utilsMock.execAsync).toHaveBeenCalledWith(
             expect.stringMatching(
               // eslint-disable-next-line max-len
-              /open .*dist\/bin\/HomebridgeShortcutsButtons\\ -\\ Notify\\ Shortcut\\ Result.app" --env NOTIFICATION_TITLE="platformMock" --env NOTIFICATION_SUBTITLE="shortcutMock execution was cancelled" --env NOTIFICATION_SOUND="Sosumi"/,
+              /open .*dist\/bin\/HomebridgeShortcutsButtons - Notify Shortcut Result.app" --env NOTIFICATION_TITLE="platformMock" --env NOTIFICATION_SUBTITLE="shortcutMock execution was cancelled" --env NOTIFICATION_SOUND="Sosumi"/,
             ),
             {
               env: {
@@ -435,7 +435,7 @@ describe(HSBXCallbackUrlServer.name, () => {
           expect(utilsMock.execAsync).toHaveBeenCalledWith(
             expect.stringMatching(
               // eslint-disable-next-line max-len
-              /open .*dist\/bin\/HomebridgeShortcutsButtons\\ -\\ Notify\\ Shortcut\\ Result.app" --env NOTIFICATION_TITLE="platformMock" --env NOTIFICATION_SUBTITLE="shortcutMock received an unknown result status" --env NOTIFICATION_SOUND="Sosumi"/,
+              /open .*dist\/bin\/HomebridgeShortcutsButtons - Notify Shortcut Result.app" --env NOTIFICATION_TITLE="platformMock" --env NOTIFICATION_SUBTITLE="shortcutMock received an unknown result status" --env NOTIFICATION_SOUND="Sosumi"/,
             ),
             {
               env: {
