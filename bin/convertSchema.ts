@@ -44,7 +44,10 @@ function recursiveParse(root: object, subLevel = false) {
       `| ${(subLevel ? '&ensp;↳ ' : '') + fieldName} ` +
       `| \`${fieldConfig['enum'] ? (fieldConfig['enum'] as []).map((str) => `"${str}"`).join(' \\| ') : fieldConfig['type']}\` ` +
       `| ${!fieldConfig['default'] ? '-' : typeof fieldConfig['default'] === 'string' ? `\`"${fieldConfig['default']}"\`` : `\`${fieldConfig['default']}\``} ` +
-      `| ${(fieldConfig['description'] as string).replaceAll('\n', '').replaceAll('|', '\\|')} |\n`;
+      `| ${(fieldConfig['description'] as string).replaceAll('\n', '').replaceAll('|', '\\|')} |\n`.replaceAll(
+        'target="_README" rel="noreferrer" rel="noopener" ',
+        '',
+      );
     if (fieldConfig['properties']) {
       recursiveParse(fieldConfig['properties'], true);
     }
@@ -95,6 +98,7 @@ async function writeConfig(config: string): Promise<void> {
     )
     .replaceAll('<br>', '')
     .replaceAll('* \n', '*\n')
+    .replaceAll('target="_README" rel="noreferrer" rel="noopener" ', '')
     .replaceAll(/export\s(\w+)\s(?!HSBConfig)/g, '$1 ')
     .replaceAll(/(([^\n]+)\*\/)(\n\s*(\w+\s)?(\w+)(:|\s=))/gm, (a, _b, c, _d, _e, f) => {
       const fieldConfig = schema.properties[f as never];

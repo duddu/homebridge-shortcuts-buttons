@@ -2,30 +2,32 @@
   "pluginAlias": "HomebridgeShortcutsButtons",
   "pluginType": "platform",
   "singular": true,
+  "headerDisplay": "Please refer to the <a target=\"_README\" rel=\"noreferrer\" rel=\"noopener\" href=\"https://github.com/duddu/homebridge-shortcuts-buttons#readme\">plugin documentation</a> for a more comprehensive explanation on this configuration.",
+  "footerDisplay": "Please refer to the <a target=\"_README\" rel=\"noreferrer\" rel=\"noopener\" href=\"https://github.com/duddu/homebridge-shortcuts-buttons#readme\">plugin documentation</a> for a more comprehensive explanation on this configuration.",
   "schema": {
     "type": "object",
     "properties": {
       "name": {
         "type": "string",
-        "description": "Name of the platform bridge.",
-        "default": "Homebridge Shortcuts Buttons"
+        "description": "Display name of the platform bridge.",
+        "default": "ShortcutsButtons"
       },
       "accessoryName": {
         "type": "string",
-        "description": "Display name of the accessory.",
+        "description": "Display name of the platform accessory.",
         "default": "Shortcuts"
       },
       "serviceType": {
         "type": "string",
         "title": "Display buttons as",
         "enum": ["Outlet", "Switch"],
-        "description": "Display the buttons services as outlets or as switches.",
+        "description": "Display the shortcuts buttons as Outlets or as Switches. See the <a target=\"_README\" rel=\"noreferrer\" rel=\"noopener\" href=\"https://github.com/duddu/homebridge-shortcuts-buttons/tree/latest?tab=readme-ov-file#how-does-it-look-like\">related documentation</a> for a visual preview of the two options in the Apple Home app.",
         "default": "Outlet"
       },
       "services": {
         "type": "array",
-        "title": "Buttons",
-        "description": "List of buttons configuration objects.",
+        "title": "Shortcuts buttons",
+        "description": "Add a new item to this list for every Apple Shortcut you want to be able to launch.<br>\nThe machine running Homebridge must have access to every shortcut listed here (i.e. the macOS user must be logged into the iCloud account where the shortcuts are stored). If you change the name of a shortcut from the Shortcuts app remember to update it here too.",
         "uniqueItems": true,
         "minItems": 1,
         "items": {
@@ -33,13 +35,13 @@
           "properties": {
             "serviceName": {
               "type": "string",
-              "title": "Button name",
-              "description": "A name to display for this button."
+              "title": "Button title",
+              "description": "A title to display for this button."
             },
             "shortcutName": {
               "type": "string",
               "title": "Shortcut name",
-              "description": "Name of the Apple Shortcut to trigger, as displayed in the Shortcuts app. The machine running Homebridge must have access to it (i.e. be logged to the correct iCloud account)."
+              "description": "The name of the Apple Shortcut to launch, as displayed in your Shortcuts app."
             }
           },
           "required": ["serviceName", "shortcutName"]
@@ -47,40 +49,61 @@
       },
       "callbackServerEnabled": {
         "type": "boolean",
-        "title": "Enable Callback Command",
-        "description": "Whether the plugin should execute a command once a shortcut run completes. This determines whether to run an internal x-callback-url http server in the background.<br>\nAll fields below depend on this one: any value inserted in the following fields will be ignored if this one value is set to false.",
+        "title": "Enable Callback",
+        "description": "The plugin will wait for the shortcut to complete its run, and will execute a callback action of your choice.",
         "default": true
       },
       "callbackCommandType": {
         "type": "string",
+        "title": "Callback Type",
         "enum": ["Default (display notification)", "Custom unix command", "Shortcut name"],
-        "description": "With the default option, after the shortcut completion, a notification with the outcome of the shortcut run is displayed on the host running Homebrige.<br>\nIf you choose to customize the callback behaviour, you have two choices: use any unix command that your host is able to execute, or just use another shortcut to handle the callback if you like. Depending on which choice you make, you'll have to fill in the next field accordingly.<br>\nPlease consult the dedicated documentation for more detail: <a href=\"https://github.com/duddu/homebridge-shortcuts-buttons/blob/latest/README.md#callback-command\">Callback command</a>.",
-        "default": "Default (display notification)"
+        "description": "With the default option, after the shortcut completion, a notification with the outcome of the shortcut run is displayed on the host running Homebrige.<br>\nIf you choose to customize the callback behaviour, you have two choices: use any unix command that your host is able to execute, or just use another shortcut to handle the callback if you like. Depending on your choice, you must complete the next field accordingly.<br>\nPlease see the <a target=\"_README\" rel=\"noreferrer\" rel=\"noopener\" href=\"https://github.com/duddu/homebridge-shortcuts-buttons/tree/latest?tab=readme-ov-file#callback-command\">related documentation</a> for more detail.",
+        "default": "Default (display notification)",
+        "condition": {
+          "functionBody": "return model.callbackServerEnabled === true;"
+        }
       },
       "callbackCustomCommand": {
         "type": "string",
-        "description": "Either a unix command or the name of a shortcut to run, depending on the value selected in the previous field. In the former case, all the content of the field will be treated as a command and executed: in the latter, this field expects just the plain name of the shortcut as displayed in the Shortcuts app. If you left the previous field on the default value, any text inserted here will be ignored.<br>\nPlease consult the dedicated documentation for more details also regarding the runtime variables available during your command/shortcut execution: <a href=\"https://github.com/duddu/homebridge-shortcuts-buttons/blob/latest/README.md#callback-command\">Callback command</a>."
+        "title": "Custom callback command / callback shortcut name",
+        "description": "Either a unix command or the name of a shortcut to run, depending on the value selected in the previous field. In the former case, all the content of the field will be treated as a command and executed: in the latter, this field expects just the plain name of the shortcut as displayed in the Shortcuts app. If you left the previous field on the default value, any text inserted here will be ignored.<br>\nYou can also read input parameters from your custom command/shortcut. Please see the <a target=\"_README\" rel=\"noreferrer\" rel=\"noopener\" href=\"https://github.com/duddu/homebridge-shortcuts-buttons/tree/latest?tab=readme-ov-file#custom-unix-command\">related documentation</a> for more detail.",
+        "condition": {
+          "functionBody": "return model.callbackServerEnabled === true && model.callbackCommandType !== 'Default (display notification)';"
+        }
       },
       "callbackCommandTimeout": {
         "type": "number",
-        "description": "The time in milliseconds that the x-callback-url server should wait for the callback command execution to complete before timing out. Note: this matters only in case of custom callback command; if you chose a shortcut, the actual command executed is only the launch of it, the run itself is indipendent from the plugin.",
-        "default": 5000
+        "title": "Custom callback command timeout",
+        "description": "The time in milliseconds that the x-callback-url server should wait for the callback command execution to complete before timing out.",
+        "default": 5000,
+        "condition": {
+          "functionBody": "return model.callbackServerEnabled === true && model.callbackCommandType === 'Custom unix command';"
+        }
       },
       "callbackServerHostname": {
         "type": "string",
         "description": "IPv4 address or hostname to expose the internal x-callback-url http server (must be accessible from a browser on the machine running Homebridge).",
-        "default": "127.0.0.1"
+        "default": "127.0.0.1",
+        "condition": {
+          "functionBody": "return model.callbackServerEnabled === true;"
+        }
       },
       "callbackServerPort": {
         "type": "number",
-        "description": "A free port number to be used by the internal x-callback-url http server.",
-        "default": 63963
+        "description": "A free port number for the internal x-callback-url HTTP server.",
+        "default": 63963,
+        "condition": {
+          "functionBody": "return model.callbackServerEnabled === true;"
+        }
       },
       "callbackServerProtocol": {
         "type": "string",
         "enum": ["http", "https"],
         "description": "If you access other Homebridge services (e.g. UI) behind a reverse proxy with TLS certificate installed, you may want to access the x-callback-url server via https as well.",
-        "default": "http"
+        "default": "http",
+        "condition": {
+          "functionBody": "return model.callbackServerEnabled === true;"
+        }
       }
     },
     "required": [
