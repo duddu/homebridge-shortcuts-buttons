@@ -14,7 +14,7 @@
     "url": "https://github.com/duddu/homebridge-shortcuts-buttons/issues"
   },
   "engines": {
-    "node": "^18.20.4 || ^20.16.0 || ^22.6.0",
+    "node": "^18.20.4 || ^20.18.0 || ^22.10.0",
     "homebridge": "^1.8.0 || ^2.0.0-beta.0"
   },
   "main": "dist/index.js",
@@ -44,13 +44,13 @@
     "@semantic-release/github": "^11.0.5",
     "@semantic-release/npm": "^12.0.2",
     "@semantic-release/release-notes-generator": "^14.1.0",
-    "@types/node": "^22.14.0",
+    "@types/node": "^22.18.1",
     "@typescript-eslint/eslint-plugin": "^8.43.0",
     "@typescript-eslint/parser": "^8.29.1",
     "commitizen": "^4.3.1",
     "cz-conventional-changelog": "^3.3.0",
     "eslint": "^9.35.0",
-    "homebridge": "^2.0.0-beta.27",
+    "homebridge": "^2.0.0-beta.29",
     "husky": "^9.1.7",
     "json-schema-to-typescript": "^15.0.4",
     "lodash": "^4.17.21",
