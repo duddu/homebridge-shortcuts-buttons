@@ -2,158 +2,158 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 	<url>
 		<loc>https://homebridge-shortcuts-buttons.duddu.dev/index.html</loc>
-		<lastmod>2025-09-10T23:08:08.014Z</lastmod>
+		<lastmod>2025-09-13T06:54:36.817Z</lastmod>
 	</url>
 	<url>
 		<loc>https://homebridge-shortcuts-buttons.duddu.dev/modules.html</loc>
-		<lastmod>2025-09-10T23:08:08.014Z</lastmod>
+		<lastmod>2025-09-13T06:54:36.817Z</lastmod>
 	</url>
 	<url>
 		<loc>https://homebridge-shortcuts-buttons.duddu.dev/hierarchy.html</loc>
-		<lastmod>2025-09-10T23:08:08.014Z</lastmod>
+		<lastmod>2025-09-13T06:54:36.817Z</lastmod>
 	</url>
 	<url>
 		<loc>https://homebridge-shortcuts-buttons.duddu.dev/modules/accessory.html</loc>
-		<lastmod>2025-09-10T23:08:08.014Z</lastmod>
+		<lastmod>2025-09-13T06:54:36.817Z</lastmod>
 	</url>
 	<url>
 		<loc>https://homebridge-shortcuts-buttons.duddu.dev/classes/accessory.HSBAccessory.html</loc>
-		<lastmod>2025-09-10T23:08:08.014Z</lastmod>
+		<lastmod>2025-09-13T06:54:36.817Z</lastmod>
 	</url>
 	<url>
 		<loc>https://homebridge-shortcuts-buttons.duddu.dev/classes/accessory.HSBDevice.html</loc>
-		<lastmod>2025-09-10T23:08:08.014Z</lastmod>
+		<lastmod>2025-09-13T06:54:36.817Z</lastmod>
 	</url>
 	<url>
 		<loc>https://homebridge-shortcuts-buttons.duddu.dev/interfaces/accessory.HSBAccessoryContext.html</loc>
-		<lastmod>2025-09-10T23:08:08.014Z</lastmod>
+		<lastmod>2025-09-13T06:54:36.817Z</lastmod>
 	</url>
 	<url>
 		<loc>https://homebridge-shortcuts-buttons.duddu.dev/types/accessory.HSBPlatformAccessory.html</loc>
-		<lastmod>2025-09-10T23:08:08.014Z</lastmod>
+		<lastmod>2025-09-13T06:54:36.817Z</lastmod>
 	</url>
 	<url>
 		<loc>https://homebridge-shortcuts-buttons.duddu.dev/modules/config.html</loc>
-		<lastmod>2025-09-10T23:08:08.014Z</lastmod>
+		<lastmod>2025-09-13T06:54:36.817Z</lastmod>
 	</url>
 	<url>
 		<loc>https://homebridge-shortcuts-buttons.duddu.dev/interfaces/config.HSBConfig.html</loc>
-		<lastmod>2025-09-10T23:08:08.014Z</lastmod>
+		<lastmod>2025-09-13T06:54:36.817Z</lastmod>
 	</url>
 	<url>
 		<loc>https://homebridge-shortcuts-buttons.duddu.dev/modules/platform.html</loc>
-		<lastmod>2025-09-10T23:08:08.014Z</lastmod>
+		<lastmod>2025-09-13T06:54:36.817Z</lastmod>
 	</url>
 	<url>
 		<loc>https://homebridge-shortcuts-buttons.duddu.dev/classes/platform.HSBPlatform.html</loc>
-		<lastmod>2025-09-10T23:08:08.014Z</lastmod>
+		<lastmod>2025-09-13T06:54:36.817Z</lastmod>
 	</url>
 	<url>
 		<loc>https://homebridge-shortcuts-buttons.duddu.dev/modules/server.html</loc>
-		<lastmod>2025-09-10T23:08:08.014Z</lastmod>
+		<lastmod>2025-09-13T06:54:36.817Z</lastmod>
 	</url>
 	<url>
 		<loc>https://homebridge-shortcuts-buttons.duddu.dev/enums/server.HSBXCallbackUrlOptionalSearchParamsKeys.html</loc>
-		<lastmod>2025-09-10T23:08:08.014Z</lastmod>
+		<lastmod>2025-09-13T06:54:36.817Z</lastmod>
 	</url>
 	<url>
 		<loc>https://homebridge-shortcuts-buttons.duddu.dev/enums/server.HSBXCallbackUrlRequiredSearchParamsKeys.html</loc>
-		<lastmod>2025-09-10T23:08:08.014Z</lastmod>
+		<lastmod>2025-09-13T06:54:36.817Z</lastmod>
 	</url>
 	<url>
 		<loc>https://homebridge-shortcuts-buttons.duddu.dev/classes/server.HSBXCallbackUrlRequestValidator.html</loc>
-		<lastmod>2025-09-10T23:08:08.014Z</lastmod>
+		<lastmod>2025-09-13T06:54:36.817Z</lastmod>
 	</url>
 	<url>
 		<loc>https://homebridge-shortcuts-buttons.duddu.dev/classes/server.HSBXCallbackUrlSearchParams.html</loc>
-		<lastmod>2025-09-10T23:08:08.014Z</lastmod>
+		<lastmod>2025-09-13T06:54:36.817Z</lastmod>
 	</url>
 	<url>
 		<loc>https://homebridge-shortcuts-buttons.duddu.dev/classes/server.HSBXCallbackUrlServer.html</loc>
-		<lastmod>2025-09-10T23:08:08.014Z</lastmod>
+		<lastmod>2025-09-13T06:54:36.817Z</lastmod>
 	</url>
 	<url>
 		<loc>https://homebridge-shortcuts-buttons.duddu.dev/classes/server.HSBXCallbackUrlServerCommand.html</loc>
-		<lastmod>2025-09-10T23:08:08.014Z</lastmod>
+		<lastmod>2025-09-13T06:54:36.817Z</lastmod>
 	</url>
 	<url>
 		<loc>https://homebridge-shortcuts-buttons.duddu.dev/classes/server.HSBXCallbackUrlServerCommandEnvironment.html</loc>
-		<lastmod>2025-09-10T23:08:08.014Z</lastmod>
+		<lastmod>2025-09-13T06:54:36.817Z</lastmod>
 	</url>
 	<url>
 		<loc>https://homebridge-shortcuts-buttons.duddu.dev/interfaces/server.HSBXCallbackUrlRequestValidatorDescriptor.html</loc>
-		<lastmod>2025-09-10T23:08:08.014Z</lastmod>
+		<lastmod>2025-09-13T06:54:36.817Z</lastmod>
 	</url>
 	<url>
 		<loc>https://homebridge-shortcuts-buttons.duddu.dev/types/server.HSBXCallbackUrlRequestValidatorsDescriptors.html</loc>
-		<lastmod>2025-09-10T23:08:08.014Z</lastmod>
+		<lastmod>2025-09-13T06:54:36.817Z</lastmod>
 	</url>
 	<url>
 		<loc>https://homebridge-shortcuts-buttons.duddu.dev/types/server.HSBXCallbackUrlRequestValidatorsKeys.html</loc>
-		<lastmod>2025-09-10T23:08:08.014Z</lastmod>
+		<lastmod>2025-09-13T06:54:36.817Z</lastmod>
 	</url>
 	<url>
 		<loc>https://homebridge-shortcuts-buttons.duddu.dev/types/server.HSBXCallbackUrlSearchParamsDict.html</loc>
-		<lastmod>2025-09-10T23:08:08.014Z</lastmod>
+		<lastmod>2025-09-13T06:54:36.817Z</lastmod>
 	</url>
 	<url>
 		<loc>https://homebridge-shortcuts-buttons.duddu.dev/functions/server.createRequestValidators.html</loc>
-		<lastmod>2025-09-10T23:08:08.014Z</lastmod>
+		<lastmod>2025-09-13T06:54:36.817Z</lastmod>
 	</url>
 	<url>
 		<loc>https://homebridge-shortcuts-buttons.duddu.dev/modules/service.html</loc>
-		<lastmod>2025-09-10T23:08:08.014Z</lastmod>
+		<lastmod>2025-09-13T06:54:36.817Z</lastmod>
 	</url>
 	<url>
 		<loc>https://homebridge-shortcuts-buttons.duddu.dev/classes/service.HSBService.html</loc>
-		<lastmod>2025-09-10T23:08:08.014Z</lastmod>
+		<lastmod>2025-09-13T06:54:36.817Z</lastmod>
 	</url>
 	<url>
 		<loc>https://homebridge-shortcuts-buttons.duddu.dev/classes/service.HSBServiceState.html</loc>
-		<lastmod>2025-09-10T23:08:08.014Z</lastmod>
+		<lastmod>2025-09-13T06:54:36.817Z</lastmod>
 	</url>
 	<url>
 		<loc>https://homebridge-shortcuts-buttons.duddu.dev/classes/service.HSBServiceToggleBackOffTimeout.html</loc>
-		<lastmod>2025-09-10T23:08:08.014Z</lastmod>
+		<lastmod>2025-09-13T06:54:36.817Z</lastmod>
 	</url>
 	<url>
 		<loc>https://homebridge-shortcuts-buttons.duddu.dev/types/service.HSBServiceConfig.html</loc>
-		<lastmod>2025-09-10T23:08:08.014Z</lastmod>
+		<lastmod>2025-09-13T06:54:36.817Z</lastmod>
 	</url>
 	<url>
 		<loc>https://homebridge-shortcuts-buttons.duddu.dev/types/service.HSBServiceType.html</loc>
-		<lastmod>2025-09-10T23:08:08.014Z</lastmod>
+		<lastmod>2025-09-13T06:54:36.817Z</lastmod>
 	</url>
 	<url>
 		<loc>https://homebridge-shortcuts-buttons.duddu.dev/modules/settings.html</loc>
-		<lastmod>2025-09-10T23:08:08.014Z</lastmod>
+		<lastmod>2025-09-13T06:54:36.817Z</lastmod>
 	</url>
 	<url>
 		<loc>https://homebridge-shortcuts-buttons.duddu.dev/variables/settings.PLATFORM_NAME.html</loc>
-		<lastmod>2025-09-10T23:08:08.014Z</lastmod>
+		<lastmod>2025-09-13T06:54:36.817Z</lastmod>
 	</url>
 	<url>
 		<loc>https://homebridge-shortcuts-buttons.duddu.dev/variables/settings.PLUGIN_NAME.html</loc>
-		<lastmod>2025-09-10T23:08:08.014Z</lastmod>
+		<lastmod>2025-09-13T06:54:36.817Z</lastmod>
 	</url>
 	<url>
 		<loc>https://homebridge-shortcuts-buttons.duddu.dev/modules/shortcut.html</loc>
-		<lastmod>2025-09-10T23:08:08.014Z</lastmod>
+		<lastmod>2025-09-13T06:54:36.817Z</lastmod>
 	</url>
 	<url>
 		<loc>https://homebridge-shortcuts-buttons.duddu.dev/enums/shortcut.HSBShortcutStatus.html</loc>
-		<lastmod>2025-09-10T23:08:08.014Z</lastmod>
+		<lastmod>2025-09-13T06:54:36.817Z</lastmod>
 	</url>
 	<url>
 		<loc>https://homebridge-shortcuts-buttons.duddu.dev/classes/shortcut.HSBShortcut.html</loc>
-		<lastmod>2025-09-10T23:08:08.014Z</lastmod>
+		<lastmod>2025-09-13T06:54:36.817Z</lastmod>
 	</url>
 	<url>
 		<loc>https://homebridge-shortcuts-buttons.duddu.dev/modules/utils.html</loc>
-		<lastmod>2025-09-10T23:08:08.014Z</lastmod>
+		<lastmod>2025-09-13T06:54:36.817Z</lastmod>
 	</url>
 	<url>
 		<loc>https://homebridge-shortcuts-buttons.duddu.dev/classes/utils.HSBUtils.html</loc>
-		<lastmod>2025-09-10T23:08:08.014Z</lastmod>
+		<lastmod>2025-09-13T06:54:36.817Z</lastmod>
 	</url>
 </urlset>
