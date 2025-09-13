@@ -128,4 +128,3 @@ Please feel free to open PRs from forked repo against the `latest` branch, I'll 
 ### Semantic release and conventional changelog
 
 This repo uses [semantic-release](https://github.com/semantic-release/semantic-release) to publish github releases and npm packages. Among the other things, it perform commits analysis in order to determine when a new release is needed, so it's important that all commits messages follow the conventional-changelog syntax.
-To facilitate this, the repo enforces the use of [commitizen](https://github.com/commitizen/cz-cli) locally, via [husky](https://typicode.github.io/husky) `prepare-commit-msg` hook.

@@ -1,2 +1,4 @@
+#!/usr/bin/env sh
+npm run lint
 npm run typedoc
 git add docs
