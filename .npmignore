@@ -1,25 +1,27 @@
-# Ignore source code
+# source code
 /src/
 
 # dev-only local executables
 /bin/
 
-# ignore assets
+# static assets
 /assets/
 
-# ignore tests
+# tests
 /test/
 
-# ignore docs
+# documentation
 /docs/
 
-# dev-only modules configurations
+# dev-only config files
 .*
-jest.config.ts
+jest.config.*
+eslint.config.*
 typedoc.json
 
 # MacOS
 .DS_Store
+
 
 # ------------- Defaults ------------- #
 
