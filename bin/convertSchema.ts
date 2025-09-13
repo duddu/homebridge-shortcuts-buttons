@@ -1,24 +1,22 @@
+/* eslint-disable max-len */
+
 import { join } from 'path';
-import { exit, stdout } from 'process';
+import { env, exit, stdout } from 'process';
 import { writeFile, readFile } from 'fs/promises';
 import { compile, Options } from 'json-schema-to-typescript';
-import lowerCase from 'lodash/lowerCase.js';
-import startCase from 'lodash/startCase.js';
+import lowerCase from 'lodash/lowerCase';
+import startCase from 'lodash/startCase';
 
 import { schema } from '../config.schema.json';
 
-/* eslint-disable max-len */
-
 const moduleName = 'SchemaConverter';
 const configInterfaceName = 'HSBConfig';
+const npmLocalPrefix = env.npm_config_local_prefix!;
 const interfaceOutputRootPath = '/src/config.ts';
-const interfaceOutputRelativePath = join(
-  process.env.npm_config_local_prefix,
-  interfaceOutputRootPath,
-);
+const interfaceOutputRelativePath = join(npmLocalPrefix, interfaceOutputRootPath);
 const readmeOutputRootPath = '/README.md';
-const readmeOutputRelativePath = join(process.env.npm_config_local_prefix, readmeOutputRootPath);
-const prettierrcPath = join(process.env.npm_config_local_prefix, '/.prettierrc');
+const readmeOutputRelativePath = join(npmLocalPrefix, readmeOutputRootPath);
+const prettierrcPath = join(npmLocalPrefix, '/.prettierrc');
 
 async function main(): Promise<void> {
   recursiveParse(schema.properties);

@@ -521,8 +521,8 @@ describe(HSBXCallbackUrlServerCommand.name, () => {
       const expectedError =
         'HSBXCallbackUrlServerCommandEnvironment Invalid callback url search params';
 
-      expect(() => getServerCommand({ status: 'success' })).toThrowError(expectedError);
-      expect(() => getServerCommand({ shortcut: 'shortcutMock' })).toThrowError(expectedError);
+      expect(() => getServerCommand({ status: 'success' })).toThrow(expectedError);
+      expect(() => getServerCommand({ shortcut: 'shortcutMock' })).toThrow(expectedError);
     });
   });
 });

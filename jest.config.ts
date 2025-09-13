@@ -182,12 +182,14 @@ const config: JestConfigWithTsJest = {
   transform: {
     // '^.+\\.[tj]sx?$' to process js/ts with `ts-jest`
     // '^.+\\.m?[tj]sx?$' to process js/ts/mjs/mts with `ts-jest`
-    // '^.+\\.spec\\.ts$': [
     '^.+\\.tsx?$': [
       'ts-jest',
       {
-        // isolatedModules: true,
-        // tsconfig: './test/tsconfig.test.json',
+        tsconfig: {
+          isolatedModules: true,
+          module: 'Node20',
+          moduleResolution: 'NodeNext',
+        },
         useESM: true,
       },
     ],

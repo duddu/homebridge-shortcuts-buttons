@@ -1,8 +1,8 @@
+import { FlatCompat } from '@eslint/eslintrc';
+import js from '@eslint/js';
 import tsParser from '@typescript-eslint/parser';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import js from '@eslint/js';
-import { FlatCompat } from '@eslint/eslintrc';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -14,7 +14,7 @@ const compat = new FlatCompat({
 
 export default [
   {
-    ignores: ['**/dist'],
+    ignores: ['**/*.d.ts'],
   },
   ...compat.extends(
     'eslint:recommended',
@@ -42,7 +42,6 @@ export default [
       semi: ['off'],
       'comma-dangle': ['warn', 'always-multiline'],
       'dot-notation': 'off',
-      eqeqeq: 'warn',
       curly: ['warn', 'all'],
       'brace-style': ['warn'],
       'prefer-arrow-callback': ['warn'],
