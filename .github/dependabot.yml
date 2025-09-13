@@ -3,16 +3,19 @@ updates:
   - package-ecosystem: npm
     directory: '/'
     versioning-strategy: increase
+    schedule:
+      interval: weekly
     groups:
-      npm dev dependencies:
+      npm dev minor:
         dependency-type: development
         applies-to: version-updates
         update-types:
           - minor
           - patch
-    schedule:
-      interval: weekly
   - package-ecosystem: github-actions
     directory: '/'
     schedule:
       interval: weekly
+    commit-message:
+      include: scope
+      prefix: ci
